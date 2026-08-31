@@ -51,6 +51,23 @@ function runBacktest({ symbol, candles, adapter, broker, initialCapital, positio
     else if (action === 'CLOSE' && inPosition) pending = { type: 'EXIT' };
   }
 
+  // FORCED_RESEARCH_EXIT: if a position is still open after the last bar,
+  // close it at the last bar's close (slippage-adjusted) purely to value the
+  // ending state. This is a valuation device, not a real market fill.
+  let forcedExit = false;
+  if (portfolio.isInPosition()) {
+    const lastBar = bars[bars.length - 1];
+    if (lastBar) {
+      const trade = portfolio.closePosition(lastBar, broker.exitFillPrice(lastBar.close), broker);
+      trade.forcedExit = true;
+      forcedExit = true;
+      // replace the terminal equity point (which still marked the open position)
+      // with the post-exit cash so the curve ends exactly at the final equity.
+      const curve = portfolio.state.equityCurve;
+      if (curve.length > 0) curve[curve.length - 1].equity = portfolio.state.cash;
+    }
+  }
+
   const state = portfolio.finalize();
   return {
     symbol,
@@ -64,6 +81,7 @@ function runBacktest({ symbol, candles, adapter, broker, initialCapital, positio
     barsTotal: bars.length,
     barsInPosition: state.barsInPosition,
     totalFunding: state.totalFunding,
+    forcedExit,
     openPositionAtEnd: state.position !== null,
   };
 }

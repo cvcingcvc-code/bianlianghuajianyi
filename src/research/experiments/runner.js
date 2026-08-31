@@ -97,6 +97,12 @@ function buildWarnings({ result, metrics, broker, candles, qualityReport, segmen
   if (candles.length < 200) {
     warnings.push('insufficient trading history (bars < 200)');
   }
+  if (result.forcedExit) {
+    warnings.push('position force-exited at end of backtest (forced research exit at last close)');
+  }
+  if (result.openPositionAtEnd) {
+    warnings.push('position still open at end of backtest (final equity includes unrealized PnL)');
+  }
   if (continuity && continuity.gapCount > 0) {
     warnings.push(`DATA CONTINUITY WARNING: ${continuity.missingBars} missing bar(s) in ${continuity.gapCount} gap(s); results NOT marked VALIDATED`);
   }
@@ -154,6 +160,7 @@ function buildSummaryJson({ symbol, candles, result, metrics, broker, intervalMs
     barsTotal: result.barsTotal,
     barsInPosition: result.barsInPosition,
     totalFunding: result.totalFunding,
+    forcedExit: !!result.forcedExit,
     openPositionAtEnd: result.openPositionAtEnd,
     warnings,
   };
@@ -186,22 +193,25 @@ function buildReportMd({ symbol, candles, result, metrics, broker, intervalMs, p
   L.push(`| Win Rate | ${fmtPct(metrics.winRatePct)} |`);
   L.push(`| Average Win | ${fmtMoney(metrics.avgWin)} USDT |`);
   L.push(`| Average Loss | ${fmtMoney(metrics.avgLoss)} USDT |`);
-  L.push(`| Profit Factor | ${fmt(metrics.profitFactor)} |`);
-  L.push(`| Expectancy | ${fmtMoney(metrics.expectancy)} USDT |`);
+  L.push(`| Net Profit Factor | ${fmt(metrics.netProfitFactor)} |`);
+  L.push(`| Gross Profit Factor | ${fmt(metrics.grossProfitFactor)} |`);
+  L.push(`| Expectancy (USDT/trade) | ${fmtMoney(metrics.expectancyDollar)} |`);
+  L.push(`| Expectancy (%/trade) | ${fmt(metrics.expectancyPctPerTrade) === 'N/A' ? 'N/A' : fmt(metrics.expectancyPctPerTrade) + '%'} |`);
   L.push(`| Trade Count | ${metrics.tradeCount} |`);
   L.push(`| Exposure | ${fmtPct(metrics.exposurePct)} |`);
   L.push(`| Max Consecutive Loss | ${metrics.maxConsecutiveLoss} |`);
   L.push(`| Total Fees | ${fmtMoney(metrics.totalFees)} USDT |`);
   L.push(`| Gross Profit | ${fmtMoney(metrics.grossProfit)} USDT |`);
   L.push(`| Gross Loss | ${fmtMoney(metrics.grossLoss)} USDT |`);
+  L.push(`| Forced Research Exit | ${result.forcedExit ? 'yes' : 'no'} |`);
   L.push('');
   L.push('## Assumptions');
   L.push('');
   L.push(`- Commission: ${fmt(metrics ? (broker.commissionPct * 100) : 0)}% per fill (both entry and exit)`);
   L.push(`- Slippage: ${fmt(broker.slippagePct * 100)}% (long entry: open x (1+slip), exit: open x (1-slip))`);
   L.push(`- Funding: ${broker.fundingIncluded() ? `included (rate ${fundingRate})` : 'funding rate not included'}`);
-  L.push(`- Position Size: ${positionSizePct}% of available equity per position (no leverage)`);
-  L.push(`- Execution Model: signal at close of bar N -> fill at open of bar N+1 (no look-ahead)`);
+  L.push(`- Position Size: ${positionSizePct}% of available equity per position (fee-inclusive, no leverage)`);
+  L.push(`- Execution Model: signal at close of bar N -> fill at open of bar N+1 (no look-ahead); any open position at the end is force-exited at the last close for valuation (forcedExit)`);
   L.push('');
   L.push('## Warnings');
   L.push('');
@@ -410,18 +420,30 @@ function runOnce({ symbol, candles, adapter, broker, initialCapital = DEFAULT_IN
   return { result, metrics, continuity };
 }
 
-// Research reference benchmark: buy at the first candle's open, hold, sell at the last candle's close.
-// Mark-to-market with closes for drawdown. Not a trading recommendation.
-function buyAndHoldReference(candles) {
+// Research reference benchmarks.
+//   BUY_HOLD_GROSS_REFERENCE:          buy first open, sell last close, 0 costs.
+//   BUY_HOLD_COST_ADJUSTED_REFERENCE:  same, but applies the given research fee
+//                                      (commission + slippage) on entry and exit.
+// Entry uses the first candle's open; exit uses the last candle's close.
+// These are research benchmarks, not trading recommendations.
+function buyAndHoldReference(candles, { commissionPct = 0, slippagePct = 0 } = {}) {
   if (!candles || candles.length === 0) {
     return { totalReturnPct: null, maxDrawdownPct: null, finalEquity: null, initialCapital: null };
   }
   const initialCapital = 10000;
-  const entry = candles[0].open;
-  const exit = candles[candles.length - 1].close;
-  const qty = initialCapital / entry;
+  const entryOpen = candles[0].open;
+  const exitClose = candles[candles.length - 1].close;
+  const entryFill = entryOpen * (1 + slippagePct);
+  const exitFill = exitClose * (1 - slippagePct);
+  // Fee-inclusive sizing, same as the backtester portfolio.
+  const entryFee = (initialCapital * (commissionPct / (1 + commissionPct)));
+  const qty = (initialCapital - entryFee) / entryFill;
+  const exitNotional = exitFill * qty;
+  const exitFee = exitNotional * commissionPct;
+  const finalEquity = exitNotional - exitFee;
+
+  // equity while holding (all-in) = qty * close
   const equityCurve = candles.map((c) => ({ timestamp: c.timestamp, equity: c.close * qty }));
-  const finalEquity = equityCurve[equityCurve.length - 1].equity;
   const dd = maxDrawdown(equityCurve);
   return {
     symbol: candles[0].symbol,
@@ -431,6 +453,7 @@ function buyAndHoldReference(candles) {
     maxDrawdownPct: dd.maxDrawdownPct,
     maxDrawdownAbs: dd.maxDrawdownAbs,
     equityCurve,
+    costs: { commissionPct, slippagePct },
   };
 }
 

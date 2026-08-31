@@ -23,13 +23,17 @@ function createPortfolio({ initialCapital, symbol, positionSizePct = 100, strate
       return state.position ? state.position.quantity : 0;
     },
 
-    // Open a LONG at `fillPrice` on bar (entry size = cash * sizePct, no leverage).
+    // Open a LONG at `fillPrice` on bar.
+    // Fee-inclusive sizing: the entry budget (cash * sizePct) must cover BOTH the
+    // notional and its entry fee, so cash never goes negative and there is no
+    // implicit leverage (notional is strictly less than cash for sizePct <= 1).
     openPosition(bar, fillPrice, broker) {
       if (state.position) {
         throw new Error('Cannot open: position already exists');
       }
       const sizePct = positionSizePct / 100;
-      const notional = state.cash * sizePct;
+      const budget = state.cash * sizePct;                 // max outlay incl. fee
+      const notional = budget / (1 + broker.commissionPct); // notional * (1+comm) = budget
       const quantity = notional / fillPrice;
       const fees = broker.commission(notional);
       state.cash -= notional + fees;

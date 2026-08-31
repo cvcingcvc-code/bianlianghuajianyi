@@ -89,3 +89,36 @@ CLOSE 条件（有持仓时，满足任一）：EMA 死叉（`!fastAboveSlow && 
 2. 现有代码的入场条件比文档描述更宽松（无需真金叉、无需 RSI<35），且多一个 `RSI<55` 上限。
 3. 这些条件直接影响样本数量：`rsiEma` 在真实数据上的成交次数预计会很少，需结合样本量审慎解读。
 4. 本阶段所有回测均以**代码实际条件**为准，不以文档描述为准。
+
+---
+
+## 5. rsiEma CLOSE（退出）真实代码条件（BACKTEST INTEGRITY AUDIT V2 补充）
+
+真实代码（`src/strategy/rsiEma.js` computeSignal）：
+
+```
+rsiWeakening = (rsi < 60) AND (rsiPrev != null) AND (rsiPrev >= 60)
+rsiTakeProfit = rsiWeakening AND (rsi > 65)        // <-- 关键
+emaDeathCross = (NOT fastAboveSlow) AND (emaFastPrev != null) AND (emaFastPrev > emaSlowPrev)
+
+CLOSE 仅当（有持仓）:
+    emaDeathCross OR rsiTakeProfit
+```
+
+### 语义分析（不改代码，仅解释事实）
+
+- **EMA 死叉**（`emaDeathCross`）：当前 EMA9 < EMA21，且上一根 EMA9 > EMA21 → 真正的向下穿越。✓ 会触发 CLOSE。
+- **RSI take-profit**（`rsiTakeProfit`）：要求 `rsi < 60`（来自 `rsiWeakening`）**且同时** `rsi > 65`。
+
+  > `rsi < 60 && rsi > 65` 不可能同时成立 → **`rsiTakeProfit` 恒为 false（死代码）**。
+
+- 因此，`rsiEma` 的**真实退出路径只有 EMA 死叉**。所谓"RSI 从 >=60 回落触发平仓"在现有代码中**不会发生**。
+
+### 伪代码（真实行为）
+
+```
+CLOSE（有持仓时）⇔  (emaFastPrev > emaSlowPrev) AND (emaFast_now < emaSlow_now)
+（RSI 分支恒为 false，不参与退出）
+```
+
+> 该结论影响策略行为解读，但不属于回测器问题。本阶段**不修改策略**；如需让 RSI 退出生效，属于策略设计变更，应进入 Strategy Research V2 评审。

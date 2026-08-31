@@ -101,8 +101,20 @@ function computeMetrics({ initialCapital, finalEquity, equityCurve, trades, inte
   metrics.avgLoss = losses.length > 0 ? mean(losses.map((t) => t.netPnl)) : null;
   metrics.grossProfit = grossProfit;
   metrics.grossLoss = grossLoss;
-  metrics.profitFactor = grossLoss < 0 ? Math.abs(grossProfit / grossLoss) : null;
-  metrics.expectancy = tradeCount > 0 ? mean(trades.map((t) => t.netPnl)) : null;
+  metrics.profitFactor = grossLoss < 0 ? Math.abs(grossProfit / grossLoss) : null; // == net PF (netPnl sums)
+  metrics.netProfitFactor = metrics.profitFactor;
+
+  // Gross profit factor uses pre-fee grossPnl sums.
+  const gWins = trades.filter((t) => t.grossPnl > 0);
+  const gLosses = trades.filter((t) => t.grossPnl < 0);
+  const gProfitSum = gWins.reduce((a, t) => a + t.grossPnl, 0);
+  const gLossSum = gLosses.reduce((a, t) => a + t.grossPnl, 0);
+  metrics.grossProfitFactor = gLossSum < 0 ? Math.abs(gProfitSum / gLossSum) : null;
+
+  // Expectancy: explicit units.
+  metrics.expectancy = tradeCount > 0 ? mean(trades.map((t) => t.netPnl)) : null; // USDT per trade (dollar)
+  metrics.expectancyDollar = metrics.expectancy;
+  metrics.expectancyPctPerTrade = tradeCount > 0 ? mean(trades.map((t) => t.returnPct)) : null; // % per trade
 
   // Max consecutive losing trades
   let maxConsecLoss = 0;

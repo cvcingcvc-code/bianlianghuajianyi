@@ -108,10 +108,27 @@ for bar in bars:
 
 - `totalReturnPct` / `annualizedReturnPct`（按实际时间跨度年化，非简单 ×252）
 - `maxDrawdownPct` / `maxDrawdownAbs`（running-peak 计算）
-- `sharpe` / `sortino`（基于逐 bar equity 收益，`periodsPerYear = 365天×24h×3600s / intervalMs`，riskFree=0）
-- `winRatePct` / `avgWin` / `avgLoss` / `profitFactor` / `expectancy`
-- `tradeCount` / `exposurePct` / `maxConsecutiveLoss`
+- `sharpe` / `sortino`（基于**逐 bar equity 收益** `equity_t/equity_{t-1}-1`，`periodsPerYear` 由 interval 推导，15m→35040，riskFree=0）
+- `winRatePct` / `avgWin` / `avgLoss` / `maxConsecutiveLoss`
+- `exposurePct` = `barsInMarket / totalBars`（bar 级在仓比例）
 - `grossProfit` / `grossLoss` / `totalFees` / `finalEquity`
+
+### Expectancy（明确单位，V2）
+
+- `expectancyDollar`（= 旧 `expectancy`）：每笔交易净盈亏均值，单位 **USDT/笔**
+- `expectancyPctPerTrade`：每笔交易 `returnPct` 均值，单位 **%/笔**
+
+> 报告中不再输出无单位的 "Expectancy"；`expectancy` 字段保留仅为向后兼容，等于 `expectancyDollar`。
+
+### Profit Factor（明确口径，V2）
+
+- `grossProfitFactor` = | Σ(grossPnl>0) / Σ(grossPnl<0) |（**扣手续费前**）
+- `netProfitFactor`（= 旧 `profitFactor`） = | Σ(netPnl>0) / Σ(netPnl<0) |（**扣手续费后**）
+
+### 资金与结束处理（V2）
+
+- 仓位 = `budget = cash × fraction`，`notional = budget / (1 + commissionPct)`，`fraction ≤ 1` ⇒ **无杠杆、不借现金**（费用含入预算）。
+- 末根 bar 后仍持仓 → **FORCED_RESEARCH_EXIT**：以最后 close（滑点调整）强制平仓，`forcedExit=true`，`openPositionAtEnd=false`。仅用于估值。
 
 ---
 
