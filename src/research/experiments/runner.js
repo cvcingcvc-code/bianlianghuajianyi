@@ -17,10 +17,11 @@
 const fs = require('fs');
 const path = require('path');
 const { loadCandles } = require('../data/candleRepository');
+const { analyzeContinuity, buildDataQualityMd } = require('../data/continuity');
 const { loadStrategy, listStrategies } = require('../strategyAdapter');
 const { createBroker, createFundingProvider } = require('../backtest/brokerSimulator');
 const { runBacktest } = require('../backtest/backtester');
-const { computeMetrics } = require('../metrics/performance');
+const { computeMetrics, intervalToMs } = require('../metrics/performance');
 const { maxDrawdown } = require('../metrics/drawdown');
 const { tradesToCsv } = require('../backtest/tradeLedger');
 
@@ -84,7 +85,7 @@ function splitCandles(candles, { trainStartMs, trainEndMs, testStartMs, testEndM
   return { train, test };
 }
 
-function buildWarnings({ result, metrics, broker, candles, qualityReport, segment }) {
+function buildWarnings({ result, metrics, broker, candles, qualityReport, segment, continuity }) {
   const warnings = [];
   const trades = result.trades.length;
   if (trades < 30) {
@@ -95,6 +96,9 @@ function buildWarnings({ result, metrics, broker, candles, qualityReport, segmen
   }
   if (candles.length < 200) {
     warnings.push('insufficient trading history (bars < 200)');
+  }
+  if (continuity && continuity.gapCount > 0) {
+    warnings.push(`DATA CONTINUITY WARNING: ${continuity.missingBars} missing bar(s) in ${continuity.gapCount} gap(s); results NOT marked VALIDATED`);
   }
   if (result.openPositionAtEnd) {
     warnings.push('position still open at end of backtest (final equity includes unrealized PnL)');
@@ -159,6 +163,8 @@ function buildReportMd({ symbol, candles, result, metrics, broker, intervalMs, p
   const L = [];
   L.push('# Backtest Report');
   L.push('');
+  L.push('> **FUNDING NOT INCLUDED** — results are gross of funding costs (unless a funding provider is configured).');
+  L.push('');
   if (segment) L.push(`**Segment:** ${segment}`);
   L.push(`- Symbol: ${symbol}`);
   L.push(`- Strategy: ${result.strategy}`);
@@ -211,6 +217,7 @@ function buildReportMd({ symbol, candles, result, metrics, broker, intervalMs, p
 function writeSegment({ dir, segment, symbol, candles, adapter, broker, initialCapital, positionSizePct, intervalMs, fundingRate, qualityReport }) {
   ensureDir(dir);
   const result = runBacktest({ symbol, candles, adapter, broker, initialCapital, positionSizePct });
+  const continuity = intervalMs ? analyzeContinuity(candles, intervalMs) : null;
   const metrics = computeMetrics({
     initialCapital,
     finalEquity: result.finalEquity,
@@ -220,7 +227,7 @@ function writeSegment({ dir, segment, symbol, candles, adapter, broker, initialC
     barsTotal: result.barsTotal,
     barsInPosition: result.barsInPosition,
   });
-  const warnings = buildWarnings({ result, metrics, broker, candles, qualityReport, segment });
+  const warnings = buildWarnings({ result, metrics, broker, candles, qualityReport, segment, continuity });
   const summary = buildSummaryJson({ symbol, candles, result, metrics, broker, intervalMs, positionSizePct, fundingRate, segment, warnings });
 
   fs.writeFileSync(path.join(dir, 'summary.json'), JSON.stringify(summary, null, 2), 'utf8');
@@ -385,4 +392,64 @@ function writeCompareMd(reportPath, symbol, rows) {
   fs.writeFileSync(reportPath, L.join('\n'), 'utf8');
 }
 
-module.exports = { runSingle, runCompare, splitCandles, estimateIntervalMs };
+module.exports = { runSingle, runCompare, splitCandles, estimateIntervalMs, runDataQuality, runOnce, buyAndHoldReference };
+
+// Run one backtest over a given candle set with a broker and return { result, metrics, continuity }.
+function runOnce({ symbol, candles, adapter, broker, initialCapital = DEFAULT_INITIAL_CAPITAL, positionSizePct = DEFAULT_POSITION_SIZE_PCT, intervalMs }) {
+  const result = runBacktest({ symbol, candles, adapter, broker, initialCapital, positionSizePct });
+  const metrics = computeMetrics({
+    initialCapital,
+    finalEquity: result.finalEquity,
+    equityCurve: result.equityCurve,
+    trades: result.trades,
+    intervalMs,
+    barsTotal: result.barsTotal,
+    barsInPosition: result.barsInPosition,
+  });
+  const continuity = intervalMs ? analyzeContinuity(candles, intervalMs) : null;
+  return { result, metrics, continuity };
+}
+
+// Research reference benchmark: buy at the first candle's open, hold, sell at the last candle's close.
+// Mark-to-market with closes for drawdown. Not a trading recommendation.
+function buyAndHoldReference(candles) {
+  if (!candles || candles.length === 0) {
+    return { totalReturnPct: null, maxDrawdownPct: null, finalEquity: null, initialCapital: null };
+  }
+  const initialCapital = 10000;
+  const entry = candles[0].open;
+  const exit = candles[candles.length - 1].close;
+  const qty = initialCapital / entry;
+  const equityCurve = candles.map((c) => ({ timestamp: c.timestamp, equity: c.close * qty }));
+  const finalEquity = equityCurve[equityCurve.length - 1].equity;
+  const dd = maxDrawdown(equityCurve);
+  return {
+    symbol: candles[0].symbol,
+    initialCapital,
+    finalEquity,
+    totalReturnPct: ((finalEquity / initialCapital) - 1) * 100,
+    maxDrawdownPct: dd.maxDrawdownPct,
+    maxDrawdownAbs: dd.maxDrawdownAbs,
+    equityCurve,
+  };
+}
+
+// Data quality report for a symbol's CSV (used by `--data-quality`).
+async function runDataQuality({ file, symbol, interval = '15m', outDir = DEFAULT_OUT_DIR }) {
+  const { candles, qualityReport } = loadCandles({ file, symbol });
+  const intervalMs = intervalToMs(interval);
+  const continuity = analyzeContinuity(candles, intervalMs);
+  ensureDir(outDir);
+  const md = buildDataQualityMd({ symbol, interval, candles, qualityReport, continuity });
+  const outFile = path.join(outDir, `data-quality-${symbol}.md`);
+  fs.writeFileSync(outFile, md, 'utf8');
+
+  console.log(`=== Data Quality: ${symbol} ===`);
+  console.log(`  rows: ${candles.length} | expected: ${continuity.expectedBars} | missing: ${continuity.missingBars} | gaps: ${continuity.gapCount} | duplicates: ${continuity.duplicateBars}`);
+  console.log(`  range: ${iso(continuity.firstTimestamp)} -> ${iso(continuity.lastTimestamp)}`);
+  if (continuity.gapCount > 0) {
+    console.log('  DATA CONTINUITY WARNING: missing bars present');
+  }
+  console.log(`  Report: ${outFile}`);
+  return { candles, qualityReport, continuity, outFile };
+}

@@ -3,6 +3,7 @@ const assert = require('node:assert');
 const { createPortfolio } = require('../src/research/backtest/portfolio');
 const { createBroker } = require('../src/research/backtest/brokerSimulator');
 const { computeMetrics } = require('../src/research/metrics/performance');
+const { intervalToMs, periodsPerYearFor } = require('../src/research/metrics/performance');
 const { maxDrawdown } = require('../src/research/metrics/drawdown');
 
 function curve(equities, intervalMs = 900000) {
@@ -125,4 +126,34 @@ test('metrics: null values when there are no trades', () => {
   assert.equal(metrics.profitFactor, null);
   assert.equal(metrics.expectancy, null);
   assert.equal(metrics.maxConsecutiveLoss, null);
+});
+
+// --- Interval parser / annualization (Sharpe periodsPerYear) ---
+test('interval parser: 15m -> 900000 ms and periodsPerYear 35040', () => {
+  assert.equal(intervalToMs('15m'), 15 * 60 * 1000);
+  assert.equal(periodsPerYearFor(intervalToMs('15m')), (365 * 24 * 60 * 60 * 1000) / 900000);
+  assert.equal(periodsPerYearFor(intervalToMs('15m')), 35040);
+});
+
+test('interval parser: 1h -> 3600000 ms and periodsPerYear 8760', () => {
+  assert.equal(intervalToMs('1h'), 3600 * 1000);
+  assert.equal(periodsPerYearFor(intervalToMs('1h')), 8760);
+});
+
+test('interval parser: 1d -> 86400000 ms and periodsPerYear 365', () => {
+  assert.equal(intervalToMs('1d'), 24 * 3600 * 1000);
+  assert.equal(periodsPerYearFor(intervalToMs('1d')), 365);
+});
+
+test('interval parser: computeMetrics derives periodsPerYear dynamically from 15m', () => {
+  const metrics = computeMetrics({
+    initialCapital: 100,
+    finalEquity: 101,
+    equityCurve: curve([100, 101]),
+    trades: [],
+    intervalMs: intervalToMs('15m'),
+    barsTotal: 2,
+    barsInPosition: 0,
+  });
+  assert.equal(metrics.periodsPerYear, 35040);
 });

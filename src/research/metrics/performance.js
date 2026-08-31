@@ -7,6 +7,26 @@ const { maxDrawdown } = require('./drawdown');
 
 const MS_PER_YEAR = 365 * 24 * 60 * 60 * 1000;
 
+const INTERVAL_RE = /^(\d+)\s*(m|h|d|w)?$/i;
+
+// Generic interval parser -> milliseconds.
+// Supports: '15m', '1h', '1d', '1w' (and plain ms numbers).
+function intervalToMs(label) {
+  if (typeof label === 'number') return label;
+  const m = String(label).trim().match(INTERVAL_RE);
+  if (!m) throw new Error(`Cannot parse interval "${label}"`);
+  const n = Number(m[1]);
+  const unit = (m[2] || 'm').toLowerCase();
+  const perUnitMs = { m: 60 * 1000, h: 3600 * 1000, d: 24 * 3600 * 1000, w: 7 * 24 * 3600 * 1000 }[unit];
+  return n * perUnitMs;
+}
+
+// Periods per year for a 24/7 market derived from the bar interval.
+// Derived dynamically — never hardcoded (15m -> 35040, 1h -> 8760, 1d -> 365).
+function periodsPerYearFor(intervalMs) {
+  return intervalMs > 0 ? MS_PER_YEAR / intervalMs : null;
+}
+
 function mean(xs) {
   if (xs.length === 0) return null;
   return xs.reduce((a, b) => a + b, 0) / xs.length;
@@ -43,7 +63,7 @@ function computeMetrics({ initialCapital, finalEquity, equityCurve, trades, inte
   // --- Per-bar returns -> Sharpe / Sortino (annualized by data frequency) ---
   metrics.sharpe = null;
   metrics.sortino = null;
-  metrics.periodsPerYear = intervalMs && intervalMs > 0 ? MS_PER_YEAR / intervalMs : null;
+  metrics.periodsPerYear = periodsPerYearFor(intervalMs);
   if (equityCurve.length >= 2 && metrics.periodsPerYear) {
     const returns = [];
     for (let i = 1; i < equityCurve.length; i++) {
@@ -100,4 +120,4 @@ function computeMetrics({ initialCapital, finalEquity, equityCurve, trades, inte
   return metrics;
 }
 
-module.exports = { computeMetrics, MS_PER_YEAR };
+module.exports = { computeMetrics, MS_PER_YEAR, intervalToMs, periodsPerYearFor };

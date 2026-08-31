@@ -11,7 +11,7 @@
 //   npm run research -- --symbol BTCUSDT --strategy rsiEma --file ...
 //   npm run research:compare -- --file ... --symbol BTCUSDT
 
-const { runSingle, runCompare } = require('./experiments/runner');
+const { runSingle, runCompare, runDataQuality } = require('./experiments/runner');
 const { listStrategies } = require('./strategyAdapter');
 
 function usage() {
@@ -131,6 +131,12 @@ async function main() {
   const outDir = args['out-dir'] || 'reports';
 
   const common = { symbol, file: args['file'], initialCapital, commissionPct: commission, slippagePct: slippage, positionSizePct, fundingRate, outDir };
+
+  const isDataQuality = args['data-quality'] === 'true' || args['data-quality'] === true;
+  if (isDataQuality) {
+    await runDataQuality({ file: args['file'], symbol, interval: args['interval'] || '15m', outDir });
+    return;
+  }
 
   if (isCompare) {
     await runCompare(common);
