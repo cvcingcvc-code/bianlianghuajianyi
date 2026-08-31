@@ -1,0 +1,21 @@
+{
+  "name": "binance-trader",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Automated Binance USD-M Futures trading bot with risk management",
+  "scripts": {
+    "start": "node src/index.js",
+    "start:dry": "cross-env DRY_RUN=true https_proxy=http://127.0.0.1:7890 node src/index.js",
+    "start:reset-breaker": "node src/index.js --reset-breaker",
+    "research": "node src/research/cli.js",
+    "research:compare": "node src/research/cli.js --compare",
+    "test": "node --test \"tests/**/*.test.js\""
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "node-binance-api": "^1.0.32"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0"
+  }
+}

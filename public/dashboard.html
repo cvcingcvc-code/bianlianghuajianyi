@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binance Trader Dashboard</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, monospace; background: #0d1117; color: #c9d1d9; padding: 16px; min-height: 100vh; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1400px; margin: 0 auto; }
+.card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; }
+.card-header { font-size: 13px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+.full { grid-column: 1 / -1; }
+.half { grid-column: span 1; }
+
+.price-tickers { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.ticker-item { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 12px; }
+.ticker-symbol { font-size: 16px; font-weight: 600; color: #58a6ff; }
+.ticker-price { font-size: 24px; font-weight: 700; margin: 4px 0; }
+.ticker-change { font-size: 14px; }
+.up { color: #3fb950; }
+.down { color: #f85149; }
+
+.positions { display: flex; flex-direction: column; gap: 8px; }
+.pos-card { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 12px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.pos-symbol { font-weight: 600; color: #58a6ff; }
+
+.chart-container { position: relative; width: 100%; height: 280px; }
+canvas { width: 100%; height: 100%; }
+
+.stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.stat-item { text-align: center; padding: 12px; background: #0d1117; border-radius: 6px; }
+.stat-value { font-size: 22px; font-weight: 700; }
+.stat-label { font-size: 11px; color: #8b949e; margin-top: 4px; }
+
+.signal-log { max-height: 300px; overflow-y: auto; font-size: 12px; }
+.signal-item { padding: 4px 8px; border-left: 2px solid #30363d; margin-bottom: 4px; }
+.signal-item.LONG { border-left-color: #3fb950; }
+.signal-item.CLOSE { border-left-color: #f85149; }
+.signal-time { color: #8b949e; margin-right: 8px; }
+
+.breaker-alert { background: #f85149; color: #fff; padding: 8px 12px; border-radius: 4px; font-weight: 600; display: none; }
+.breaker-alert.active { display: block; }
+
+@media (max-width: 800px) { .grid { grid-template-columns: 1fr; } .half { grid-column: 1 / -1; } .stats-bar { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div id="breakerBar" class="breaker-alert full"></div>
+
+  <div class="full"><div class="stats-bar">
+    <div class="stat-item"><div class="stat-value up" id="balance">--</div><div class="stat-label">Balance (USDT)</div></div>
+    <div class="stat-item"><div class="stat-value" id="pnl">--</div><div class="stat-label">Realized PnL</div></div>
+    <div class="stat-item"><div class="stat-value" id="trades">--</div><div class="stat-label">Trades</div></div>
+    <div class="stat-item"><div class="stat-value" id="winRate">--</div><div class="stat-label">Win Rate</div></div>
+  </div></div>
+
+  <div class="card half">
+    <div class="card-header">Price Chart <select id="chartSymbol" style="background:#0d1117;color:#c9d1d9;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-family:monospace"></select></div>
+    <div class="chart-container"><canvas id="chart"></canvas></div>
+  </div>
+
+  <div class="card half">
+    <div class="card-header">Positions</div>
+    <div class="positions" id="positions"><div style="color:#8b949e;text-align:center;padding:40px">No open positions</div></div>
+  </div>
+
+  <div class="card full">
+    <div class="card-header"><span>Live Prices</span><span id="uptime" style="font-size:11px"></span></div>
+    <div class="price-tickers" id="tickers"></div>
+  </div>
+
+  <div class="card full">
+    <div class="card-header">Commands</div>
+    <div style="display:flex;gap:8px">
+      <input id="cmdInput" type="text" placeholder="/status  /close SYMBOL  /pause  /resume  /strategy  /help" style="flex:1;background:#0d1117;color:#c9d1d9;border:1px solid #30363d;border-radius:6px;padding:8px 12px;font-family:monospace;font-size:14px" onkeydown="if(event.key==='Enter')sendCmd()">
+      <button onclick="sendCmd()" style="background:#238636;color:#fff;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-weight:600">Send</button>
+    </div>
+    <div id="cmdResult" style="margin-top:8px;font-size:13px;white-space:pre-wrap"></div>
+  </div>
+
+  <div class="card full">
+    <div class="card-header">Signals</div>
+    <div class="signal-log" id="signals"><div style="color:#8b949e">Waiting for signals...</div></div>
+  </div>
+</div>
+
+<script>
+const SSE = new EventSource('/api/stream');
+const chartCtx = document.getElementById('chart').getContext('2d');
+let allHistory = {};
+let selectedChartSymbol = '';
+let startTime = Date.now();
+
+function $(id) { return document.getElementById(id); }
+function fmt(n, d) { return (n ?? 0).toFixed(d ?? 2); }
+function pnlSign(v) { return v >= 0 ? '+' : ''; }
+
+function updateStats(data) {
+  $('balance').textContent = fmt(data.balance);
+  const pnlEl = $('pnl');
+  pnlEl.textContent = pnlSign(data.pnl) + fmt(data.pnl);
+  pnlEl.className = 'stat-value ' + (data.pnl >= 0 ? 'up' : 'down');
+  $('trades').textContent = data.trades;
+  $('winRate').textContent = data.trades > 0 ? fmt(data.wins / data.trades * 100, 0) + '%' : '--';
+}
+
+function updateTickers(prices) {
+  let html = '';
+  for (const [sym, d] of Object.entries(prices || {})) {
+    html += `<div class="ticker-item">
+      <div class="ticker-symbol">${sym}</div>
+      <div class="ticker-price">${fmt(d.price, d.price > 1000 ? 2 : 4)}</div>
+      <div class="ticker-change ${d.change >= 0 ? 'up' : 'down'}">${pnlSign(d.change)}${fmt(d.change, 2)}%</div>
+    </div>`;
+  }
+  $('tickers').innerHTML = html;
+
+  const sel = $('chartSymbol');
+  for (const sym of Object.keys(prices || {})) {
+    if (!sel.querySelector(`option[value="${sym}"]`)) sel.appendChild(new Option(sym, sym));
+  }
+  if (!selectedChartSymbol && Object.keys(prices || {}).length > 0) {
+    selectedChartSymbol = sel.value = Object.keys(prices)[0];
+  }
+}
+
+function updatePositions(positions) {
+  if (!positions || positions.length === 0) {
+    $('positions').innerHTML = '<div style="color:#8b949e;text-align:center;padding:40px">No open positions</div>';
+    return;
+  }
+  let html = '';
+  for (const p of positions) {
+    const upnl = p.unrealizedPnl || 0;
+    html += `<div class="pos-card">
+      <div><span class="pos-symbol">${p.symbol}</span> <span style="color:#8b949e;font-size:12px">${p.leverage}x</span></div>
+      <div><div style="font-size:11px;color:#8b949e">Entry / Mark</div><div style="font-size:14px">${fmt(p.entryPrice, 4)} / ${fmt(p.currentPrice || p.entryPrice, 4)}</div></div>
+      <div><div style="font-size:11px;color:#8b949e">PnL</div><div style="font-size:14px" class="${upnl >= 0 ? 'up' : 'down'}">${pnlSign(upnl)}${fmt(upnl, 4)} USDT</div></div>
+      <div><div style="font-size:11px;color:#8b949e">Size</div><div>${p.quantity}</div></div>
+      <div><div style="font-size:11px;color:#8b949e">SL / TP</div><div>${fmt(p.stopLossPrice, 4)} / ${fmt(p.takeProfitPrice, 4)}</div></div>
+      <div></div>
+    </div>`;
+  }
+  $('positions').innerHTML = html;
+}
+
+function updateSignals(signals) {
+  if (!signals || signals.length === 0) return;
+  let html = '';
+  for (const s of signals.slice(0, 30)) {
+    const t = new Date(s.time);
+    const cls = s.reason.includes('REJECTED') ? 'REJECTED' : s.direction;
+    html += `<div class="signal-item ${cls}"><span class="signal-time">${t.toLocaleTimeString()}</span> <b>${s.symbol}</b> ${s.reason}</div>`;
+  }
+  $('signals').innerHTML = html;
+}
+
+function updateBreakers(breakers) {
+  const bar = $('breakerBar');
+  const tripped = Object.values(breakers || {}).find(b => b.tripped);
+  if (tripped) {
+    bar.className = 'breaker-alert active full';
+    bar.textContent = `CIRCUIT BREAKER: ${tripped.reason} — ${Math.max(0, Math.floor((tripped.expiresAt - Date.now()) / 1000))}s remaining`;
+  } else {
+    bar.className = 'breaker-alert full';
+  }
+}
+
+function drawChart() {
+  const history = allHistory[selectedChartSymbol];
+  if (!history || history.length < 2) return;
+  const canvas = $('chart');
+  const dpr = window.devicePixelRatio || 1;
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  canvas.width = w * dpr; canvas.height = h * dpr;
+  const ctx = chartCtx;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+
+  const prices = history.map(p => p.price);
+  const min = Math.min(...prices) * 0.999;
+  const max = Math.max(...prices) * 1.001;
+  const range = max - min || 1;
+  const pw = w / (prices.length - 1);
+
+  ctx.strokeStyle = '#21262d'; ctx.lineWidth = 1;
+  for (let i = 0; i < 5; i++) {
+    const y = (h - 20) - ((i / 4) * (h - 40));
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+    ctx.fillStyle = '#8b949e'; ctx.font = '10px monospace'; ctx.textAlign = 'left';
+    ctx.fillText(fmt(min + range * (i / 4), 2), 4, y - 4);
+  }
+
+  ctx.strokeStyle = '#58a6ff'; ctx.lineWidth = 2; ctx.beginPath();
+  for (let i = 0; i < prices.length; i++) {
+    const x = i * pw, y = (h - 20) - ((prices[i] - min) / range) * (h - 40);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.lineTo((prices.length - 1) * pw, h - 20); ctx.lineTo(0, h - 20); ctx.closePath();
+  const grad = ctx.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, 'rgba(88,166,255,0.2)'); grad.addColorStop(1, 'rgba(88,166,255,0)');
+  ctx.fillStyle = grad; ctx.fill();
+}
+
+async function pollState() {
+  try {
+    const res = await fetch('/api/state');
+    const data = await res.json();
+    updateStats(data); updateTickers(data.prices); updatePositions(data.positions);
+    updateSignals(data.signals); updateBreakers(data.breakers);
+    if (data.priceHistory) { allHistory = data.priceHistory; drawChart(); }
+  } catch (e) {}
+}
+
+SSE.onmessage = (e) => {
+  try {
+    const msg = JSON.parse(e.data);
+    if (msg.type === 'tick') {
+      updateTickers(msg.data.prices);
+      if (msg.data.history) { for (const [sym, h] of Object.entries(msg.data.history)) allHistory[sym] = h; drawChart(); }
+    }
+  } catch (ex) {}
+};
+
+$('chartSymbol').addEventListener('change', function() { selectedChartSymbol = this.value; drawChart(); });
+
+setInterval(() => {
+  const s = Math.floor((Date.now() - startTime) / 1000);
+  $('uptime').textContent = `Uptime: ${Math.floor(s/3600)}h ${Math.floor(s/60)%60}m ${s%60}s`;
+  pollState();
+}, 2000);
+
+async function sendCmd() {
+  const input = $('cmdInput');
+  const cmd = input.value.trim();
+  if (!cmd) return;
+  try {
+    const res = await fetch('/api/command', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({text: cmd}) });
+    const data = await res.json();
+    $('cmdResult').innerHTML = '<span style="color:#3fb950">> ' + cmd + '</span>\n' + (data.reply || '(ok)');
+    input.value = '';
+  } catch(e) {
+    $('cmdResult').innerHTML = '<span style="color:#f85149">Error: ' + e.message + '</span>';
+  }
+}
+
+setInterval(drawChart, 5000);
+pollState();
+</script>
+</body>
+</html>
