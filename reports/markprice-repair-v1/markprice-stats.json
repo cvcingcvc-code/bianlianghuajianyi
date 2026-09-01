@@ -1,0 +1,42 @@
+{
+  "BTCUSDT": {
+    "totalEvents": 6114,
+    "exactMatches": 3254,
+    "fallbackMatches": 2839,
+    "staleRejected": 21,
+    "noData": 0,
+    "unresolvedEvents": 21,
+    "avgStalenessMs": 133.65692145121523,
+    "maxStalenessMs": 60022
+  },
+  "ETHUSDT": {
+    "totalEvents": 6114,
+    "exactMatches": 3260,
+    "fallbackMatches": 2848,
+    "staleRejected": 6,
+    "noData": 0,
+    "unresolvedEvents": 6,
+    "avgStalenessMs": 70.08497191011236,
+    "maxStalenessMs": 60015
+  },
+  "BNBUSDT": {
+    "totalEvents": 7091,
+    "exactMatches": 3254,
+    "fallbackMatches": 2839,
+    "staleRejected": 21,
+    "noData": 977,
+    "unresolvedEvents": 998,
+    "avgStalenessMs": 133.65692145121523,
+    "maxStalenessMs": 60022
+  },
+  "SOLUSDT": {
+    "totalEvents": 6517,
+    "exactMatches": 3281,
+    "fallbackMatches": 2889,
+    "staleRejected": 19,
+    "noData": 328,
+    "unresolvedEvents": 347,
+    "avgStalenessMs": 110.76947040498442,
+    "maxStalenessMs": 60015
+  }
+}

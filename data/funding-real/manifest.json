@@ -1,0 +1,1870 @@
+{
+  "generatedAt": "2026-09-01T08:39:50.626Z",
+  "assets": {
+    "BTCUSDT": {
+      "sourceEndpoint": "data.binance.vision",
+      "symbol": "BTCUSDT",
+      "requestedStart": "2021-01-01T00:00:00.000Z",
+      "requestedEnd": "2025-12-31T23:59:59.999Z",
+      "downloadedAt": "2026-09-01T08:41:13.150Z",
+      "firstFundingTime": 1609459200002,
+      "lastFundingTime": 1767196800001,
+      "rowCount": 5478,
+      "sha256": "674683b67d80a3d2336dab330e27617a0d31c32324a45661b9d02ceb59fd7d98",
+      "directMarkPriceCount": 0,
+      "missingMarkPriceCount": 5478,
+      "duplicateCount": 0,
+      "invalidCount": 0,
+      "positiveRateCount": 4812,
+      "negativeRateCount": 666,
+      "zeroRateCount": 0,
+      "archives": [
+        {
+          "month": "2021-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "cff916dc4b638ec3de97828e8911cd91cf7d7a3d0836ec0175869c374e66823d",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "819a7b107443686adb313fc5fc223302a29f3981e1d1bd9828ad0ade65a8a8af",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "2125fd300848938c7b992b8f7b7b5007d5b277a4ff1ebda7da083b40242729da",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "9cd888e3b0a1954813d0062c2e60426fdc8e34a7f258f6838371ec67f535b028",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "ed934afb9cf84df6ecae742e755147333a84244836a66b51523abc66dd5f63af",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "7b8d9bfb8816636b800764dafb2aa2307d19166c695bfa245adbf7d01d61f766",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "8ab3df641d3bcf40527491f8e26d046ad2b662d1950ead9555ad32975571b7fe",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "7eb681cc45b94176f4b9192a62c3a1925d79031ba001cea2d8dec6ff6e5b9c35",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "03f25a7c25eef18d5f5b5b7bb0b664cab7a210b409f37e95a54e141808a0752d",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "f25820d6add687addbca3ef43bee58f70853a6da53832a0c1bc22d00dc8ec64a",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "e2e6b2d7218607e7e4a38137d50f553c2cfb901275c19edf567024c1cc6de85f",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "bf3ce484faf41d7dccfd38c5cc3d8de34d8297df30ab10784e874cc10fd1b310",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "22ee19079b620f5c6d820e7d7f8bafa7fde866d89bd664863b8bd527749c12cb",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "fa95088258a905c79ab79e8984d2f6f66933ec2e814dbab4ef9da89b01ab484a",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "4cf0883bc07f4ed4cdd3b0d8c0d166b4d15d21e666ab752f9f44401af4d6172f",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "57e2776cc68b3169fc9f8632dad67278f470cd453407a8ebe6c87963c8a31357",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "bced8a5013d09742b96682e6fd01ad4456213515a03d7586ec2b1f2689af5255",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "0cd0708f8903829eb46f98cf60f4b2516c986e1ccddf6620a5912b48e16baf93",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "29d58cce0cd45f74c6a112039835c6d9ee5a7e60e7c38c2503beb7930453a4fe",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "6f4f0c6c84c05694b4b4a5c085776730fd4059723eecd98ee6ffeb3fde4da811",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "d62cd4e13009de37add446dc4f63ead4c56dcc4955a1e60f6726bcadc5a68fa9",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "ad9efed10d4ca1567b865d7a158790977cec1b925395634217069df6696c8bc9",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "8febe5bec1a029e993bbf27490761f8c47c32849bf7dd13441b2b2f6ec1ffb51",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "4218c78331bcc4dbeb5768fa112242a880971c1f2cfd1d3f32aaa26ca34069af",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "05e3df32f28d0d50f4c5a280adee9368b4a66fc68c6ddca1b3277087ac0d19f5",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "5227accd9aaa59f71f5e682abffb58be5f99573ed208ab968b1704c81ac11345",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "ab022adff9b853d2f33cf80154e77c770f57c3392f0bbc36564b2e2cdbd0e872",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "2931039d26818edc65d4faefba84945fd1ba52989dd58fb127dc3cd7a12c7fbf",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "5d026fece46df86293054c8c56c2c8de575d30161b82979b11831831217a246e",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "3ffdde6f1dc9c3c065d77ae43f3ba64d19d4cb76512d4bc1d541933d4fb2e6f7",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "0304baed9fd407293a8a8040b30a1b68bd344803b630d33530375b421733a930",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "516a8f50631c6ede6a9642f6d1590b6a22c33ba09935501d2ace8dc1396501fd",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "3fd9df6fd1eef33cf5fe625c27012359bc6d64a68c109305d7b44a0354f533c2",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "03105cc140150bffca834bcccbddc6cfee245e079d2df1759653243bd6e92448",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "8015d2997f8d5e757ff3707ee87800ca30a74da0129daa747b64117f07bcc186",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "8f02fdd2a2da261bbf13ab301c74bdb57fae005f19d5088e9ece5f8824c1a2a7",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "3e0d30870672aa8f0f937881056e3cfd55913ae5c780cd50b33f2763aa0ba58e",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-02",
+          "status": "OK",
+          "rows": 87,
+          "sha256": "daf1e4901e3d6436d82ad60f90d007eb5300be8047cfef121007203a7212cde6",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "711dcaf2a341aedfd06447b4117b540f60adb0784c5e64a313c718e4cf092bc3",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "6d220b8e2815362a11d294d35dbca28568370d8295351937eceec10f2b359b85",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "aef8c5fdce1493fd570b5829a72f2f17c7e459483390f25544d16c2a30be592e",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "43fc4473820d1fb4fe340d1b1951a87555f6841aa352e684fa95d6adffce04c6",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "acab0593c1452660ce74a6c239fb215c1192b0a9c6e8c1689e6495de40a0174b",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "7003d29a43dd5f9357f838da8766834954939e22c1d80af682d9f33984f67b71",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "6ef23b02392b481ef9c3855434bf3644289fb6e228b4f7d9a0dfc6d3cdff1116",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "26db65ac8020d80ece35df79c254c5f7e24427529bcceeb2972748c4fe2d2707",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "e1b19cccfe2cdcba48b022790789b7b01edd86c075f39bc152e44c267d43bd51",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "069409f525ebf6370ee1c7defe475167de4b97284c5ac8e68768652968cd3dc9",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "df725010d55458866eb5a47e9ee708c6796c9d7e77b14c38342cea11f381815e",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "e918b90fb33df3a3317feea13807a892047f1ec86eeac100bdb7b3dd83285d46",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "a3b95cfb315641fbfddc61eb32adf2a2588afb7a3973a61f464aca007ad43e3f",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "01dbb7bd0135f98bd63bdde6b943cde1accc1770cabf92f68a1ec0653ced3888",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "e7355e2775b88009c984db1783bb8ed6b5f24ede2b52bb764151b5722d6a5e42",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "a1f4a40953740fa83ee9ad97776ff8325d1958654a67f1325614071a983819d4",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "b097dff828f6e43fece23db0d3cb98042a9d7bc19693b8cbfd051d88eb973b7b",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "1180129860b6e196e8d70bb9719e81573aa6b4acb423ba5ee7f82f10c836f7ab",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "21dc6570fc6bffad0e7b5f9e99211b82ad07c95ab4f18c3a2daa3b95ec98344c",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "9ecdedab6344fc4cdb154763266b8e09627a71c3cc5574cf868158b541c259c2",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "23735400405627d610123e3a43db3e98ae7addb93459cd670e65a7659a5f081b",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "35318b789f020b0e04c9043112480743855554e52e1d188437cbdaa67246d51d",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        }
+      ]
+    },
+    "ETHUSDT": {
+      "sourceEndpoint": "data.binance.vision",
+      "symbol": "ETHUSDT",
+      "requestedStart": "2021-01-01T00:00:00.000Z",
+      "requestedEnd": "2025-12-31T23:59:59.999Z",
+      "downloadedAt": "2026-09-01T08:42:32.222Z",
+      "firstFundingTime": 1609459200002,
+      "lastFundingTime": 1767196800001,
+      "rowCount": 5478,
+      "sha256": "15d98dd5805c8241cb394073c06bfba41c6bb5c3fb403fb02648adf543990826",
+      "directMarkPriceCount": 0,
+      "missingMarkPriceCount": 5478,
+      "duplicateCount": 0,
+      "invalidCount": 0,
+      "positiveRateCount": 4736,
+      "negativeRateCount": 742,
+      "zeroRateCount": 0,
+      "archives": [
+        {
+          "month": "2021-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "4c18c1df8904dea9770aeba5326d26b3fa9a3ffac4891f5f7125d4be2da847c0",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "15e9a939f253a11fc1af2858bb3844f3d39019ccf7efa66a9456f0f60afba3dd",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "2bcaadc8206cb8d76a26f0f3cbf97020b747545b0e75c3dd8a3b195b435478a5",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "2fee34e8b9b6e828d01bab0df1c67104f7a98f3c063668c8db627b802ffa5a95",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "21809ef6691a1441bd55ba4af4494a038d1a399ae0ae432e80cb41b47d71f3bd",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "8e58ccf8f52c69c55754492daafadab92d4ca8c8bd027f4532582d06e9f36063",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "f8f538bedf642052e428cd25f3134784de6e62a136e76f6a07ea6e79dfc9c39d",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "0120b284bde23d077e1e26e5e4b56fd3e2d1d82a3a7fe0e9de26825b9fc9c0db",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "4b4a94cdafbb8fea7762c266aa79b183700b7c9dcf7e981f7fdbe9372f2eec66",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "4dfb8698f6951b2c66229e1c687977eae0778bb703d6268232da2ceb3e9b5e6d",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "d9a7e22a237717f23d4b0505f14613359b7ea7831b23a78653a891cbbe3d521c",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "788d5c57e7cbc8e6b94ed4d7672618a85311edf1d7f0888083410d0d3389d811",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "9f5bd01450b05a8c5e48cdc99fa147e85c82ecf7ee7919fa543a4e6039a2b98d",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "9c35e30327ac8915cc1333415b7d5018425781c81918e349d26b734525fcdfe5",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "3de0714a2b2582029b32147815298b6e67e972e776ca3f68a4208823b4109404",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "7c306ac8b6275a857b064916080e0b6ec502b25a4501c84c3fd2c0b077425de3",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "c458330243c9d8e048ffc7168c9e3c077c01bb82b1644097a4893fee34069b78",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "f6f3a69b656b91500b41501a230e663ccc3c1a65f46273595b00682d8f6fabb1",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "17826e5591af8660a7fed74d60e24eee77c822cf0d901dd8af355a10a36699aa",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "a2680549de5e087566f4d323b3a812c2b9863528c6bc49b0e551cb42c381bb4d",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "816e4de946d9f854cc457c86ca396b9cb49b46e80cf44941b59b9ad2124f2ef8",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "e434c29eb544cc57ff574e38685535bb7d04703aee54bc5d52f53cea372810e6",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "4f4e52f176f69e99353959d287874a4d4a135b5bb4ea85514dd5a3e65958b2d7",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "8cd0e885d63b85ee602d80eaae956f9ee3e0e25db264eb5c74026a9ae0d71f4e",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "5647d5978092d220eb14e11c7854d86815d0eb6204197e37b4808cc599e986f3",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "7da37820c15fb08600ae668551d0b724326b8f71d761582990721059280a221b",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "5110b60cbbc5f26048ce02575c26444ea2ed497baed9a5609e118359e1ca3b51",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "fa3a3cf7c3b8285687ae8c8014eed8bc58ad3ceb33ccb62ff4298048213c0e6c",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "bf890ea68d979942ed296b058390eb98b0b495547fee2117d3b76d5e7f629b24",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "b3ddac1309f9a684f4e811776a6c09fb2239bb8d1ae0ff4bd342a1c32a5e171f",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "82577976d8acd886fda84179ee38c9e7ef445732c3b6a062d6ffd2a9e3cc30bf",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "cf749429c366cef3302a804b3e702937e5f1a77aeddc5b628dca7da547a8935a",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "41ac7eb67a46d14d97daec4c37e8229df5ac6b165639ad4b2c54bc7374930341",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "ccaf4474f0dc94adedd4330c14995f338186caa2cc9fd0d2e2c55f74cf263a5c",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "153ec1450eb5d999ce253e2c7ca2e81b79a523ff52dd18b14faefab8212b999b",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "91bdf41566cebb86c6f0e3646b0037de9c22e14ee2f592c5722c7e4a19c91119",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "5a71469b0b363886df904e784dddefc484dd943334b1fb7454713ce4ed715a4b",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-02",
+          "status": "OK",
+          "rows": 87,
+          "sha256": "915fad950c48935f3875d88992b8d78290bc8a6fada44408e3ed14aef9a56670",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "e9c1d0f3e7e3b493277c7f826afb223482d56bdc7611144d398ac10e47307907",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "b54c9f05af116ccd921b32b25960ae26954c4983992d44f2390bf1de08b2c724",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "8350ab4d61b12ec61539611e30809039f54814213bc4c937609360b1ff28b5e0",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "def13f4a478c28b0111fb24c57f95fcee80e71982ed74f12e465d20d328e2275",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "9d236281ab6430250ad2b472cbbf03812a40aed42e73c8339fc6be55a2417a82",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "e17684bc761924eb5e1912c52cfa997eddeb99da303e68e28f6f37369f672b9d",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "ffb6e7441053137cb7ca81cc83bcdd996612f7dbb15aa2e168a7ee521f8cbbca",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "2124978c335473a5d9c0f0e9f238193d56c21ac7e250e065a36e9d1201beb049",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "636a4c7c86445c2774b4eae8598c480fcbc57de7dde5d40f6937c7fac510797c",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "11a0847e8aacb32eeb725611fda4fe6a8419c03eb0c16e14dfc3b9287e78ecc9",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "88c95b99d2784a7baac529fe578563d7e05038a1b8a498b2f59bf81b216fee20",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "9e116dd6754484a19ecc41ced40b8dfa7f62c33d41cdc3317336b1e1f043767f",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "62464a8bfb7ba515628acb76d3e2172d33b88805faa2e701a22537c51a17d139",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "7db62cb5e9f32397dacabb3d571b96397024bda3810bde0799c90f61cb773679",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "996aff38f046b50510301532ac5cbdca115afca971c49cb548f50e5d70e18d99",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "ae7ca242249ca3df06d1222a0c264fe83b18c4b2c19fe656e864f7d081d5e198",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "5f2d840c5669ca946529c33f6df32433c5d0cd973eb4adfd40459270c460e7f8",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "c3fca21c71afb4962e89f8e3d84afe5832019ed8f570ee7c7c299f2436a28b62",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "2fa09df245aadc73cf43f837a72c3009fcd7d10c8c4e3db48b2d1021c331841a",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "1ae86c5fb1f15d8792906b746cc7598ebe7e6e7194b74501db79c874e37d7e14",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "a3a8abb219373ec1e02e8d1a47015665d180d6130cfe1df71d2fa8fc9de59e59",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "ef9e84f53a5fa07702958c8700077c8be0a90ec8b3e25110f5611109c3c0090c",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        }
+      ]
+    },
+    "BNBUSDT": {
+      "sourceEndpoint": "data.binance.vision",
+      "symbol": "BNBUSDT",
+      "requestedStart": "2020-02-01T00:00:00.000Z",
+      "requestedEnd": "2025-12-31T23:59:59.999Z",
+      "downloadedAt": "2026-09-01T08:44:05.880Z",
+      "firstFundingTime": 1581321600000,
+      "lastFundingTime": 1767196800001,
+      "rowCount": 6455,
+      "sha256": "57a616d4e745e4289ae9446d65eae41122b6a8e12011b2ceb8e4dd5cc5b968f5",
+      "directMarkPriceCount": 0,
+      "missingMarkPriceCount": 6455,
+      "duplicateCount": 0,
+      "invalidCount": 0,
+      "positiveRateCount": 1551,
+      "negativeRateCount": 1731,
+      "zeroRateCount": 3173,
+      "archives": [
+        {
+          "month": "2020-02",
+          "status": "OK",
+          "rows": 59,
+          "sha256": "98babcb280ea039fa506f7ad791889dfa3d4ca0ec968131e73a321d349370b22",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2020-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "59a4380336d1625bfd5b4065279fbadbaa0ae5c973773392876f97451433e903",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2020-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "8a89bb0860dbf13684c71afc86453ade0e4288b64c308491e621a48d61418bc9",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2020-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "b5130658f9e7e79fc09518ceeaa888f18a5e4192128466e5fa67fef5e73fd253",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2020-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "854819c6762a1f54f01421a3af1afbdbaf90c8d5c66a69b2dde645d5eaa97ed8",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2020-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "57c05c478122ad7ccc7b0792759919d5610560f0bc20fd33cbf77e70613d7989",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2020-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "24bbf156cf48214abb8a07c72f6bf75e7478f1015ec76525aa963b280226645d",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2020-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "96c54d80d6b4e2315fc21efbfbf0ab314b9b73c211215b7c7bf1612364048384",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2020-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "943d597fef613cfe4dc71fea17554bbdfd03ee801f02ae942f7bd5cca75b77db",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2020-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "2ddee7f807390da4b7037247ad251ac3b357093d143ff8e166da89f4f39ab943",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2020-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "469bf2f16286fd6a0511930ca5ed394717824e263ff880ca7e25c62bc728786a",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "43cbedd92154495a5434b42ba1a53b22319b039564c84b4c73209944c2409051",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "61ce56989aad647a6a45b73c91f1452eab7259ac7edf3f15eb68a1b1881e06a7",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "f14f70cbb79e5fc11a4aa5156d381a4536086b86518da10a42b65ded61d15a1e",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "c5abc4309a82a971b3cbc8ed66d8c66170315dfc5bc2a7ef7c42e40e5ef527ed",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "e08391c3ac416df2bcebba182792fb8632a828b1f7bd3de02f0eba11607b6cb7",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "e51d259f86fb4ef4ae53127feb94a1f75b3535b3668ec8ef6ae644d833124f56",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "76880b69f8ed2ad5399471493080f9daa311004b0e48012fbe524c6ebe3d0869",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "61df9c44a8a08b5a596fe33e49150ebf7b55bb733e389119b2538b18d2584f63",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "0afa14d51d0fabe16495b3e2b5ed3558b5bf4f23c5b9c92164a4f7d5f907ecad",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "a8556a173a1f7ab33d82b5538176aa396cfa0b7fab8f7b904009e9f9e2a1efe2",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "a9c846afb0ee66c67f14be211b9b7838dc97be156af549da477c28e805210393",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "d53711d34c24fef4df6147359811ecd0a747b5cc64dae1e30b92e3578cc41408",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "687891d67f99c3a622c44ed34413d65918fd96ea3a59d5e376af84d6d83f743b",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "4f7641f27333f9a55a8fdeb827387504984a8734a37ef73ab6e620db41fe0303",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "96888f6eb25414b7095aaedbc7ad7410c315c4fd3cf92cbc41b02e5c4a942d84",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "697cb449545afb1281b9fa6c03d902515f7d909d96668f345f6dd053dfed7430",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "b14eb3bf91a3cfaea1be24a2b9bf0d8991194f125b85f7bedc3c5ff4294845b2",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "168a18066b384a4718ee9f6f659edb7edf713e6be5f8d798bcdf0525c42825f4",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "7bda335d67fa74ce7d034989298137161181dd5e54f4085e13f52f677c14fce7",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "9b5f26943c0b41dbabd37421aa7857851a7e3656646f5a1999568c1aee9a9111",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "a61885f7b9705d335c4fabb6d2bf1bbd35af15615adfac0d49fdac3a95cba3ba",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "a899a77f378d0133a5837b4d7755fb1db9b8c8ca4e51ce94bc2f97e3a5928c25",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "1abb39471f3908ae91f4379500cbb24f5e7a487d004979719d19abff6f2ec2a9",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "3291256d57eef23bcd663a547e537e762ee54d54b8959a983e6bc4738fe7ef4b",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "57926f802a5d97b17bb08f10539bf10e86bdb55caa1efed7b1e485ec0e4a3a27",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "f5e3ce986788bef656363c2741e8f515f93e409c61e9b335bc714e528f4f8609",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "0309e5d4202275f5657b2d5a400c77618f51090962e2945ab2305820f8fbf239",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "7bbc666c3748ff43b5042acc77f9b158344d6b1e11f93c7de0c36c83affd7066",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "bcf038a86d9f483fa4d1a9db6fa734cae54745409bcc083d3067670f76b4fb84",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "7a92bc9a9f03229509e2e34835c8cb4e05b8218cc82fe080443389d2ccbb1e98",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "38d044d00f3c81a8d201b9117f5f1f6559568db16561cf9ce8f0eccc02cddbc9",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "27621b8cfc274cba9882e08c61315433ea23f58d59eb83781b4e63f9ad685c13",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "a0b6b5a900f40ebff05d1ec293685fd644f0ac26552c25a2801490d8d7178a21",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "db8ae79ac84f006fdd9cd17d57f8ed28fc1a10f716c8483030693d87c830d411",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "65c9092766c696eddb155142379b696b78b6c48490d984b02976412380dc6df6",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "3292f306a22f3190315e71780b68b88a3ac5c8dda5a05e6f3d768ac21b3d6cf5",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "6ce71612fdc2c2d227b1431ea6c9aec07d6a46ebd7d7650aee5da1a09cd19f90",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-02",
+          "status": "OK",
+          "rows": 87,
+          "sha256": "1d99928f6340abc95946545f51fadb59f2183f984b8117d5ce39456d26884250",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "ae596433406d0e00bf66f4430c7f51f8d03b4d2a395949ce29d8765554ad7195",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "97e66b580deae706cbf1b56b21a71668d5587a7db68bf69d01ef1db5045125bd",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "4ebe1a295be42c705739ff3717b113661513eee0560a17936697568cd2c06ae0",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "bc5d4b47ffa9c6e6b30147dbb3c93f63a27b071428445ed6e57339a86745a9e0",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "ba2e909430ca421202cc86b658d242bdcb03cf15f729fd5bdaf6b11bc7117243",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "5b1c28afa6becb9c4303fb2438c39461b199a48a0992bccb5e1e4be344b7a931",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "2c9e13fa39b3956ea76d29074e26e0ccc6abbd3e235d752aa63b383de29a4d80",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "ac53012800835002672b559455766f73eb30cce3b4b75a30e8d834f03cc3ba1c",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "ca02937135f8d51991e96290cd527ba8cfba3e6ca6bdf08247c88bdc88fdfc09",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "9bad523573121ac9a255adac4574e4ea8545ab77807d6ccd8ac132771b6f0c7b",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "74544eee335ba817f34c28bad187eabc9c19b730a84e875eb636499944198479",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "b5094d4dfe17e0b07b4a4cfeca6baef32a96711b824ea45e1c9bcf80db0d2b06",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "8bd05f64e15a3f1731d75ad21dea232b6ae9e93cff351a0699a4c1ab0dc0d2ea",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "d5b35805679bb3a410fce7ddb370ce4b6f69bc37233e4ffde4eec40f524e3ff2",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "fc9a418d195865c4a61e0c858c56dfa62dab80c4d5f0df37cd71aed1173fd37b",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "2ea8b6a079ab89270eeeecee1bd47128cbf585ada1bc65a1b657b76061e12c04",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "014c717df6ca0fbc5c8850a22741cf07b425af5aeec07de42265f7a70aa9fd39",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "1ca07a28c070cd092a04c4e002f5d7ae123c45a149f385c3b316ba1b9cd0a7b6",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "e87adf5d21d31f7c49739eb0cffb7347284bdb2d981d4ab8d2cde6cdfe94d4af",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "6c45db6d53c47e1413c842bffba176aa58d8fe5bef0b1326ce5a4acb5b9abaef",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "e1bb556f0d0b00f4615c41048dc71377b91ea43351100c90a3750efd519d7682",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "18000c78612678f3daf1b493828f2c61f0e680f2a23f6bde34a4624504f228e5",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        }
+      ]
+    },
+    "SOLUSDT": {
+      "sourceEndpoint": "data.binance.vision",
+      "symbol": "SOLUSDT",
+      "requestedStart": "2020-09-01T00:00:00.000Z",
+      "requestedEnd": "2025-12-31T23:59:59.999Z",
+      "downloadedAt": "2026-09-01T08:45:25.897Z",
+      "firstFundingTime": 1600012800004,
+      "lastFundingTime": 1767196800001,
+      "rowCount": 5881,
+      "sha256": "1275b6ba2589b1f2b56ab2270a06e8f71ecd6538ea3a565c6bd3056096c3d1cd",
+      "directMarkPriceCount": 0,
+      "missingMarkPriceCount": 5881,
+      "duplicateCount": 0,
+      "invalidCount": 0,
+      "positiveRateCount": 4356,
+      "negativeRateCount": 1524,
+      "zeroRateCount": 1,
+      "archives": [
+        {
+          "month": "2020-09",
+          "status": "OK",
+          "rows": 52,
+          "sha256": "14fcf2b6183131263ea740f60641948076853ab273b030463934f6a81e01797b",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2020-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "a7712335a1ad285ef1a2a4a25309fb44c5562819f666ffd60e16b2112ca5ee2a",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2020-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "f359a0f2355b4c9d4523ac28d4b006e5ff3c1c192baeba471bbaa3cb8928db40",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2020-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "925301315c1928ded7c81a816c82a8b01c52712fcd4fd842ff68199950856b17",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "69ceaed5037e3560bd6f31651ba0214de913af8f0c4c25712c95cbbe1308cb97",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "88363d90b2bb922736556118610a8b1ddadc679b474950b69b07eb3ca9eb0253",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "256b24b3655ef98daa5080a509c0674fc11e7c83774869b0ae2a794cbbf2a05a",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "3a7fa828be00e3e352cef39ca5856c0d86077724f8d1ce576be79f302c21dd71",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "f9a657f15d4753cb73bf8ffd0d62405d480044162c19e1f7437608e2c1bb6694",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "5d97dc076126d6df30eb68185be0613a08391b18d6046da006c790b3674b0d40",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "d5cc6efda2474a0ea47626b8ec17b40f8b2cc21aa1338e55796f402c9173e125",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "36028dd0bcfa30c6be842f0ee066ffa1ae3d93082cf4aafd302d1c0a3a386ecd",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "2b1bbc144fed66818841e7af5f5e310adf8e2cb3b1d7643e0c1b2bb30bf421e8",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "0ac3fe161fe23ac8479a4a6e5fbfc38e91ae1515663d93a3fe767c351ee81187",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "16996f42bf6d48a5569bfecd8af6027de2298b30dca1d95381c595893de8e2e8",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2021-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "0ea2c59cde9362715dea398bd66d3325d5bdb40c39db0370977bcad0b0f67533",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "f3be14b01356f33f6cbde6d12ee30311ae91fc521dc78d72a0aa39db8c295053",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "d622a4a5cfb461e81d9cb13ebdd34b02e2d221c2ddb8d708dc4047d2f499fa96",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "10d3d16d74340850c2148553261dfdad7ffeb0b705f014c869fa807a1e7ddc84",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "f07052472753f04eb8e7fb818cf60e90e187e712f63a577741ca7ae59c63bc9e",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "ed42b50666e40e1489f01730f85e5efe919b9a94344e043369a459c66492a940",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "78249fec5212753b19ce01c2fb23ffdc3deecd29bd3ab61fb7cf70ba6c395edc",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "ce4c96d62e020d4b3c53bc31c248e5800a4a6eb3a6809c36509238122aa02a3a",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "1604d1993d0c6a7e37e2ff81a6944d7b5c0e81475e3fe475bdbdf0deaff4d847",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "673b50b2daec4a34da7d8a8095995ddbafa6f66bf8c2d499ba48f8050cf68565",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "d0436ed57e674ae3c00eeff3aa46f6e65c596892b80e5b6e8183d487c6ef3168",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-11",
+          "status": "OK",
+          "rows": 165,
+          "sha256": "73fbada102584d8e19cb9594f04471f589ff37404b0cf64c0bd7cb4ac4d4a157",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2022-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "b9b8d803d985679959d21a55d08b14db331cf961442f8446eb18d723ea154567",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "12a401fc459341834a0d3c2f207d55e7aced058b62838f296028885ee2e52612",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "1173c36ad296e152ed9f954ce49fd65b7ffd8a03f270906a1e816fdbb7929f57",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "6a950dfbe4e75ce7e28a174d1432fed82fe08964053c618bec2be70f83ae6b61",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "88d1b03da4cd68774d846d5a9b7a9ba3d165a7b03855cad84a181820a2f7b297",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "b644431236540c0fa4573e96b9357077755d53440427fb2419e68272ea653137",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "63de6ffcbab1fec0b83807efde188fdafb06d4ed0f947c4df86d757f894d88c9",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "7323f1cf79a8dfeb78dd7bd8cd2940a7db00ee023739430435b1cc25cecadcae",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "87ce0395cf9d1fa9ea4849b4811d366c1867d4159f3c1a2b4a3e0656972be2a0",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "7a8c1135aa165e9399a274acf1f330bbf6bae594266582fc1cfc91b950f73e75",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "a56852237de6b69483565853858901ce7e4c611d3950d485a064bf90069958ba",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "1cbd9c6b802cdf035ba408c03e82aab678c2a994c2c6860386a4226ba104e252",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2023-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "debe51eb20a3b7d6093baec3b609e7a9f746c64635cfa77aa761e88e84454902",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "6b514b6c2bb67ff04df97d747efb9c6e4bb1bb27e889f1dc51a42ab1419a3d24",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-02",
+          "status": "OK",
+          "rows": 87,
+          "sha256": "7ccaf8d60ddf07e03eba0589ec4f75abfc2a842217722aaefe996ee1bc095706",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "ff3041b6119af926fc55fc722332240037f1aee9b3a2db25f9cb801ba8e2992c",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "591e7c4993e59b60966213efd938f48420cd9b63db815240ffc070ec40470e53",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "cdd788722e8b85fd6c9d992e7c1c767be87afc91db5b8c07751f898b373cbf29",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "8da6c97d67718422a5df9a0d50e37849521fb54de87cbb3b3397e441439dfcc9",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "2585a0db933c70b62c87cac509de42ac09b98d370238c0d8c68249a20bd2b9a3",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "ef076200aab768d33f71449957f6cd9c96c0da696708a5f561b97e7a0995e8d2",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "7666e4d3e6ea6dd28011c508cf01421007521e98e96ea551f809836441b43ca0",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "dbece64e8c5bc69c487cc03c00f6a4d4da2cad9152c73860386fcdc7d2ec9d05",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "f53a9b637d695a251200e48929a573b4bf04cc2d99d5a3a09fe7bdca622918aa",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2024-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "bae83020ac2ccfa6dd8d1362d373a92b4d5a7e396cef52e78dc2e7d81e63f621",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-01",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "314888152c16bc2d846f9aaa9ea3ebeec7c67d235ef2671f1a5e6fe0a8b4dbf2",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-02",
+          "status": "OK",
+          "rows": 84,
+          "sha256": "eeade74c1ca2a6dc9d78ba0d7a1ff145c323be72cfa2c09fcef9edab88baef9f",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-03",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "3f77a33779c946da6f3082d14fb9a5497e7e4a4e3fff4d68967e6ddf96cf99ea",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-04",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "6cd3fb27bae9313e15734d7214f4a83dc37a7a199cfc12c23f7777a5e27f7fd7",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-05",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "eb03fd0d0b31eef9ee05544ea8dcce097a807d3475f67d0a5f0859c487c5f5c3",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-06",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "4ccee0a6fd67cb775be49d124b9eb038f26acd09426fcb9aaf9d3de74cf3a24e",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-07",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "66ce38d1a8bc4bdd53af29d8ea5c72493ed48fe9894ee5e9ff4600ccec864c4f",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-08",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "fe9efc3abe1e4be2a2fa9a4008e6957856387f6783a06b97cac3ee271746915f",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-09",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "f953315124d20dab98ba710d108103fb4cf054d1535787fd76d35d6b9c18e534",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-10",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "d80c5be7660a950ad673a0e82488877c6ca0eb81f084d4c844320f892ad2c020",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-11",
+          "status": "OK",
+          "rows": 90,
+          "sha256": "5134fdf4319d629473f8cff1e66dc74180844ae2846ab41a8128466ab3682c2f",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        },
+        {
+          "month": "2025-12",
+          "status": "OK",
+          "rows": 93,
+          "sha256": "01db13c460b0190736e1da019c7fcd7ea0abbf3b047e16d3aa8a9e9acec3101f",
+          "header": "calc_time,funding_interval_hours,last_funding_rate"
+        }
+      ]
+    }
+  }
+}

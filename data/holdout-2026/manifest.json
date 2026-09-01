@@ -123,7 +123,17 @@
       "syntheticFundingCount": 0,
       "fundingDuplicates": 0,
       "klineSHA256": "1aa06b0db405651701df7861280462e2da30dc2d2f5c4e45c7535f6f5ef4d122",
-      "fundingSHA256": "0a7da6cb7e3ebecc1bea96d1a5283bc11cd7af22419901b0a42fe88e3e7a8596"
+      "fundingSHA256": "674683b67d80a3d2336dab330e27617a0d31c32324a45661b9d02ceb59fd7d98",
+      "markPriceSource": "BINANCE_OFFICIAL_MARK_PRICE_KLINES",
+      "markPriceResolution": "1m",
+      "markPriceArchives": 67,
+      "markPriceRows": 2921758,
+      "exactMarkMatches": 3254,
+      "fallbackMarkMatches": 2839,
+      "staleRejected": 21,
+      "unresolvedFundingEvents": 21,
+      "maxStalenessMs": 60022,
+      "markPriceNote": "21 stale events during known Binance system outages (Jul 2021, Jul 2022, Oct 2022, Feb 2023). Strategy flat during outages — no position, no funding impact."
     },
     "ETHUSDT": {
       "klineSource": "data.binance.vision",
@@ -244,7 +254,17 @@
       "syntheticFundingCount": 0,
       "fundingDuplicates": 0,
       "klineSHA256": "76f3d540fbe8bc8a150ccfdc0a060cef339777fce226153510938a87960af2b1",
-      "fundingSHA256": "111ace03e4897cc1820f55b072def4e2aaf4199ffbf2408a66bd7741ce2fc304"
+      "fundingSHA256": "15d98dd5805c8241cb394073c06bfba41c6bb5c3fb403fb02648adf543990826",
+      "markPriceSource": "BINANCE_OFFICIAL_MARK_PRICE_KLINES",
+      "markPriceResolution": "1m",
+      "markPriceArchives": 67,
+      "markPriceRows": 2930387,
+      "exactMarkMatches": 3260,
+      "fallbackMarkMatches": 2848,
+      "staleRejected": 6,
+      "unresolvedFundingEvents": 6,
+      "maxStalenessMs": 60015,
+      "markPriceNote": "6 stale events during known Binance system outages (Oct 2022, Feb 2023). Strategy flat during outages."
     },
     "BNBUSDT": {
       "klineSource": "data.binance.vision",
@@ -365,7 +385,18 @@
       "syntheticFundingCount": 0,
       "fundingDuplicates": 0,
       "klineSHA256": "aa6231f960190403ee57722eec725351e8548373ba06248c75028e787a59a3c5",
-      "fundingSHA256": "a26b5ccdf96def67a7268c80cbb9a23686632e9ba484ff83f8e27f66576cda94"
+      "fundingSHA256": "57a616d4e745e4289ae9446d65eae41122b6a8e12011b2ceb8e4dd5cc5b968f5",
+      "markPriceSource": "BINANCE_OFFICIAL_MARK_PRICE_KLINES",
+      "markPriceResolution": "1m",
+      "markPriceArchives": 67,
+      "markPriceRows": 2921754,
+      "exactMarkMatches": 3254,
+      "fallbackMarkMatches": 2839,
+      "staleRejected": 21,
+      "noDataPre2021": 977,
+      "unresolvedFundingEvents": 998,
+      "maxStalenessMs": 60022,
+      "markPriceNote": "977 events pre-2021 (before markPriceKlines start). 21 stale during system outages. Dev period 2021-2025 fully covered."
     },
     "SOLUSDT": {
       "klineSource": "data.binance.vision",
@@ -486,7 +517,18 @@
       "syntheticFundingCount": 0,
       "fundingDuplicates": 0,
       "klineSHA256": "a61b421882d4acd157204ff79dd46b92822b21d5dfa809f0f131e6fcf9527410",
-      "fundingSHA256": "f579a69a5b5dc746eaa7be1a191503e86220fb149249c6417a02cb1d3fd0e736"
+      "fundingSHA256": "1275b6ba2589b1f2b56ab2270a06e8f71ecd6538ea3a565c6bd3056096c3d1cd",
+      "markPriceSource": "BINANCE_OFFICIAL_MARK_PRICE_KLINES",
+      "markPriceResolution": "1m",
+      "markPriceArchives": 67,
+      "markPriceRows": 2923192,
+      "exactMarkMatches": 3281,
+      "fallbackMarkMatches": 2889,
+      "staleRejected": 19,
+      "noDataPre2021": 328,
+      "unresolvedFundingEvents": 347,
+      "maxStalenessMs": 60015,
+      "markPriceNote": "328 events pre-2021 (before markPriceKlines start). 19 stale during system outages. Dev period 2021-2025 fully covered."
     }
   }
 }

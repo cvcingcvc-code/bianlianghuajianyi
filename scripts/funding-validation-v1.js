@@ -245,12 +245,16 @@ function main() {
       fundingQuality[symbol] = { status: 'FUNDING DATA INCOMPLETE', issues: ['CSV file not found'] };
       continue;
     }
-    const events = loadFundingCSV(csvPath);
+    const allEvents = loadFundingCSV(csvPath);
+    // Filter to dev period only (2021-01-01 to 2025-12-31) for validation.
+    // 2026 events exist in CSV for data completeness but are holdout-locked.
+    const DEV_END_MS = Date.UTC(2025, 11, 31, 23, 59, 59, 999);
+    const events = allEvents.filter((e) => e.fundingTime >= Date.UTC(2021, 0, 1) && e.fundingTime <= DEV_END_MS);
     const report = verifyFundingData({
       events,
       symbol,
       expectedStartMs: Date.UTC(2021, 0, 1),
-      expectedEndMs: Date.UTC(2025, 11, 31, 23, 59, 59, 999),
+      expectedEndMs: DEV_END_MS,
     });
     fundingQuality[symbol] = report;
     fundingProviders[symbol] = createHistoricalFundingProvider({ events });

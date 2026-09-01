@@ -32,19 +32,22 @@ test('real CSV parser rejects synthetic source', () => {
   }
 });
 
-test('real CSV has source column with BINANCE_OFFICIAL value', () => {
+test('real CSV has markPriceSource column with official value', () => {
   const csvPath = path.join(ROOT, 'data', 'funding-real', 'BTCUSDT.csv');
   if (!fs.existsSync(csvPath)) return; // real data not downloaded — expected when network blocked
   const content = fs.readFileSync(csvPath, 'utf8');
   const lines = content.split('\n').filter((l) => l.trim());
   if (lines.length <= 1) return; // no data rows — expected when network blocked
   const header = lines[0];
-  assert.ok(header.includes('source'), 'real CSV must have source column');
+  assert.ok(header.includes('markPriceSource'), 'real CSV must have markPriceSource column');
   const firstData = lines[1];
-    assert.ok(
-      firstData.includes('BINANCE_OFFICIAL_FUNDING_RATE_HISTORY') || firstData.includes('BINANCE_DATA_VISION_OFFICIAL_ARCHIVE'),
-      'real CSV source must be official Binance (got: ' + firstData.split(',').pop() + ')'
-    );
+  const cols = firstData.split(',');
+  const srcIdx = header.split(',').indexOf('markPriceSource');
+  const src = cols[srcIdx];
+  assert.ok(
+    src === 'MARK_PRICE_EXACT_OPEN' || src === 'MARK_PRICE_PREVIOUS_FALLBACK',
+    'real CSV markPriceSource must be official (got: ' + src + ')'
+  );
 });
 
 // === Manifest tests ===
