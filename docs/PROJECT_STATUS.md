@@ -8,8 +8,7 @@ Build and validate a systematic long-only futures strategy for Binance USD-M per
 
 ## Current Stage
 
-**FUNDING ENGINE VALIDATED WITH SYNTHETIC DATA**
-**REAL HISTORICAL FUNDING VALIDATION BLOCKED**
+**REAL FUNDING VALIDATION COMPLETE — READY FOR FINAL HOLDOUT**
 
 The frozen `breakout24h4h` candidate has passed:
 1. Development validation (BTC/ETH, 2021-2025)
@@ -31,7 +30,8 @@ Real historical funding validation BLOCKED — requires official Binance API acc
 | V4 Candidate Freeze | COMPLETE | `2e866b3` | `docs/v4-final-development-candidate.md` |
 | Cross-Asset External Validation V1 | COMPLETE — SURVIVED | `eab2a78` | `reports/external-v1/CROSS_ASSET_EXTERNAL_VALIDATION_REPORT.md` |
 | Funding Engine Validation (synthetic) | COMPLETE (engine only) | `fda1332` | `reports/funding-v1/REAL_FUNDING_COST_VALIDATION_REPORT.md` |
-| Real Funding Data Acquisition & Revalidation V1 | BLOCKED — OFFICIAL DATA REQUIRED | — | — |
+| Real Funding Data Acquisition (data.vision) | COMPLETE — 23,292 events | `00d0daf` | `data/funding-real/manifest.json` |
+| Real Funding Cost Validation V1 | COMPLETE — ALL PASS | `00d0daf` | `reports/funding-real-v1/REAL_FUNDING_COST_VALIDATION_REPORT.md` |
 | Final Holdout Protocol V1 | LOCKED (2026) | — | — |
 
 ## Current Frozen Candidate
@@ -65,29 +65,21 @@ Real historical funding validation BLOCKED — requires official Binance API acc
 - Year consistency: 7/10 complete buckets positive (70% ≥ 60% threshold)
 - 2025 regime: mixed (not systematic) — BNB +0.35%, SOL -0.64%, BTC -0.74%, ETH -0.75%
 
-### What Has NOT Been Validated
+### What Has Been Validated (Updated)
 
-- **Funding costs**: All results are FUNDING NOT INCLUDED. Average holding time is ~5 days (116-126h), meaning positions cross multiple 8h funding events.
+- **Funding costs**: All 4 assets validated with real Binance data.vision funding rates (23,292 events, 2021-2025). BTC/ETH show MATERIAL impact (31.6%/48.9% NetPF ratio), BNB/SOL show NEGLIGIBLE impact. All PASS funding-adjusted survival gate.
 - **2026 holdout**: LOCKED. Never accessed.
 
 ## Current In-Progress / Next Steps
 
-1. **Real Funding Cost Validation V1** (next stage):
-   - Download official Binance USD-M funding rate history for BTC/ETH/BNB/SOL
-   - Build historical funding provider (`data/funding/`)
-   - Re-run all 4 assets × 4 scenarios (GROSS_NO_FUNDING, BASE_NO_FUNDING, BASE_REAL_FUNDING, STRESS_REAL_FUNDING)
-   - Before vs After Funding comparison
-   - Funding-adjusted survival gate
-   - Generate reports
-
-2. **Final Holdout Protocol V1** (after funding validation passes):
+1. **Final Holdout Protocol V1** (next stage):
    - Run frozen `breakout24h4h` on 2026 data for BTC/ETH/BNB/SOL
    - One-time evaluation, no iteration
+   - Generate holdout report
 
 ## Blockers
 
-- **Funding data not downloaded**: `data/funding/` directory does not exist. Must download official Binance funding rate history before funding validation can proceed.
-- **Funding provider not implemented**: `brokerSimulator.js` has `createFundingProvider` with `'none'` and `'constant'` types, but no `'historical'` type that loads real funding rates from CSV.
+- None — all prerequisites for Final Holdout are met
 
 ## Prohibitions
 
@@ -123,7 +115,8 @@ Real historical funding validation BLOCKED — requires official Binance API acc
 | `data/market/ETHUSDT-15m.csv` | ETH 15m (2021-01 → 2026-07, 175296 rows) |
 | `data/market/BNBUSDT-15m.csv` | BNB 15m (2020-02 → 2025-12, 206560 rows) |
 | `data/market/SOLUSDT-15m.csv` | SOL 15m (2020-09 → 2025-12, 185252 rows) |
-| `data/funding/` | DOES NOT EXIST — must be created for funding validation |
+| `data/funding-real/` | Real Binance funding data (23,292 events, CSV + manifest) |
+| `reports/funding-real-v1/` | Real funding validation reports |
 
 ## Test Status
 
@@ -135,8 +128,10 @@ Real historical funding validation BLOCKED — requires official Binance API acc
 
 - Baseline SHA: `619edc9` (docs: update PROJECT_STATUS with funding result SHA)
 - Frozen Candidate Freeze SHA: `2e866b3`
+- External Validation Prereg SHA: `1b886f7`
 - External Validation Result SHA: `eab2a78`
-- Funding Preregistration SHA: `1259f8a74d7dab1f4b352fb6de862eb1664ae706`
-- Synthetic Funding Engine SHA: `fda13321be8e552ad3bf831adc6d13056e28573c` (engine validation only, NOT real funding evidence)
-- Real Funding Validation: BLOCKED — requires official Binance API access
-- Working tree: clean (at baseline)
+- Funding Preregistration SHA: `1259f8a`
+- Synthetic Funding Engine SHA: `fda1332` (engine validation only, NOT real funding evidence)
+- Real Funding Data Acquisition SHA: `00d0daf` (data.vision archives + validation)
+- Real Funding Validation Result SHA: `00d0daf` (all 4 assets PASS)
+- Next: Final Holdout Protocol V1
