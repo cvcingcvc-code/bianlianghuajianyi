@@ -1,6 +1,6 @@
 # PROJECT_STATUS.md — Binance-Trader Quantitative Research
 
-> Last updated: 2026-09-01. Based on git commit `eab2a78` (HEAD). Working tree clean.
+> Last updated: 2026-09-01. Status verified against baseline SHA: `ea9df81`.
 
 ## Project Goal
 
@@ -130,6 +130,9 @@ The next required stage is **Real Funding Cost Validation V1** — re-running al
 
 ## Git Status
 
-- HEAD: `eab2a78` (research: complete cross asset external validation v1)
-- Working tree: clean
-- No uncommitted changes
+- Baseline SHA: `ea9df81` (docs: establish persistent project context and validation protocol)
+- Frozen Candidate Freeze SHA: `2e866b3`
+- External Validation Result SHA: `eab2a78`
+- Working tree: clean (at baseline)
+- Funding Preregistration SHA: (pending)
+- Funding Result SHA: (pending)
