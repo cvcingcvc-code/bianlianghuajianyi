@@ -1,6 +1,6 @@
 # PROJECT_STATUS.md — Binance-Trader Quantitative Research
 
-> Last updated: 2026-09-01. Status verified against baseline SHA: `ea9df81`.
+> Last updated: 2026-09-01. Status verified against funding result SHA: `fda1332`.
 
 ## Project Goal
 
@@ -136,4 +136,4 @@ All 4 assets pass funding-adjusted gates. Edge preserved for all assets.
 - External Validation Result SHA: `eab2a78`
 - Working tree: clean (at baseline)
 - Funding Preregistration SHA: `1259f8a74d7dab1f4b352fb6de862eb1664ae706`
-- Funding Result SHA: (pending)
+- Funding Result SHA: `fda13321be8e552ad3bf831adc6d13056e28573c`
