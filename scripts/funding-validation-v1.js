@@ -16,7 +16,7 @@ const { loadFundingCSV } = require('../src/research/funding/fundingDownloader');
 const { verifyFundingData } = require('../src/research/funding/fundingDataValidator');
 
 const ROOT = path.join(__dirname, '..');
-const REPORT_DIR = path.join(ROOT, 'reports', 'funding-v1');
+const REPORT_DIR = path.join(ROOT, 'reports', 'funding-real-v1');
 
 const POSITION_SIZE_PCT = 25;
 const INITIAL_CAPITAL = 10000;
@@ -239,7 +239,7 @@ function main() {
   const fundingCSVs = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT'];
 
   for (const symbol of fundingCSVs) {
-    const csvPath = path.join(ROOT, 'data', 'funding', `${symbol}-funding.csv`);
+    const csvPath = path.join(ROOT, 'data', 'funding-real', `${symbol}.csv`);
     if (!fs.existsSync(csvPath)) {
       console.log(`${symbol}: FUNDING DATA MISSING`);
       fundingQuality[symbol] = { status: 'FUNDING DATA INCOMPLETE', issues: ['CSV file not found'] };
