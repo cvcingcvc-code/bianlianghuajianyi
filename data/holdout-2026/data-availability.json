@@ -1,0 +1,111 @@
+{
+  "generatedAt": "2026-09-01T09:06:02.976Z",
+  "assets": {
+    "BTCUSDT": {
+      "candle": {
+        "totalRows": 195648,
+        "holdoutRows": 20352,
+        "holdout2026Rows": 20352,
+        "firstTimestamp": 1609459200000,
+        "lastTimestamp": 1785541500000,
+        "firstHoldoutTimestamp": 1767225600000,
+        "lastHoldoutTimestamp": 1785541500000,
+        "missingBars": 0,
+        "duplicateBars": 0,
+        "sha256": "989111f5a077f24c2dbe66ca03e53e50e2de7a951e29362891d7bc31f89bb715"
+      },
+      "funding": {
+        "totalEvents": 5478,
+        "holdoutEvents": 0,
+        "firstFundingTime": 1609459200002,
+        "lastFundingTime": 1767196800001,
+        "firstHoldoutFundingTime": null,
+        "lastHoldoutFundingTime": null,
+        "officialSourceCount": 0,
+        "syntheticSourceCount": 0,
+        "holdoutSources": [],
+        "sha256": "e0ed74374c5fa6968f82cfca322d534a929714dd35cd5d5b99061a1ff222698e"
+      }
+    },
+    "ETHUSDT": {
+      "candle": {
+        "totalRows": 195648,
+        "holdoutRows": 20352,
+        "holdout2026Rows": 20352,
+        "firstTimestamp": 1609459200000,
+        "lastTimestamp": 1785541500000,
+        "firstHoldoutTimestamp": 1767225600000,
+        "lastHoldoutTimestamp": 1785541500000,
+        "missingBars": 0,
+        "duplicateBars": 0,
+        "sha256": "cedf9757682feb4feccbabb7eed7ef00172781ed74c56862376b288da9837cbf"
+      },
+      "funding": {
+        "totalEvents": 5478,
+        "holdoutEvents": 0,
+        "firstFundingTime": 1609459200002,
+        "lastFundingTime": 1767196800001,
+        "firstHoldoutFundingTime": null,
+        "lastHoldoutFundingTime": null,
+        "officialSourceCount": 0,
+        "syntheticSourceCount": 0,
+        "holdoutSources": [],
+        "sha256": "aa10a16ddf72e05277d966ee588d37937b2de1a26f560e5f616c3b699f5a3862"
+      }
+    },
+    "BNBUSDT": {
+      "candle": {
+        "totalRows": 206560,
+        "holdoutRows": 0,
+        "holdout2026Rows": 0,
+        "firstTimestamp": 1581321600000,
+        "lastTimestamp": 1767224700000,
+        "firstHoldoutTimestamp": null,
+        "lastHoldoutTimestamp": null,
+        "missingBars": 0,
+        "duplicateBars": 0,
+        "sha256": "a306781bda750e5a4220513b92b34238cad42d4e50b7824e70dc81b791055e3e"
+      },
+      "funding": {
+        "totalEvents": 6455,
+        "holdoutEvents": 0,
+        "firstFundingTime": 1581321600000,
+        "lastFundingTime": 1767196800001,
+        "firstHoldoutFundingTime": null,
+        "lastHoldoutFundingTime": null,
+        "officialSourceCount": 0,
+        "syntheticSourceCount": 0,
+        "holdoutSources": [],
+        "sha256": "02720775404023e727d75b17aa15da0c36e1bf79f90acab2bd16cc7c78ec43f4"
+      }
+    },
+    "SOLUSDT": {
+      "candle": {
+        "totalRows": 185252,
+        "holdoutRows": 0,
+        "holdout2026Rows": 0,
+        "firstTimestamp": 1600066800000,
+        "lastTimestamp": 1767224700000,
+        "firstHoldoutTimestamp": null,
+        "lastHoldoutTimestamp": null,
+        "missingBars": 0,
+        "duplicateBars": 0,
+        "sha256": "7fbace3ebbf50b4bd84913d029c69b555ea2efbd49268c097a2c0363059bece6"
+      },
+      "funding": {
+        "totalEvents": 5881,
+        "holdoutEvents": 0,
+        "firstFundingTime": 1600012800004,
+        "lastFundingTime": 1767196800001,
+        "firstHoldoutFundingTime": null,
+        "lastHoldoutFundingTime": null,
+        "officialSourceCount": 0,
+        "syntheticSourceCount": 0,
+        "holdoutSources": [],
+        "sha256": "a490d1de4dd378e782c07f4e49d1273cbca5d0ac0ce2af0d633bc58b9255d863"
+      }
+    }
+  },
+  "commonFinalHoldoutEnd": 1767225599999,
+  "finalHoldoutStart": 1767225600000
+}
