@@ -10,6 +10,7 @@
 - **Timeframe**: 4h（由已验证 Binance 官方 15m 数据严格 UTC 对齐聚合，16×15m；不完整窗口丢弃）
 - **Code**: `src/research/strategies/breakout24h4h.js`（基于 `breakout24hFactory.js`）
 - **Preregistration SHA**: `59578e98f64446350db3c603896d243bc8b7d214`（docs/strategy-v4-hypotheses.md）
+- **Freeze SHA**: `2e866b3fd4f0b38f0570ab31c9dfc77e1030c5a8`（本文件 commit）
 
 ## 完整规则（冻结）
 
