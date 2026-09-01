@@ -32,7 +32,7 @@ Final Holdout data acquisition complete. All 2026 data downloaded from data.bina
 | Funding Engine Validation (synthetic) | COMPLETE (engine only) | `fda1332` | `reports/funding-v1/REAL_FUNDING_COST_VALIDATION_REPORT.md` |
 | Real Funding Data Acquisition (data.vision) | COMPLETE — 23,292 events | `00d0daf` | `data/funding-real/manifest.json` |
 | Real Funding Cost Validation V1 | COMPLETE — ALL PASS | `00d0daf` | `reports/funding-real-v1/REAL_FUNDING_COST_VALIDATION_REPORT.md` |
-| Final Holdout Protocol V1 | PREREGISTERED + DATA READY | `3eb66b3` / `902273e` | `reports/final-holdout-v1/` |
+| Final Holdout Protocol V1 | PREREGISTERED + FUNDING REPAIRED | `3eb66b3` / `bbc44c9` | `reports/final-holdout-v1/` |
 
 ## Current Frozen Candidate
 
@@ -141,5 +141,6 @@ Final Holdout data acquisition complete. All 2026 data downloaded from data.bina
 - Real Funding Validation Result SHA: `00d0daf` (all 4 assets PASS)
 - Final Holdout Prereg SHA: `3eb66b3`
 - Final Holdout Data Acquisition SHA: `902273e` (all 2026 data downloaded)
+- Mark Price Repair SHA: `bbc44c9` (official markPriceKlines, all gates PASS)
 - Final Holdout Result: **NOT EXECUTED** (awaiting human instruction)
 - 2026 Holdout Status: **UNCONSUMED, LOCKED**
