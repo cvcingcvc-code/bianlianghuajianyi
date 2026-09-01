@@ -8,13 +8,13 @@ Build and validate a systematic long-only futures strategy for Binance USD-M per
 
 ## Current Stage
 
-**CROSS-ASSET EXTERNAL VALIDATION V1 COMPLETE — NEXT: REAL FUNDING COST VALIDATION V1**
+**REAL FUNDING COST VALIDATION V1 — PREREGISTERED, READY FOR IMPLEMENTATION**
 
 The frozen `breakout24h4h` candidate has passed:
 1. Development validation (BTC/ETH, 2021-2025)
 2. Cross-asset external validation (BNB/SOL, full available history)
 
-The next required stage is **Real Funding Cost Validation V1** — re-running all 4 assets with actual Binance historical funding rates to determine if the edge survives funding costs.
+The current stage is **Real Funding Cost Validation V1** — preregistered at commit `1259f8a`. Next: download funding data, build historical provider, run 4 assets × 4 scenarios with actual funding costs.
 
 ## Completed Stages
 
@@ -28,7 +28,7 @@ The next required stage is **Real Funding Cost Validation V1** — re-running al
 | Strategy Research V4 (timeframe) | COMPLETE — breakout24h4h survived | `abfd04d` | `reports/v4/STRATEGY_RESEARCH_V4_REPORT.md` |
 | V4 Candidate Freeze | COMPLETE | `2e866b3` | `docs/v4-final-development-candidate.md` |
 | Cross-Asset External Validation V1 | COMPLETE — SURVIVED | `eab2a78` | `reports/external-v1/CROSS_ASSET_EXTERNAL_VALIDATION_REPORT.md` |
-| Real Funding Cost Validation V1 | NOT STARTED | — | — |
+| Real Funding Cost Validation V1 | PREREGISTERED | `1259f8a` | `docs/real-funding-cost-validation-v1.md` |
 | Final Holdout Protocol V1 | LOCKED (2026) | — | — |
 
 ## Current Frozen Candidate
@@ -134,5 +134,5 @@ The next required stage is **Real Funding Cost Validation V1** — re-running al
 - Frozen Candidate Freeze SHA: `2e866b3`
 - External Validation Result SHA: `eab2a78`
 - Working tree: clean (at baseline)
-- Funding Preregistration SHA: (pending)
+- Funding Preregistration SHA: `1259f8a74d7dab1f4b352fb6de862eb1664ae706`
 - Funding Result SHA: (pending)
