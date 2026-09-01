@@ -25,6 +25,8 @@ const RESEARCH_STRATEGY_MODULES = {
   emaConfirmation: () => require('./strategies/emaConfirmation'),
   trendPullbackReclaim: () => require('./strategies/trendPullbackReclaim'),
   breakout24hTrend: () => require('./strategies/breakout24hTrend'),
+  breakout24h1h: () => require('./strategies/breakout24h1h'),
+  breakout24h4h: () => require('./strategies/breakout24h4h'),
 };
 
 const STRATEGY_MODULES = { ...LIVE_STRATEGY_MODULES, ...RESEARCH_STRATEGY_MODULES };
