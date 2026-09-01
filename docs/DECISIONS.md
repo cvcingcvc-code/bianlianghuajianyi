@@ -122,3 +122,11 @@
 **Why**: Research integrity. Live trading introduces emotional and financial pressure that can corrupt research methodology.
 **Alternatives considered**: Paper trading integration (deferred).
 **Evidence**: No API key files, no live trading code in `src/strategy/` that connects to exchange.
+
+## D016: Funding data from data.binance.vision, not fapi.binance.com
+
+**Date**: Real Funding Validation (commit `00d0daf`)
+**Decision**: Download official funding rate archives from `data.binance.vision` (public S3 bucket) instead of `fapi.binance.com` (API).
+**Why**: `fapi.binance.com` is unreachable (ETIMEDOUT) from OpenCode environment. `data.binance.vision` provides identical official data as monthly ZIP archives with checksums.
+**Alternatives considered**: fapi.binance.com streaming/pagination (blocked by network), synthetic funding (rejected for validation).
+**Evidence**: `scripts/download-real-funding-archive.js` — downloads from `https://data.binance.vision/data/futures/um/monthly/fundingRate/`
