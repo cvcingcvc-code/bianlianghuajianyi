@@ -1,0 +1,492 @@
+{
+  "generatedAt": "2026-09-01T09:38:31.652Z",
+  "holdoutStart": "2026-01-01T00:00:00.000Z",
+  "holdoutEnd": "2026-07-31T23:59:59.999Z",
+  "dataSource": "data.binance.vision",
+  "assets": {
+    "BTCUSDT": {
+      "klineSource": "data.binance.vision",
+      "fundingSource": "data.binance.vision",
+      "klineArchives": [
+        {
+          "month": "2026-01",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "065fc8cf21f51ad6bd043fa670ba2dbc8c6030efd5dff63d5d4a9d99e0b88d0b",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-02",
+          "status": "OK",
+          "rows": 2688,
+          "sha256": "983c066f0cf0171466e89d7596433f5ac717ea8c805fe5b650a83b3176cd92c1",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-03",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "ea25e84ddffdcc8b7ba68fb47363daee6a9ef53941f152c9ebf6d4e165d32bf8",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-04",
+          "status": "OK",
+          "rows": 2880,
+          "sha256": "0bc151133aa47be76f535539e25c04970bd6d0afd54e532951638dc8330fcc58",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-05",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "1c0a865f62ddca9890f5d7bbe901b7261a3818785594d960f5fce36ee7ce81f5",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-06",
+          "status": "OK",
+          "rows": 2880,
+          "sha256": "54369ae74f8122e0d3c8152807f78ec3ced435a8b0ab59c5efcea2cbad878857",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-07",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "10df439d8404a31fc55ed91fe0169b79db3fa3e7a8c83bc2eb704004eadea1c2",
+          "source": "MONTHLY_ARCHIVE"
+        }
+      ],
+      "fundingArchives": [
+        {
+          "month": "2026-01",
+          "status": "OK",
+          "events": 93,
+          "sha256": "fcdc796484f395830d418588a34a26baed8849dbef0ff2b56173247e493ff51f",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-02",
+          "status": "OK",
+          "events": 84,
+          "sha256": "80df1dd669dc1e3afc360c9da8b9a949a127fce088eedbf5bf708bd37b0a1f58",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-03",
+          "status": "OK",
+          "events": 93,
+          "sha256": "5c069d5e9597a44fd0e213395082e59ff223fb99c9eab3a2a5a2a5622ba7867c",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-04",
+          "status": "OK",
+          "events": 90,
+          "sha256": "51cdeb4de7d5ef1d4eece80b6115e391bdf7a2d0803bf9ad8371ab23340b22d3",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-05",
+          "status": "OK",
+          "events": 93,
+          "sha256": "445b65fd6b17bfcfb5e4d035db29fad34f729fa078f0449024db42621be84e6e",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-06",
+          "status": "OK",
+          "events": 90,
+          "sha256": "cff97ce688329592bccbbf5873b5c7021649e093f5f5806e332c5b4fb7fd6a00",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-07",
+          "status": "OK",
+          "events": 93,
+          "sha256": "e36fcc66f493d7d9ec348c852fc22e9f318c79cf7adae17398a3994ae0adc41e",
+          "source": "MONTHLY_ARCHIVE"
+        }
+      ],
+      "kline15mRows": 195648,
+      "holdout15mRows": 20352,
+      "firstKline": "2021-01-01T00:00:00.000Z",
+      "lastKline": "2026-07-31T23:45:00.000Z",
+      "missingBars": 0,
+      "duplicateBars": 0,
+      "fundingTotal": 6114,
+      "holdoutFundingEvents": 636,
+      "firstFunding": "2021-01-01T00:00:00.002Z",
+      "lastFunding": "2026-07-31T16:00:00.000Z",
+      "officialFundingCount": 636,
+      "syntheticFundingCount": 0,
+      "fundingDuplicates": 0,
+      "klineSHA256": "1aa06b0db405651701df7861280462e2da30dc2d2f5c4e45c7535f6f5ef4d122",
+      "fundingSHA256": "0a7da6cb7e3ebecc1bea96d1a5283bc11cd7af22419901b0a42fe88e3e7a8596"
+    },
+    "ETHUSDT": {
+      "klineSource": "data.binance.vision",
+      "fundingSource": "data.binance.vision",
+      "klineArchives": [
+        {
+          "month": "2026-01",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "447a9db9356fac7d162cf485d5ac4488a587dc053ac0a59f35f24cae84e6403d",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-02",
+          "status": "OK",
+          "rows": 2688,
+          "sha256": "71de116aeb4643bad5eba4537673f1b1aea22f33064780bf6fa636429f63415a",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-03",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "8070870b512ab7c312329a7fc1a45217fc7aff5ed7bbb4f805d96caf7c99fd5d",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-04",
+          "status": "OK",
+          "rows": 2880,
+          "sha256": "d9974b77eb5b1b37c1b6b82f064a4edbb8c0b2a0531fbee487e3a34e519da6be",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-05",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "3db40bf90a856aa0977bcac53c46750c174b58c9e0a438ea9803948e81d42260",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-06",
+          "status": "OK",
+          "rows": 2880,
+          "sha256": "d4d7c7087b6813c219c39c1cfcb7b3f5c493551b94d33a8d7c6ee0b7201f010a",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-07",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "6d35d18663150fc242eec9fb2f4d3ed220081c849994020f728e93556f7a9f50",
+          "source": "MONTHLY_ARCHIVE"
+        }
+      ],
+      "fundingArchives": [
+        {
+          "month": "2026-01",
+          "status": "OK",
+          "events": 93,
+          "sha256": "830cf7797ea6ecdc554ac2d9047a141df1a6a544f4ea58e7028227930462b139",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-02",
+          "status": "OK",
+          "events": 84,
+          "sha256": "e445f00c81a7fa8361d99b3660f24b4f58e5d952fe301d70bbc72c319bc01a77",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-03",
+          "status": "OK",
+          "events": 93,
+          "sha256": "9f5625846c503a1e94fcdecd2deb37dc8852e341add353fa48c2b9a0cc70df6a",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-04",
+          "status": "OK",
+          "events": 90,
+          "sha256": "86160f455478a8b262d96d1516f583355e6e0cec7beeb5784e69dda76f599e98",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-05",
+          "status": "OK",
+          "events": 93,
+          "sha256": "ff926ad3fc48493c26c85af16620b19c695cc1854faa1e7f0ea2ab9fdafc2084",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-06",
+          "status": "OK",
+          "events": 90,
+          "sha256": "cc6fb028a811bc423b711f6b89de067bf92a2eda61303e1ce0b219b5d3210e47",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-07",
+          "status": "OK",
+          "events": 93,
+          "sha256": "ece7f6c64d0e45fbd64929dec40bae525fe365381046e367de5ca0827bc623d3",
+          "source": "MONTHLY_ARCHIVE"
+        }
+      ],
+      "kline15mRows": 195648,
+      "holdout15mRows": 20352,
+      "firstKline": "2021-01-01T00:00:00.000Z",
+      "lastKline": "2026-07-31T23:45:00.000Z",
+      "missingBars": 0,
+      "duplicateBars": 0,
+      "fundingTotal": 6114,
+      "holdoutFundingEvents": 636,
+      "firstFunding": "2021-01-01T00:00:00.002Z",
+      "lastFunding": "2026-07-31T16:00:00.000Z",
+      "officialFundingCount": 636,
+      "syntheticFundingCount": 0,
+      "fundingDuplicates": 0,
+      "klineSHA256": "76f3d540fbe8bc8a150ccfdc0a060cef339777fce226153510938a87960af2b1",
+      "fundingSHA256": "111ace03e4897cc1820f55b072def4e2aaf4199ffbf2408a66bd7741ce2fc304"
+    },
+    "BNBUSDT": {
+      "klineSource": "data.binance.vision",
+      "fundingSource": "data.binance.vision",
+      "klineArchives": [
+        {
+          "month": "2026-01",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "3302a77b3af0391f4f88c45a686f531de7a1e208e04e83ccda771a20d72f7616",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-02",
+          "status": "OK",
+          "rows": 2688,
+          "sha256": "4be571a245dbcb73be9c671056b3a501490dcbb0f88e63f36a94e205c15e0ece",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-03",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "ecf8c70031ba5d36cd70a93e1023eaea15cf8fbae42403e861edd617dc026a35",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-04",
+          "status": "OK",
+          "rows": 2880,
+          "sha256": "ab293f08ba196b29d4d164189c07360ad443e840c58cca4db26f2761ae4e17a3",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-05",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "af87367b3470893af159d7352003ba351bf1c147d9d1cbedd76d0c88a8834efd",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-06",
+          "status": "OK",
+          "rows": 2880,
+          "sha256": "70281dcb771df1d572ddf9fe3a5fa1442a60162917c5954335edd433638f27cc",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-07",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "d89b57d3ee1b1c0dc2d1c705737d223b0273ee7939f03cec3ced35e77e54395c",
+          "source": "MONTHLY_ARCHIVE"
+        }
+      ],
+      "fundingArchives": [
+        {
+          "month": "2026-01",
+          "status": "OK",
+          "events": 93,
+          "sha256": "b7fc86f2e15ed637796db819d03ec7fba66f2651ad1077cb143e2cd4bafc7e1d",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-02",
+          "status": "OK",
+          "events": 84,
+          "sha256": "1b474640f9646c08f2dac80db4b4716303972dbf35613f5c7da948e2f858b646",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-03",
+          "status": "OK",
+          "events": 93,
+          "sha256": "19e6e88c1a0c318fee6b8c570ed39fbfd4e3dcbcd917e0738347c3b03fad52c3",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-04",
+          "status": "OK",
+          "events": 90,
+          "sha256": "64ad28743203161c89a5c64582ed14a599a5d47addcffc3f7e2f07063ef9bb2b",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-05",
+          "status": "OK",
+          "events": 93,
+          "sha256": "b62dd555a8c1ecc25644f529e4cd351a835aeabaa70258909d9f1c328f427cd8",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-06",
+          "status": "OK",
+          "events": 90,
+          "sha256": "fffa72378e35dd0fc6faf22e8e7b5b22794201124e4727da92d6cb2b591459be",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-07",
+          "status": "OK",
+          "events": 93,
+          "sha256": "0ff2884392a6efe9a33063971dd583090124e916a3c8b59dca6949cb6ed81124",
+          "source": "MONTHLY_ARCHIVE"
+        }
+      ],
+      "kline15mRows": 226912,
+      "holdout15mRows": 20352,
+      "firstKline": "2020-02-10T08:00:00.000Z",
+      "lastKline": "2026-07-31T23:45:00.000Z",
+      "missingBars": 0,
+      "duplicateBars": 0,
+      "fundingTotal": 7091,
+      "holdoutFundingEvents": 636,
+      "firstFunding": "2020-02-10T08:00:00.000Z",
+      "lastFunding": "2026-07-31T16:00:00.000Z",
+      "officialFundingCount": 636,
+      "syntheticFundingCount": 0,
+      "fundingDuplicates": 0,
+      "klineSHA256": "aa6231f960190403ee57722eec725351e8548373ba06248c75028e787a59a3c5",
+      "fundingSHA256": "a26b5ccdf96def67a7268c80cbb9a23686632e9ba484ff83f8e27f66576cda94"
+    },
+    "SOLUSDT": {
+      "klineSource": "data.binance.vision",
+      "fundingSource": "data.binance.vision",
+      "klineArchives": [
+        {
+          "month": "2026-01",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "4b8776dad2aaa78d3b65d9ea2f9633ee684619ae82df4dfaee82d47d97916127",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-02",
+          "status": "OK",
+          "rows": 2688,
+          "sha256": "c722dfb99c8188214ec0e385f727d9d62cedca394ff85b621621fc72fa762c22",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-03",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "220843dfa95a260eb7592cc31e55e708f0a597943f70a9f91f48efaba10a2bef",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-04",
+          "status": "OK",
+          "rows": 2880,
+          "sha256": "d53aca5418e2bf2b375a66a57607984a3fca1fb190d6c7544645e394cdbd7868",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-05",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "b047cecfb3b3c2448c252740a91b9135c5e152d911887d29231af8e0d54f8174",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-06",
+          "status": "OK",
+          "rows": 2880,
+          "sha256": "141d6d45369c1a423fb844fc9ebc8f1c8753c892b9fa6a2810b1f68440ff8679",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-07",
+          "status": "OK",
+          "rows": 2976,
+          "sha256": "393c30e6d60456e94f019297b21c86b30d2a90ecf8e16d585ddf88fd7030735f",
+          "source": "MONTHLY_ARCHIVE"
+        }
+      ],
+      "fundingArchives": [
+        {
+          "month": "2026-01",
+          "status": "OK",
+          "events": 93,
+          "sha256": "c53be79aae38a1f35e94880f106df4eceab57bfa74a0b5fc5852fdfabf57ab8e",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-02",
+          "status": "OK",
+          "events": 84,
+          "sha256": "84cb9bcf44ba1364b37db876e7c852aa1b831371556b610e2387115addec9d5f",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-03",
+          "status": "OK",
+          "events": 93,
+          "sha256": "75cfaea075d97779a577c3744ea63e3d83704f281806fb5f76f2d3e0f089fd2c",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-04",
+          "status": "OK",
+          "events": 90,
+          "sha256": "951a280e98b6d20fe4be25bf2b71f3cda1c07c7583a88cb874151e2b1fe941f1",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-05",
+          "status": "OK",
+          "events": 93,
+          "sha256": "c13066e5f7c5d161dbebd488cbeaab1205688c6dc7f9fafcc8f94296f2c1e47b",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-06",
+          "status": "OK",
+          "events": 90,
+          "sha256": "8d32fa3153d54c58667650e8b2c65e489b3a433b775052a93208bf60541a40d3",
+          "source": "MONTHLY_ARCHIVE"
+        },
+        {
+          "month": "2026-07",
+          "status": "OK",
+          "events": 93,
+          "sha256": "13f655eaa29865b16acc7bd97be74e212bc4c2139fc2f9ead4d150852c2a9ebb",
+          "source": "MONTHLY_ARCHIVE"
+        }
+      ],
+      "kline15mRows": 205604,
+      "holdout15mRows": 20352,
+      "firstKline": "2020-09-14T07:00:00.000Z",
+      "lastKline": "2026-07-31T23:45:00.000Z",
+      "missingBars": 0,
+      "duplicateBars": 0,
+      "fundingTotal": 6517,
+      "holdoutFundingEvents": 636,
+      "firstFunding": "2020-09-13T16:00:00.004Z",
+      "lastFunding": "2026-07-31T16:00:00.000Z",
+      "officialFundingCount": 636,
+      "syntheticFundingCount": 0,
+      "fundingDuplicates": 0,
+      "klineSHA256": "a61b421882d4acd157204ff79dd46b92822b21d5dfa809f0f131e6fcf9527410",
+      "fundingSHA256": "f579a69a5b5dc746eaa7be1a191503e86220fb149249c6417a02cb1d3fd0e736"
+    }
+  }
+}

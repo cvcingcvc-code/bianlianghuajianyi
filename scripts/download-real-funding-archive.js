@@ -21,7 +21,6 @@ const ASSETS = [
   { symbol: 'SOLUSDT', startMs: Date.UTC(2020, 8, 1) },
 ];
 
-const END_MS = Date.UTC(2025, 11, 31, 23, 59, 59, 999);
 const HOLDOUT_START_MS = Date.UTC(2026, 0, 1);
 
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
@@ -119,12 +118,20 @@ async function main() {
     const allEvents = [];
     const archiveLog = [];
 
-    // Generate month range
+    // Probe forward from start date until 404 (no hardcoded end)
     const months = [];
     let y = new Date(asset.startMs).getUTCFullYear();
     let m = new Date(asset.startMs).getUTCMonth();
-    while (Date.UTC(y, m + 1, 1) <= END_MS + 31 * 86400000) {
-      months.push({ year: y, month: m + 1 });
+    for (let guard = 0; guard < 120; guard++) {
+      const mm = String(m + 1).padStart(2, '0');
+      const probeUrl = `${BASE_URL}/${asset.symbol}/${asset.symbol}-fundingRate-${y}-${mm}.zip`;
+      try {
+        const probe = await downloadFile(probeUrl);
+        if (probe === null) break; // 404 — end of availability
+        months.push({ year: y, month: m + 1 });
+      } catch (e) {
+        break; // network error — stop probing
+      }
       m++;
       if (m > 11) { m = 0; y++; }
     }
@@ -211,7 +218,7 @@ async function main() {
       sourceEndpoint: 'data.binance.vision',
       symbol: asset.symbol,
       requestedStart: new Date(asset.startMs).toISOString(),
-      requestedEnd: new Date(END_MS).toISOString(),
+      requestedEnd: deduped.length > 0 ? new Date(deduped[deduped.length - 1].fundingTime).toISOString() : null,
       downloadedAt: new Date().toISOString(),
       firstFundingTime: deduped[0]?.fundingTime,
       lastFundingTime: deduped[deduped.length - 1]?.fundingTime,

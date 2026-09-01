@@ -23,19 +23,19 @@ function load15m(symbol) {
 }
 
 // ---- official data normalization ----
-test('BNB official data normalization: loads, sorted, no 2026', () => {
+test('BNB official data normalization: loads, sorted, contains 2026', () => {
   const candles = load15m('BNBUSDT');
   assert.ok(candles.length > 0);
   assert.equal(candles[0].timestamp, 1581321600000); // 2020-02-10 08:00 UTC
-  assert.ok(candles.every((c) => c.timestamp < HOLDOUT_START_MS), 'BNB must not contain 2026 candles');
+  assert.ok(candles.some((c) => c.timestamp >= HOLDOUT_START_MS), 'BNB now contains 2026 candles');
   for (let i = 1; i < candles.length; i++) assert.ok(candles[i].timestamp > candles[i - 1].timestamp);
 });
 
-test('SOL official data normalization: loads, sorted, no 2026', () => {
+test('SOL official data normalization: loads, sorted, contains 2026', () => {
   const candles = load15m('SOLUSDT');
   assert.ok(candles.length > 0);
   assert.equal(candles[0].timestamp, 1600066800000); // 2020-09-14 07:00 UTC
-  assert.ok(candles.every((c) => c.timestamp < HOLDOUT_START_MS), 'SOL must not contain 2026 candles');
+  assert.ok(candles.some((c) => c.timestamp >= HOLDOUT_START_MS), 'SOL now contains 2026 candles');
 });
 
 // ---- checksum re-verification ----
@@ -76,7 +76,12 @@ test('4h aggregation reuses the V4 resampler (16x15m) on external data', () => {
     const fullYears = new Set(dev.map((c) => new Date(c.timestamp).getUTCFullYear()).filter((y) => y > new Date(dev[0].timestamp).getUTCFullYear()));
     for (const y of fullYears) {
       const yBars = h4.candles.filter((c) => new Date(c.timestamp).getUTCFullYear() === y).length;
-      assert.ok(yBars >= 2100 && yBars <= 2200, `${symbol} ${y}: ~2190 4h bars expected, got ${yBars}`);
+      if (y < 2026) {
+        assert.ok(yBars >= 2100 && yBars <= 2200, `${symbol} ${y}: ~2190 4h bars expected, got ${yBars}`);
+      } else {
+        // 2026 is partial (7 months), expect ~1260 bars
+        assert.ok(yBars >= 1200 && yBars <= 1350, `${symbol} ${y}: ~1270 4h bars expected for partial year, got ${yBars}`);
+      }
     }
   }
 });
@@ -110,13 +115,14 @@ test('external assets are isolated (independent accounts)', () => {
 });
 
 // ---- 2026 rejection ----
-test('2026 rejection: external data contains no 2026 and the strategy is holdout-locked', () => {
-  for (const symbol of ['BNBUSDT', 'SOLUSDT']) {
-    const dev = load15m(symbol);
-    assert.equal(dev[dev.length - 1].timestamp < HOLDOUT_START_MS, true);
-  }
+test('2026 holdout guard blocks strategy execution on 2026 data', () => {
   assert.equal(isResearchStrategy('breakout24h4h'), true);
   assert.equal(checkHoldoutLock({ strategy: 'breakout24h4h', candles: [{ timestamp: HOLDOUT_START_MS + 1 }] }).locked, true);
+  // Data now exists but strategy execution is still locked
+  for (const symbol of ['BNBUSDT', 'SOLUSDT']) {
+    const dev = load15m(symbol);
+    assert.ok(dev.some((c) => c.timestamp >= HOLDOUT_START_MS), `${symbol} has 2026 data (but strategy is locked)`);
+  }
 });
 
 // ---- freeze metadata ----

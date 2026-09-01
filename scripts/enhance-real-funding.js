@@ -84,7 +84,6 @@ function enhanceAsset(symbol) {
   let noCandle = 0;
 
   for (const row of rows) {
-    if (row.fundingTime >= HOLDOUT_START_MS) continue;
     if (row.markPrice != null && Number.isFinite(row.markPrice)) {
       alreadyHad++;
       continue;
