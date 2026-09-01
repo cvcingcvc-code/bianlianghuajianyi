@@ -1,0 +1,135 @@
+# PROJECT_STATUS.md — Binance-Trader Quantitative Research
+
+> Last updated: 2026-09-01. Based on git commit `eab2a78` (HEAD). Working tree clean.
+
+## Project Goal
+
+Build and validate a systematic long-only futures strategy for Binance USD-M perpetual contracts, using official historical data. The strategy must survive multiple independent validation gates before being considered for final holdout testing.
+
+## Current Stage
+
+**CROSS-ASSET EXTERNAL VALIDATION V1 COMPLETE — NEXT: REAL FUNDING COST VALIDATION V1**
+
+The frozen `breakout24h4h` candidate has passed:
+1. Development validation (BTC/ETH, 2021-2025)
+2. Cross-asset external validation (BNB/SOL, full available history)
+
+The next required stage is **Real Funding Cost Validation V1** — re-running all 4 assets with actual Binance historical funding rates to determine if the edge survives funding costs.
+
+## Completed Stages
+
+| Stage | Status | Commit | Report |
+| --- | --- | --- | --- |
+| Quant Research V1 (baseline) | COMPLETE | `c681348` | `docs/quant-research-v1.md` |
+| Historical Data Validation V1 | COMPLETE | `97dbf15` | `reports/HISTORICAL_VALIDATION_REPORT.md` |
+| Backtest Integrity Audit V2 | COMPLETE | `6422ea9` | `docs/backtest-integrity-audit.md` |
+| Strategy Research V2 (edge diagnosis) | COMPLETE — no candidate survived | `d1430c8` | `reports/v2/STRATEGY_RESEARCH_V2_REPORT.md` |
+| Strategy Research V3A (entry quality) | COMPLETE — no candidate survived | `92e784e` | `reports/v3a/STRATEGY_RESEARCH_V3A_REPORT.md` |
+| Strategy Research V4 (timeframe) | COMPLETE — breakout24h4h survived | `abfd04d` | `reports/v4/STRATEGY_RESEARCH_V4_REPORT.md` |
+| V4 Candidate Freeze | COMPLETE | `2e866b3` | `docs/v4-final-development-candidate.md` |
+| Cross-Asset External Validation V1 | COMPLETE — SURVIVED | `eab2a78` | `reports/external-v1/CROSS_ASSET_EXTERNAL_VALIDATION_REPORT.md` |
+| Real Funding Cost Validation V1 | NOT STARTED | — | — |
+| Final Holdout Protocol V1 | LOCKED (2026) | — | — |
+
+## Current Frozen Candidate
+
+- **Strategy**: `breakout24h4h` — 4h timeframe, 24-calendar-hour close > prior 6-bar-high breakout + EMA50 trend filter, exit on EMA9/21 death cross
+- **Code**: `src/research/strategies/breakout24h4h.js` (thin wrapper around `breakout24hFactory.js` with `windowBars: 6`)
+- **Freeze SHA**: `2e866b3fd4f0b38f0570ab31c9dfc77e1030c5a8`
+- **Preregistration SHA (V4)**: `59578e98f64446350db3c603896d243bc8b7d214`
+- **External Validation Prereg SHA**: `1b886f74ba17fb8f7813e39c7072677ae2809061`
+- **External Validation Result SHA**: `eab2a781789403f2ba84970d542d654b9a811ebf`
+
+## Latest Validation Results
+
+### Development (BTC/ETH, 2021-2025, 4h)
+
+| Metric | GROSS | BASE | STRESS |
+| --- | --- | --- | --- |
+| NetExp% | 0.9% | 0.78% | 0.68% |
+| NetPF | 1.47 | 1.39 | 1.33 |
+| Sharpe | 0.82 | 0.7 | 0.6 |
+| Trades | 234 | 234 | 234 |
+| Edge/Cost | N/A | 10.73 | 6.65 |
+
+### External Validation (BNB/SOL, full available history, 4h)
+
+| Asset | NetExp% | NetPF | Sharpe | Trades | STRESS survive |
+| --- | --- | --- | --- | --- | --- |
+| BNBUSDT | +3.28% | 2.64 | 1.26 | 212 | YES |
+| SOLUSDT | +3.49% | 1.99 | 1.17 | 196 | YES |
+
+- Year consistency: 7/10 complete buckets positive (70% ≥ 60% threshold)
+- 2025 regime: mixed (not systematic) — BNB +0.35%, SOL -0.64%, BTC -0.74%, ETH -0.75%
+
+### What Has NOT Been Validated
+
+- **Funding costs**: All results are FUNDING NOT INCLUDED. Average holding time is ~5 days (116-126h), meaning positions cross multiple 8h funding events.
+- **2026 holdout**: LOCKED. Never accessed.
+
+## Current In-Progress / Next Steps
+
+1. **Real Funding Cost Validation V1** (next stage):
+   - Download official Binance USD-M funding rate history for BTC/ETH/BNB/SOL
+   - Build historical funding provider (`data/funding/`)
+   - Re-run all 4 assets × 4 scenarios (GROSS_NO_FUNDING, BASE_NO_FUNDING, BASE_REAL_FUNDING, STRESS_REAL_FUNDING)
+   - Before vs After Funding comparison
+   - Funding-adjusted survival gate
+   - Generate reports
+
+2. **Final Holdout Protocol V1** (after funding validation passes):
+   - Run frozen `breakout24h4h` on 2026 data for BTC/ETH/BNB/SOL
+   - One-time evaluation, no iteration
+
+## Blockers
+
+- **Funding data not downloaded**: `data/funding/` directory does not exist. Must download official Binance funding rate history before funding validation can proceed.
+- **Funding provider not implemented**: `brokerSimulator.js` has `createFundingProvider` with `'none'` and `'constant'` types, but no `'historical'` type that loads real funding rates from CSV.
+
+## Prohibitions
+
+- Do NOT modify strategy code or parameters.
+- Do NOT unlock 2026 holdout data.
+- Do NOT run `--unlock-holdout`.
+- Do NOT add new strategies.
+- Do NOT change cost model assumptions.
+- Do NOT commit secrets or API keys.
+- Do NOT skip tests.
+- Do NOT use chat memory as sole source of truth.
+
+## Key File Paths
+
+| Path | Purpose |
+| --- | --- |
+| `src/research/strategies/breakout24h4h.js` | Frozen V4 candidate (windowBars=6) |
+| `src/research/strategies/breakout24hFactory.js` | Shared 24h breakout factory |
+| `src/research/backtest/backtester.js` | Core backtester (next-bar execution) |
+| `src/research/backtest/portfolio.js` | Cash/position/equity tracking |
+| `src/research/backtest/brokerSimulator.js` | Commission/slippage/funding modeling |
+| `src/research/holdoutGuard.js` | 2026 lock (HOLDOUT_START_MS = Date.UTC(2026,0,1)) |
+| `src/research/externalGate.js` | External validation gate functions |
+| `src/research/strategyAdapter.js` | Uniform strategy interface |
+| `src/research/data/resampler.js` | 15m → 1h/4h UTC-aligned resampler |
+| `src/research/data/candleRepository.js` | CSV data loader + validator |
+| `docs/v4-final-development-candidate.md` | Freeze rules and candidate spec |
+| `docs/cross-asset-external-validation-v1.md` | External validation preregistration |
+| `reports/v4/STRATEGY_RESEARCH_V4_REPORT.md` | V4 development report |
+| `reports/external-v1/CROSS_ASSET_EXTERNAL_VALIDATION_REPORT.md` | External validation report |
+| `reports/external-v1/DATA_QUALITY_REPORT.md` | BNB/SOL data quality |
+| `data/market/BTCUSDT-15m.csv` | BTC 15m (2021-01 → 2026-07, 175296 rows) |
+| `data/market/ETHUSDT-15m.csv` | ETH 15m (2021-01 → 2026-07, 175296 rows) |
+| `data/market/BNBUSDT-15m.csv` | BNB 15m (2020-02 → 2025-12, 206560 rows) |
+| `data/market/SOLUSDT-15m.csv` | SOL 15m (2020-09 → 2025-12, 185252 rows) |
+| `data/funding/` | DOES NOT EXIST — must be created for funding validation |
+
+## Test Status
+
+- 14 test files, 126 tests, all passing
+- Run: `npm test`
+- Framework: `node:test` + `node:assert`
+
+## Git Status
+
+- HEAD: `eab2a78` (research: complete cross asset external validation v1)
+- Working tree: clean
+- No uncommitted changes
