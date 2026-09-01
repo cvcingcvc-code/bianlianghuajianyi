@@ -8,14 +8,14 @@ Build and validate a systematic long-only futures strategy for Binance USD-M per
 
 ## Current Stage
 
-**FINAL HOLDOUT INCONCLUSIVE — DATA INTEGRITY FAILED**
+**FINAL HOLDOUT DATA READY — STRATEGY STILL LOCKED**
 
 The frozen `breakout24h4h` candidate has passed:
 1. Development validation (BTC/ETH, 2021-2025)
 2. Cross-asset external validation (BNB/SOL, full available history)
 3. Real historical funding validation (all 4 assets, 2021-2025)
 
-Final Holdout Protocol V1 **preregistered** but **could not be executed** — BNB/SOL have no2026 kline data, and no asset has2026 funding data on data.binance.vision.
+Final Holdout data acquisition complete. All 2026 data downloaded from data.binance.vision (28 kline archives + 28 funding archives). Strategy execution remains LOCKED.
 
 ## Completed Stages
 
@@ -32,7 +32,7 @@ Final Holdout Protocol V1 **preregistered** but **could not be executed** — BN
 | Funding Engine Validation (synthetic) | COMPLETE (engine only) | `fda1332` | `reports/funding-v1/REAL_FUNDING_COST_VALIDATION_REPORT.md` |
 | Real Funding Data Acquisition (data.vision) | COMPLETE — 23,292 events | `00d0daf` | `data/funding-real/manifest.json` |
 | Real Funding Cost Validation V1 | COMPLETE — ALL PASS | `00d0daf` | `reports/funding-real-v1/REAL_FUNDING_COST_VALIDATION_REPORT.md` |
-| Final Holdout Protocol V1 | INCONCLUSIVE — DATA INTEGRITY FAILED | `pending` | `reports/final-holdout-v1/FINAL_HOLDOUT_REPORT.md` |
+| Final Holdout Protocol V1 | PREREGISTERED + DATA READY | `3eb66b3` / `902273e` | `reports/final-holdout-v1/` |
 
 ## Current Frozen Candidate
 
@@ -72,17 +72,16 @@ Final Holdout Protocol V1 **preregistered** but **could not be executed** — BN
 
 ## Current In-Progress / Next Steps
 
-1. **Final Holdout Protocol V1** (BLOCKED):
-   - Preregistered but cannot execute
-   - BNB/SOL have no 2026 kline data on data.binance.vision
-   - No asset has 2026 funding data on data.binance.vision
-   - Re-execute when 2026 archives are published
+1. **Final Holdout Protocol V1** (DATA READY, AWAITING EXECUTION):
+   - Preregistered at `3eb66b3`
+   - Data acquired at `902273e`
+   - Awaiting human instruction to execute
+   - Strategy still LOCKED
 
 ## Blockers
 
-- **2026 kline data**: BNBUSDT and SOLUSDT have no 2026 kline data. data.binance.vision has not published 2026 monthly klines.
-- **2026 funding data**: No asset has 2026 funding events. data.binance.vision has not published 2026 monthly funding archives (except 2026-01 which has minimal data).
-- **COMMON_FINAL_HOLDOUT_END** = 2025-12-31 < FINAL_HOLDOUT_START = 2026-01-01
+- None — all data and prerequisites are ready
+- Awaiting human instruction to run Final Holdout
 
 ## Prohibitions
 
@@ -140,6 +139,7 @@ Final Holdout Protocol V1 **preregistered** but **could not be executed** — BN
 - Synthetic Funding Engine SHA: `fda1332` (engine validation only, NOT real funding evidence)
 - Real Funding Data Acquisition SHA: `00d0daf` (data.vision archives + validation)
 - Real Funding Validation Result SHA: `00d0daf` (all 4 assets PASS)
-- Final Holdout Prereg SHA: `pending` (to be committed)
-- Final Holdout Result: **NOT EXECUTED** (data integrity failed)
-- 2026 Holdout Status: **NOT CONSUMED**
+- Final Holdout Prereg SHA: `3eb66b3`
+- Final Holdout Data Acquisition SHA: `902273e` (all 2026 data downloaded)
+- Final Holdout Result: **NOT EXECUTED** (awaiting human instruction)
+- 2026 Holdout Status: **UNCONSUMED, LOCKED**
