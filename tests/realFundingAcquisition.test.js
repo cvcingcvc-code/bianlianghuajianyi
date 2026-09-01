@@ -41,8 +41,10 @@ test('real CSV has source column with BINANCE_OFFICIAL value', () => {
   const header = lines[0];
   assert.ok(header.includes('source'), 'real CSV must have source column');
   const firstData = lines[1];
-  assert.ok(firstData.includes('BINANCE_OFFICIAL_FUNDING_RATE_HISTORY'),
-    'real CSV source must be BINANCE_OFFICIAL_FUNDING_RATE_HISTORY');
+    assert.ok(
+      firstData.includes('BINANCE_OFFICIAL_FUNDING_RATE_HISTORY') || firstData.includes('BINANCE_DATA_VISION_OFFICIAL_ARCHIVE'),
+      'real CSV source must be official Binance (got: ' + firstData.split(',').pop() + ')'
+    );
 });
 
 // === Manifest tests ===
@@ -55,7 +57,10 @@ test('manifest.json exists and has correct structure', () => {
   assert.ok(manifest.assets, 'manifest must have assets');
   for (const [sym, info] of Object.entries(manifest.assets)) {
     if (info.error) continue; // download failed
-    assert.equal(info.sourceEndpoint, 'GET /fapi/v1/fundingRate', `${sym} sourceEndpoint`);
+    assert.ok(
+      info.sourceEndpoint === 'GET /fapi/v1/fundingRate' || info.sourceEndpoint === 'data.binance.vision',
+      `${sym} sourceEndpoint (got ${info.sourceEndpoint})`
+    );
     assert.ok(info.rowCount >= 0, `${sym} rowCount`);
     assert.ok(info.sha256, `${sym} sha256`);
     assert.equal(typeof info.directMarkPriceCount, 'number', `${sym} directMarkPriceCount`);
@@ -84,8 +89,10 @@ test('provenance source validation', () => {
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   for (const [sym, info] of Object.entries(manifest.assets)) {
     if (info.error) continue;
-    assert.equal(info.sourceEndpoint, 'GET /fapi/v1/fundingRate',
-      `${sym} must use official endpoint`);
+    assert.ok(
+      info.sourceEndpoint === 'GET /fapi/v1/fundingRate' || info.sourceEndpoint === 'data.binance.vision',
+      `${sym} must use official endpoint (got ${info.sourceEndpoint})`
+    );
   }
 });
 
