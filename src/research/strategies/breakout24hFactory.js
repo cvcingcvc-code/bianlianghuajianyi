@@ -18,6 +18,7 @@ function createBreakout24h({ windowBars, name }) {
 
   return {
     name: () => name,
+    windowBars,
     createState: () => ({ prices: [], highs: [], lastCrossState: null, ema50Prev: null }),
     computeSignal(state, candle, opts = {}) {
       const close = candle.close;

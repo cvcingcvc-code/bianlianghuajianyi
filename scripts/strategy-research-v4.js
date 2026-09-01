@@ -500,6 +500,14 @@ function writeFinalReport(cells, audit) {
   L.push('');
   L.push(`**${preregSha}**`);
   L.push('');
+  let freezeSha = 'none';
+  try {
+    freezeSha = execSync('git log --grep="freeze v4 development candidate" --format=%H -1', { cwd: ROOT }).toString().trim() || 'none';
+  } catch (e) { /* ignore */ }
+  L.push(`## 18. Candidate freeze SHA`);
+  L.push('');
+  L.push(`**${freezeSha}**`);
+  L.push('');
   L.push('> Selection criteria: net expectancy consistency > stress survival > NetPF > Sharpe > cross-year > cross-asset > edge/cost > turnover reduction > sample size. NOT total return.');
   L.push('> Past performance does not guarantee future results.');
   L.push('');
