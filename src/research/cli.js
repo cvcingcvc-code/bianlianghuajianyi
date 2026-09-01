@@ -12,7 +12,10 @@
 //   npm run research:compare -- --file ... --symbol BTCUSDT
 
 const { runSingle, runCompare, runDataQuality } = require('./experiments/runner');
-const { listStrategies } = require('./strategyAdapter');
+const { listStrategies, isResearchStrategy } = require('./strategyAdapter');
+const { loadCandles } = require('./data/candleRepository');
+
+const HOLDOUT_START_MS = Date.UTC(2026, 0, 1); // FINAL HOLDOUT begins 2026-01-01
 
 function usage() {
   return `
@@ -148,6 +151,22 @@ async function main() {
   const valid = listStrategies();
   if (!valid.includes(strategy)) {
     throw new Error(`Unknown strategy "${strategy}". Available: ${valid.join(', ')}`);
+  }
+
+  // FINAL HOLDOUT protection: research candidate strategies may not be evaluated
+  // on data at/after 2026-01-01 without an explicit --unlock-holdout.
+  if (isResearchStrategy(strategy)) {
+    const walk = validateWalkForward(args);
+    let touchesHoldout = walk && walk.testEndMs > HOLDOUT_START_MS;
+    if (!touchesHoldout) {
+      const { candles } = loadCandles({ file: args['file'], symbol });
+      if (candles.length && candles[candles.length - 1].timestamp >= HOLDOUT_START_MS) touchesHoldout = true;
+    }
+    if (touchesHoldout && args['unlock-holdout'] !== 'true') {
+      console.error('FINAL HOLDOUT IS LOCKED');
+      console.error(`Research candidate "${strategy}" may not be run on data >= 2026-01-01 without --unlock-holdout.`);
+      process.exit(2);
+    }
   }
 
   const walk = validateWalkForward(args);

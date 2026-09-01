@@ -42,8 +42,11 @@ function runBacktest({ symbol, candles, adapter, broker, initialCapital, positio
     portfolio.markToMarket(bar);
 
     // 4. Compute signal from this bar's close -> order executes next bar.
+    //    The full bar (open/high/low/close/volume/timestamp) is passed so
+    //    research strategies can use volume/ATR/etc. without look-ahead
+    //    (adapter wraps legacy strategies that only consume `.close`).
     const inPosition = portfolio.isInPosition();
-    const { action } = adapter.computeSignal(strategyState, bar.close, {
+    const { action } = adapter.computeSignal(strategyState, bar, {
       hasPosition: inPosition,
       warmup: false,
     });
