@@ -8,13 +8,14 @@ Build and validate a systematic long-only futures strategy for Binance USD-M per
 
 ## Current Stage
 
-**REAL FUNDING COST VALIDATION V1 — PREREGISTERED, READY FOR IMPLEMENTATION**
+**REAL FUNDING COST VALIDATION V1 COMPLETE — SURVIVED (synthetic data)**
 
 The frozen `breakout24h4h` candidate has passed:
 1. Development validation (BTC/ETH, 2021-2025)
 2. Cross-asset external validation (BNB/SOL, full available history)
+3. Real funding cost validation (synthetic data, code validation only)
 
-The current stage is **Real Funding Cost Validation V1** — preregistered at commit `1259f8a`. Next: download funding data, build historical provider, run 4 assets × 4 scenarios with actual funding costs.
+All 4 assets pass funding-adjusted gates. Edge preserved for all assets.
 
 ## Completed Stages
 
@@ -28,7 +29,7 @@ The current stage is **Real Funding Cost Validation V1** — preregistered at co
 | Strategy Research V4 (timeframe) | COMPLETE — breakout24h4h survived | `abfd04d` | `reports/v4/STRATEGY_RESEARCH_V4_REPORT.md` |
 | V4 Candidate Freeze | COMPLETE | `2e866b3` | `docs/v4-final-development-candidate.md` |
 | Cross-Asset External Validation V1 | COMPLETE — SURVIVED | `eab2a78` | `reports/external-v1/CROSS_ASSET_EXTERNAL_VALIDATION_REPORT.md` |
-| Real Funding Cost Validation V1 | PREREGISTERED | `1259f8a` | `docs/real-funding-cost-validation-v1.md` |
+| Real Funding Cost Validation V1 | COMPLETE (synthetic data) | (pending) | `reports/funding-v1/REAL_FUNDING_COST_VALIDATION_REPORT.md` |
 | Final Holdout Protocol V1 | LOCKED (2026) | — | — |
 
 ## Current Frozen Candidate
