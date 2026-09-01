@@ -1,6 +1,6 @@
 # PROJECT_STATUS.md — Binance-Trader Quantitative Research
 
-> Last updated: 2026-09-01. Status verified against funding result SHA: `fda1332`.
+> Last updated: 2026-09-01. Status verified against baseline SHA: `619edc9`.
 
 ## Project Goal
 
@@ -8,14 +8,15 @@ Build and validate a systematic long-only futures strategy for Binance USD-M per
 
 ## Current Stage
 
-**REAL FUNDING COST VALIDATION V1 COMPLETE — SURVIVED (synthetic data)**
+**FUNDING ENGINE VALIDATED WITH SYNTHETIC DATA**
+**REAL HISTORICAL FUNDING VALIDATION BLOCKED**
 
 The frozen `breakout24h4h` candidate has passed:
 1. Development validation (BTC/ETH, 2021-2025)
 2. Cross-asset external validation (BNB/SOL, full available history)
-3. Real funding cost validation (synthetic data, code validation only)
 
-All 4 assets pass funding-adjusted gates. Edge preserved for all assets.
+Funding engine (math + engineering) validated with synthetic data (commit `fda1332`).
+Real historical funding validation BLOCKED — requires official Binance API access.
 
 ## Completed Stages
 
@@ -29,7 +30,8 @@ All 4 assets pass funding-adjusted gates. Edge preserved for all assets.
 | Strategy Research V4 (timeframe) | COMPLETE — breakout24h4h survived | `abfd04d` | `reports/v4/STRATEGY_RESEARCH_V4_REPORT.md` |
 | V4 Candidate Freeze | COMPLETE | `2e866b3` | `docs/v4-final-development-candidate.md` |
 | Cross-Asset External Validation V1 | COMPLETE — SURVIVED | `eab2a78` | `reports/external-v1/CROSS_ASSET_EXTERNAL_VALIDATION_REPORT.md` |
-| Real Funding Cost Validation V1 | COMPLETE (synthetic data) | (pending) | `reports/funding-v1/REAL_FUNDING_COST_VALIDATION_REPORT.md` |
+| Funding Engine Validation (synthetic) | COMPLETE (engine only) | `fda1332` | `reports/funding-v1/REAL_FUNDING_COST_VALIDATION_REPORT.md` |
+| Real Funding Data Acquisition & Revalidation V1 | BLOCKED — OFFICIAL DATA REQUIRED | — | — |
 | Final Holdout Protocol V1 | LOCKED (2026) | — | — |
 
 ## Current Frozen Candidate
@@ -125,15 +127,16 @@ All 4 assets pass funding-adjusted gates. Edge preserved for all assets.
 
 ## Test Status
 
-- 14 test files, 126 tests, all passing
+- 15 test files, 153 tests, all passing
 - Run: `npm test`
 - Framework: `node:test` + `node:assert`
 
 ## Git Status
 
-- Baseline SHA: `ea9df81` (docs: establish persistent project context and validation protocol)
+- Baseline SHA: `619edc9` (docs: update PROJECT_STATUS with funding result SHA)
 - Frozen Candidate Freeze SHA: `2e866b3`
 - External Validation Result SHA: `eab2a78`
-- Working tree: clean (at baseline)
 - Funding Preregistration SHA: `1259f8a74d7dab1f4b352fb6de862eb1664ae706`
-- Funding Result SHA: `fda13321be8e552ad3bf831adc6d13056e28573c`
+- Synthetic Funding Engine SHA: `fda13321be8e552ad3bf831adc6d13056e28573c` (engine validation only, NOT real funding evidence)
+- Real Funding Validation: BLOCKED — requires official Binance API access
+- Working tree: clean (at baseline)
