@@ -18,7 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { loadCandles } = require('../data/candleRepository');
 const { analyzeContinuity, buildDataQualityMd } = require('../data/continuity');
-const { loadStrategy, listStrategies } = require('../strategyAdapter');
+const { loadStrategy, listLiveStrategies } = require('../strategyAdapter');
 const { createBroker, createFundingProvider } = require('../backtest/brokerSimulator');
 const { runBacktest } = require('../backtest/backtester');
 const { computeMetrics, intervalToMs } = require('../metrics/performance');
@@ -349,7 +349,7 @@ async function runCompare(opts) {
 
   console.log(`=== Compare: ${symbol} / ${candles.length} bars ===`);
   const rows = [];
-  for (const name of listStrategies()) {
+  for (const name of listLiveStrategies()) {
     const adapter = loadStrategy(name);
     const result = runBacktest({ symbol, candles, adapter, broker, initialCapital, positionSizePct });
     const metrics = computeMetrics({

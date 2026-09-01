@@ -16,12 +16,15 @@ const LIVE_STRATEGY_MODULES = {
   rsiEma: () => require('../strategy/rsiEma'),
 };
 
-// Research-only candidate strategies (STRATEGY RESEARCH V2). They are NOT
+// Research-only candidate strategies (STRATEGY RESEARCH V2 / V3A). They are NOT
 // registered in the live strategy engine (src/strategy/engine.js).
 const RESEARCH_STRATEGY_MODULES = {
   emaTrendFilter: () => require('./strategies/emaTrendFilter'),
   emaTrendDensityFilter: () => require('./strategies/emaTrendDensityFilter'),
   emaTrendVolFilter: () => require('./strategies/emaTrendVolFilter'),
+  emaConfirmation: () => require('./strategies/emaConfirmation'),
+  trendPullbackReclaim: () => require('./strategies/trendPullbackReclaim'),
+  breakout24hTrend: () => require('./strategies/breakout24hTrend'),
 };
 
 const STRATEGY_MODULES = { ...LIVE_STRATEGY_MODULES, ...RESEARCH_STRATEGY_MODULES };

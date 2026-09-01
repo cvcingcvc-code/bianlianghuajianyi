@@ -20,6 +20,7 @@ function runBacktest({ symbol, candles, adapter, broker, initialCapital, positio
 
   const bars = candles.map((c, i) => ({ ...c, index: i }));
   let pending = null; // { type: 'ENTRY' } | { type: 'EXIT' }
+  const positionFlags = []; // parallel to bars: true when a position is held at that bar's mark
 
   for (const bar of bars) {
     // 1. Execute any pending order at this bar's open (next bar after the signal).
@@ -32,26 +33,28 @@ function runBacktest({ symbol, candles, adapter, broker, initialCapital, positio
       pending = null;
     }
 
+    const inPositionNow = portfolio.isInPosition();
+
     // 2. Funding on open positions (V1 defaults to zero).
-    if (portfolio.isInPosition()) {
+    if (inPositionNow) {
       const funding = broker.fundingCost({ symbol, quantity: portfolio.positionQuantity() }, bar);
       portfolio.applyFunding(bar, funding);
     }
 
     // 3. Mark to market at this bar's close.
     portfolio.markToMarket(bar);
+    positionFlags.push(inPositionNow);
 
     // 4. Compute signal from this bar's close -> order executes next bar.
     //    The full bar (open/high/low/close/volume/timestamp) is passed so
     //    research strategies can use volume/ATR/etc. without look-ahead
     //    (adapter wraps legacy strategies that only consume `.close`).
-    const inPosition = portfolio.isInPosition();
     const { action } = adapter.computeSignal(strategyState, bar, {
-      hasPosition: inPosition,
+      hasPosition: inPositionNow,
       warmup: false,
     });
-    if (action === 'LONG' && !inPosition) pending = { type: 'ENTRY' };
-    else if (action === 'CLOSE' && inPosition) pending = { type: 'EXIT' };
+    if (action === 'LONG' && !inPositionNow) pending = { type: 'ENTRY' };
+    else if (action === 'CLOSE' && inPositionNow) pending = { type: 'EXIT' };
   }
 
   // FORCED_RESEARCH_EXIT: if a position is still open after the last bar,
@@ -83,6 +86,7 @@ function runBacktest({ symbol, candles, adapter, broker, initialCapital, positio
     trades: state.trades,
     barsTotal: bars.length,
     barsInPosition: state.barsInPosition,
+    positionFlags,
     totalFunding: state.totalFunding,
     forcedExit,
     openPositionAtEnd: state.position !== null,
