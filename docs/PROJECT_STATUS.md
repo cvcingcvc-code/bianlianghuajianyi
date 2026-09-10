@@ -142,5 +142,5 @@ Final Holdout data acquisition complete. All 2026 data downloaded from data.bina
 - Final Holdout Prereg SHA: `3eb66b3`
 - Final Holdout Data Acquisition SHA: `902273e` (all 2026 data downloaded)
 - Mark Price Repair SHA: `bbc44c9` (official markPriceKlines, all gates PASS)
-- Final Holdout Result: **NOT EXECUTED** (awaiting human instruction)
-- 2026 Holdout Status: **UNCONSUMED, LOCKED**
+- Final Holdout Result: **EXECUTED** (see final-holdout-v1/)
+- 2026 Holdout Status: **CONSUMED**
