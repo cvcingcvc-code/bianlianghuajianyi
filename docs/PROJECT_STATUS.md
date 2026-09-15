@@ -1,6 +1,6 @@
 # PROJECT_STATUS.md — Binance-Trader Quantitative Research
 
-> Last updated: 2026-09-01. Status verified against baseline SHA: `619edc9`.
+> Last updated: 2026-09-15. Status verified against baseline SHA: `8cb2dc4`.
 
 ## Project Goal
 
@@ -72,6 +72,13 @@ Final Holdout data acquisition complete. All 2026 data downloaded from data.bina
 
 ## Current In-Progress / Next Steps
 
+### ETH Quant Research V2.1 takeover
+
+- Phase 0 baseline completed on the clean clone at `8cb2dc4`.
+- Phase 1 audit recorded in `docs/V2_1_AUDIT.md` (commit `0abdb29`).
+- Phase 1 identified the unreachable RSI take-profit condition; Phase 2 is the next bounded change.
+- Market CSVs under `data/market/` are ignored and absent from this clone, so data-dependent tests remain blocked.
+
 1. **Final Holdout Protocol V1** (DATA READY, AWAITING EXECUTION):
    - Preregistered at `3eb66b3`
    - Data acquired at `902273e`
@@ -130,6 +137,8 @@ Final Holdout data acquisition complete. All 2026 data downloaded from data.bina
 - Framework: `node:test` + `node:assert`
 
 ## Git Status
+
+- V2.1 Phase 1 audit commit: `0abdb29`
 
 - Baseline SHA: `619edc9` (docs: update PROJECT_STATUS with funding result SHA)
 - Frozen Candidate Freeze SHA: `2e866b3`
