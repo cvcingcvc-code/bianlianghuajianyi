@@ -5,6 +5,8 @@ const sleep = require('../utils/sleep');
 let binance, config, repo, eventBus, logger;
 
 function init(cfg, bn, repository, bus, log) {
+  // Legacy SDK order path cannot prove endpoint isolation; only simulation remains enabled.
+  if (!cfg.dryRun) require('../exchange/LiveAdapter').denyLive();
   config = cfg; binance = bn; repo = repository; eventBus = bus; logger = log;
   eventBus.on('riskApproved', handleApproved);
   logger.info('Order Executor initialized');
@@ -12,6 +14,7 @@ function init(cfg, bn, repository, bus, log) {
 
 async function handleApproved(data) {
   if (config.dryRun) { simulate(data); return; }
+  require('../exchange/LiveAdapter').denyLive();
   if (data.action === 'CLOSE') await executeClose(data);
   else if (data.action === 'OPEN') await executeOpen(data);
 }

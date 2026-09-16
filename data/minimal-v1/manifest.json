@@ -1,0 +1,16 @@
+{
+  "source": "Official Binance USD-M archive; verified ZIP SHA256 before extraction",
+  "period": "2025-01",
+  "files": {
+    "BTCUSDT": {
+      "archiveUrl": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/4h/BTCUSDT-4h-2025-01.zip",
+      "archiveSha256": "083b54f2b4d9aeece598eaa98a90ee7a6338492dac9703243ff76e3ca2855d1e",
+      "csvSha256": "486626c150149b6e9e9abd7e87240c64d743248c927af5a449af18acf7e3845e"
+    },
+    "ETHUSDT": {
+      "archiveUrl": "https://data.binance.vision/data/futures/um/monthly/klines/ETHUSDT/4h/ETHUSDT-4h-2025-01.zip",
+      "archiveSha256": "c63b0fcfa075cfc73758db91937c52cc210e296bbeab43fb5dec3c72e9e46309",
+      "csvSha256": "9c5c7a6158a96cad4fc8ddb2214a25ee8f65b0a346154e9ab5fce0695c36e26c"
+    }
+  }
+}

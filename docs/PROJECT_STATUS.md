@@ -1,5 +1,16 @@
 # PROJECT_STATUS.md — Binance-Trader Quantitative Research
 
+## Minimal Trading Research V1 — 2026-09-15
+
+- Branch: `feature/minimal-trading-v1`, implementation based on `8cb2dc4`.
+- Delivered a separate minimal runtime: official 2025-01 BTC/ETH replay → frozen breakout24h4h → sentiment gate → existing Risk Manager → dry-run next-bar fill → local Dashboard.
+- Five read-only APIs; light single-page UI; no Live execution. Legacy non-dry SDK execution also hard-disabled.
+- 15 new V1 tests pass. Full suite: 212 tests, 199 pass, 13 pre-existing failures unchanged from baseline (197 / 184 / 13).
+- No build script; Node server and browser/API checks completed. Testnet public REST times out in this environment; testnet orders are validation-only, and missing daily loss state blocks LONG.
+- Research core, frozen strategies, risk rules, Funding, Holdout and existing research reports were not modified.
+- Run `npm start`, open http://127.0.0.1:3000. Read [V1 runbook and acceptance](minimal-v1/README.md) before continuing.
+- Commit: recorded after the implementation commit below. Prior research status is preserved verbatim below; V1 does not resolve inconsistencies in historical handoff notes.
+
 > Last updated: 2026-09-01. Status verified against baseline SHA: `619edc9`.
 
 ## Project Goal
