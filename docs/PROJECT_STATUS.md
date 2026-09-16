@@ -9,7 +9,7 @@
 - No build script; Node server and browser/API checks completed. Testnet public REST times out in this environment; testnet orders are validation-only, and missing daily loss state blocks LONG.
 - Research core, frozen strategies, risk rules, Funding, Holdout and existing research reports were not modified.
 - Run `npm start`, open http://127.0.0.1:3000. Read [V1 runbook and acceptance](minimal-v1/README.md) before continuing.
-- Commit: recorded after the implementation commit below. Prior research status is preserved verbatim below; V1 does not resolve inconsistencies in historical handoff notes.
+- Implementation commit: `1c0b6cb`. Prior research status is preserved verbatim below; V1 does not resolve inconsistencies in historical handoff notes.
 
 > Last updated: 2026-09-01. Status verified against baseline SHA: `619edc9`.
 
