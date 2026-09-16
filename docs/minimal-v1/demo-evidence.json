@@ -1,0 +1,1022 @@
+{
+  "source": "SHA256-verified Binance archive, 2025-01; chronological replay, not strategy validation",
+  "firstEthFill": {
+    "technicalSignal": {
+      "symbol": "ETHUSDT",
+      "direction": "LONG",
+      "price": 3337.88,
+      "strategy": "breakout24h4h",
+      "reason": "24h breakout (close 3337.88 > prev24hHigh 3296.99)",
+      "timestamp": 1737676799999
+    },
+    "sentiment": {
+      "symbol": "ETHUSDT",
+      "status": "unavailable",
+      "score": null,
+      "label": null,
+      "confidence": null,
+      "articleCount": 0,
+      "updatedAt": "2025-01-23T23:59:59.999Z",
+      "reason": "No fresh articles from configured source"
+    },
+    "sentimentDecision": {
+      "decision": "ALLOW",
+      "reason": "Sentiment unavailable; defer unchanged technical signal to risk"
+    },
+    "riskDecision": {
+      "decision": "APPROVE",
+      "reason": "Existing Risk Manager approved"
+    },
+    "finalDecision": "DRY_RUN_FILLED",
+    "reason": "Existing Risk Manager approved",
+    "execution": {
+      "status": "FILLED",
+      "mode": "DRY_RUN",
+      "symbol": "ETHUSDT",
+      "price": 3338.537574,
+      "quantity": 0.748,
+      "fee": 0.9988904421408001,
+      "pnl": -0.9988904421408001,
+      "timestamp": 1737676800000,
+      "action": "OPEN",
+      "fill": {
+        "status": "FILLED",
+        "mode": "DRY_RUN",
+        "symbol": "ETHUSDT",
+        "price": 3338.537574,
+        "quantity": 0.748,
+        "fee": 0.9988904421408001,
+        "pnl": -0.9988904421408001,
+        "timestamp": 1737676800000,
+        "action": "OPEN"
+      }
+    }
+  },
+  "dashboard": {
+    "status": {
+      "mode": "DRY_RUN",
+      "liveExecution": "DISABLED",
+      "market": {
+        "status": "CONNECTED",
+        "lastMessageAt": 1789480534062,
+        "source": "OFFICIAL_ARCHIVE_REPLAY",
+        "transport": "local replay",
+        "userData": "NOT_REQUIRED"
+      },
+      "strategy": "breakout24h4h",
+      "risk": {
+        "status": "ACTIVE",
+        "maxOpenPositions": 1,
+        "liveExecution": "DISABLED"
+      },
+      "sentiment": "unavailable",
+      "health": "READY",
+      "error": null,
+      "updatedAt": "2026-09-15T13:55:34.063Z"
+    },
+    "market": {
+      "symbol": "ETHUSDT",
+      "price": 3301.2,
+      "candles": [
+        {
+          "openTime": 1736827200000,
+          "open": 3157.58,
+          "high": 3189,
+          "low": 3156,
+          "close": 3170.39,
+          "volume": 309052.916,
+          "closeTime": 1736841599999
+        },
+        {
+          "openTime": 1736841600000,
+          "open": 3170.39,
+          "high": 3255.84,
+          "low": 3168.02,
+          "close": 3216.22,
+          "volume": 611908.825,
+          "closeTime": 1736855999999
+        },
+        {
+          "openTime": 1736856000000,
+          "open": 3216.21,
+          "high": 3232.99,
+          "low": 3177.23,
+          "close": 3197.87,
+          "volume": 747409.245,
+          "closeTime": 1736870399999
+        },
+        {
+          "openTime": 1736870400000,
+          "open": 3197.87,
+          "high": 3235,
+          "low": 3171.02,
+          "close": 3212.8,
+          "volume": 431259.957,
+          "closeTime": 1736884799999
+        },
+        {
+          "openTime": 1736884800000,
+          "open": 3212.79,
+          "high": 3239.46,
+          "low": 3193.02,
+          "close": 3223.99,
+          "volume": 228402.81,
+          "closeTime": 1736899199999
+        },
+        {
+          "openTime": 1736899200000,
+          "open": 3223.99,
+          "high": 3244.15,
+          "low": 3203.4,
+          "close": 3239.99,
+          "volume": 295811.449,
+          "closeTime": 1736913599999
+        },
+        {
+          "openTime": 1736913600000,
+          "open": 3239.99,
+          "high": 3251.69,
+          "low": 3213.55,
+          "close": 3231.3,
+          "volume": 282172.228,
+          "closeTime": 1736927999999
+        },
+        {
+          "openTime": 1736928000000,
+          "open": 3231.3,
+          "high": 3247.64,
+          "low": 3185.33,
+          "close": 3198.4,
+          "volume": 371300.983,
+          "closeTime": 1736942399999
+        },
+        {
+          "openTime": 1736942400000,
+          "open": 3198.41,
+          "high": 3353,
+          "low": 3185.09,
+          "close": 3332.95,
+          "volume": 1142496.701,
+          "closeTime": 1736956799999
+        },
+        {
+          "openTime": 1736956800000,
+          "open": 3332.96,
+          "high": 3442.08,
+          "low": 3322.83,
+          "close": 3433.76,
+          "volume": 715985.66,
+          "closeTime": 1736971199999
+        },
+        {
+          "openTime": 1736971200000,
+          "open": 3433.76,
+          "high": 3472.93,
+          "low": 3416.75,
+          "close": 3449.8,
+          "volume": 484145.747,
+          "closeTime": 1736985599999
+        },
+        {
+          "openTime": 1736985600000,
+          "open": 3449.81,
+          "high": 3458.99,
+          "low": 3343.76,
+          "close": 3362.1,
+          "volume": 514376.981,
+          "closeTime": 1736999999999
+        },
+        {
+          "openTime": 1737000000000,
+          "open": 3362.1,
+          "high": 3389.89,
+          "low": 3360.22,
+          "close": 3382.42,
+          "volume": 227268.453,
+          "closeTime": 1737014399999
+        },
+        {
+          "openTime": 1737014400000,
+          "open": 3382.42,
+          "high": 3384,
+          "low": 3297.7,
+          "close": 3349.75,
+          "volume": 693450.315,
+          "closeTime": 1737028799999
+        },
+        {
+          "openTime": 1737028800000,
+          "open": 3349.75,
+          "high": 3364.06,
+          "low": 3263.06,
+          "close": 3332,
+          "volume": 967866.641,
+          "closeTime": 1737043199999
+        },
+        {
+          "openTime": 1737043200000,
+          "open": 3331.99,
+          "high": 3365,
+          "low": 3308.33,
+          "close": 3343.36,
+          "volume": 472465.913,
+          "closeTime": 1737057599999
+        },
+        {
+          "openTime": 1737057600000,
+          "open": 3343.35,
+          "high": 3352.77,
+          "low": 3266.3,
+          "close": 3306.94,
+          "volume": 383329.444,
+          "closeTime": 1737071999999
+        },
+        {
+          "openTime": 1737072000000,
+          "open": 3306.93,
+          "high": 3396.65,
+          "low": 3306.41,
+          "close": 3360,
+          "volume": 554376.405,
+          "closeTime": 1737086399999
+        },
+        {
+          "openTime": 1737086400000,
+          "open": 3359.99,
+          "high": 3389.11,
+          "low": 3346.44,
+          "close": 3371.36,
+          "volume": 273122.05,
+          "closeTime": 1737100799999
+        },
+        {
+          "openTime": 1737100800000,
+          "open": 3371.37,
+          "high": 3438.23,
+          "low": 3370.83,
+          "close": 3422.11,
+          "volume": 436415.184,
+          "closeTime": 1737115199999
+        },
+        {
+          "openTime": 1737115200000,
+          "open": 3422.11,
+          "high": 3450,
+          "low": 3390,
+          "close": 3420.44,
+          "volume": 661244.494,
+          "closeTime": 1737129599999
+        },
+        {
+          "openTime": 1737129600000,
+          "open": 3420.44,
+          "high": 3447.99,
+          "low": 3406,
+          "close": 3431.12,
+          "volume": 437664.723,
+          "closeTime": 1737143999999
+        },
+        {
+          "openTime": 1737144000000,
+          "open": 3431.12,
+          "high": 3524.85,
+          "low": 3424.14,
+          "close": 3472.38,
+          "volume": 665873.616,
+          "closeTime": 1737158399999
+        },
+        {
+          "openTime": 1737158400000,
+          "open": 3472.38,
+          "high": 3492.95,
+          "low": 3366.34,
+          "close": 3382.79,
+          "volume": 489900.418,
+          "closeTime": 1737172799999
+        },
+        {
+          "openTime": 1737172800000,
+          "open": 3382.79,
+          "high": 3394.62,
+          "low": 3280,
+          "close": 3286.42,
+          "volume": 931828.883,
+          "closeTime": 1737187199999
+        },
+        {
+          "openTime": 1737187200000,
+          "open": 3286.42,
+          "high": 3323.74,
+          "low": 3225.65,
+          "close": 3310.54,
+          "volume": 1041662.209,
+          "closeTime": 1737201599999
+        },
+        {
+          "openTime": 1737201600000,
+          "open": 3310.54,
+          "high": 3346.99,
+          "low": 3272.72,
+          "close": 3305.99,
+          "volume": 766603.486,
+          "closeTime": 1737215999999
+        },
+        {
+          "openTime": 1737216000000,
+          "open": 3305.99,
+          "high": 3316.19,
+          "low": 3246.72,
+          "close": 3289.09,
+          "volume": 600054.463,
+          "closeTime": 1737230399999
+        },
+        {
+          "openTime": 1737230400000,
+          "open": 3289.09,
+          "high": 3320.97,
+          "low": 3256.64,
+          "close": 3306.7,
+          "volume": 260627.044,
+          "closeTime": 1737244799999
+        },
+        {
+          "openTime": 1737244800000,
+          "open": 3306.71,
+          "high": 3377.7,
+          "low": 3297.7,
+          "close": 3334.96,
+          "volume": 499968.097,
+          "closeTime": 1737259199999
+        },
+        {
+          "openTime": 1737259200000,
+          "open": 3334.96,
+          "high": 3337.31,
+          "low": 3258.17,
+          "close": 3275.02,
+          "volume": 552398.945,
+          "closeTime": 1737273599999
+        },
+        {
+          "openTime": 1737273600000,
+          "open": 3275.02,
+          "high": 3277.15,
+          "low": 3129.63,
+          "close": 3149.69,
+          "volume": 1233719.333,
+          "closeTime": 1737287999999
+        },
+        {
+          "openTime": 1737288000000,
+          "open": 3149.7,
+          "high": 3425.99,
+          "low": 3144.07,
+          "close": 3383.66,
+          "volume": 2009905.192,
+          "closeTime": 1737302399999
+        },
+        {
+          "openTime": 1737302400000,
+          "open": 3383.66,
+          "high": 3449.77,
+          "low": 3377.56,
+          "close": 3419.84,
+          "volume": 656060,
+          "closeTime": 1737316799999
+        },
+        {
+          "openTime": 1737316800000,
+          "open": 3419.84,
+          "high": 3432.98,
+          "low": 3155,
+          "close": 3214.15,
+          "volume": 1975076.538,
+          "closeTime": 1737331199999
+        },
+        {
+          "openTime": 1737331200000,
+          "open": 3214.16,
+          "high": 3280,
+          "low": 3141.25,
+          "close": 3271.38,
+          "volume": 1213420.668,
+          "closeTime": 1737345599999
+        },
+        {
+          "openTime": 1737345600000,
+          "open": 3271.38,
+          "high": 3455.76,
+          "low": 3249.33,
+          "close": 3383.33,
+          "volume": 1230989.383,
+          "closeTime": 1737359999999
+        },
+        {
+          "openTime": 1737360000000,
+          "open": 3383.33,
+          "high": 3412.9,
+          "low": 3333.99,
+          "close": 3375.67,
+          "volume": 763237.745,
+          "closeTime": 1737374399999
+        },
+        {
+          "openTime": 1737374400000,
+          "open": 3375.68,
+          "high": 3379.75,
+          "low": 3255,
+          "close": 3335.93,
+          "volume": 1212001.007,
+          "closeTime": 1737388799999
+        },
+        {
+          "openTime": 1737388800000,
+          "open": 3335.95,
+          "high": 3391.39,
+          "low": 3200,
+          "close": 3342.93,
+          "volume": 1742868.973,
+          "closeTime": 1737403199999
+        },
+        {
+          "openTime": 1737403200000,
+          "open": 3342.95,
+          "high": 3344.32,
+          "low": 3255.01,
+          "close": 3283.2,
+          "volume": 447017.078,
+          "closeTime": 1737417599999
+        },
+        {
+          "openTime": 1737417600000,
+          "open": 3283.21,
+          "high": 3289.47,
+          "low": 3203.5,
+          "close": 3262.23,
+          "volume": 632698.994,
+          "closeTime": 1737431999999
+        },
+        {
+          "openTime": 1737432000000,
+          "open": 3262.24,
+          "high": 3266.04,
+          "low": 3210.09,
+          "close": 3254.01,
+          "volume": 416201.919,
+          "closeTime": 1737446399999
+        },
+        {
+          "openTime": 1737446400000,
+          "open": 3254.01,
+          "high": 3313.29,
+          "low": 3233.34,
+          "close": 3304.39,
+          "volume": 425362.906,
+          "closeTime": 1737460799999
+        },
+        {
+          "openTime": 1737460800000,
+          "open": 3304.4,
+          "high": 3334.98,
+          "low": 3263.55,
+          "close": 3294.15,
+          "volume": 681178.837,
+          "closeTime": 1737475199999
+        },
+        {
+          "openTime": 1737475200000,
+          "open": 3294.15,
+          "high": 3367.95,
+          "low": 3289.18,
+          "close": 3331.74,
+          "volume": 583369.502,
+          "closeTime": 1737489599999
+        },
+        {
+          "openTime": 1737489600000,
+          "open": 3331.74,
+          "high": 3346.66,
+          "low": 3301,
+          "close": 3326.72,
+          "volume": 294744.237,
+          "closeTime": 1737503999999
+        },
+        {
+          "openTime": 1737504000000,
+          "open": 3326.71,
+          "high": 3365.97,
+          "low": 3320,
+          "close": 3330.48,
+          "volume": 283691.573,
+          "closeTime": 1737518399999
+        },
+        {
+          "openTime": 1737518400000,
+          "open": 3330.48,
+          "high": 3339.4,
+          "low": 3285.82,
+          "close": 3286.9,
+          "volume": 236504.831,
+          "closeTime": 1737532799999
+        },
+        {
+          "openTime": 1737532800000,
+          "open": 3286.91,
+          "high": 3329.52,
+          "low": 3272.5,
+          "close": 3325.53,
+          "volume": 275117.852,
+          "closeTime": 1737547199999
+        },
+        {
+          "openTime": 1737547200000,
+          "open": 3325.52,
+          "high": 3331.72,
+          "low": 3266.01,
+          "close": 3277.48,
+          "volume": 533789.749,
+          "closeTime": 1737561599999
+        },
+        {
+          "openTime": 1737561600000,
+          "open": 3277.47,
+          "high": 3291.39,
+          "low": 3237.01,
+          "close": 3261.51,
+          "volume": 393415.014,
+          "closeTime": 1737575999999
+        },
+        {
+          "openTime": 1737576000000,
+          "open": 3261.51,
+          "high": 3276.25,
+          "low": 3220.82,
+          "close": 3242,
+          "volume": 301551.844,
+          "closeTime": 1737590399999
+        },
+        {
+          "openTime": 1737590400000,
+          "open": 3241.99,
+          "high": 3261.1,
+          "low": 3202.62,
+          "close": 3225.99,
+          "volume": 341233.19,
+          "closeTime": 1737604799999
+        },
+        {
+          "openTime": 1737604800000,
+          "open": 3226.06,
+          "high": 3232.43,
+          "low": 3177,
+          "close": 3232.07,
+          "volume": 325135.376,
+          "closeTime": 1737619199999
+        },
+        {
+          "openTime": 1737619200000,
+          "open": 3232.08,
+          "high": 3232.43,
+          "low": 3187.2,
+          "close": 3212.79,
+          "volume": 275126.134,
+          "closeTime": 1737633599999
+        },
+        {
+          "openTime": 1737633600000,
+          "open": 3212.79,
+          "high": 3286,
+          "low": 3188.53,
+          "close": 3258.5,
+          "volume": 893550.014,
+          "closeTime": 1737647999999
+        },
+        {
+          "openTime": 1737648000000,
+          "open": 3258.51,
+          "high": 3296.99,
+          "low": 3192.63,
+          "close": 3203.48,
+          "volume": 656087.372,
+          "closeTime": 1737662399999
+        },
+        {
+          "openTime": 1737662400000,
+          "open": 3203.48,
+          "high": 3347.7,
+          "low": 3195.51,
+          "close": 3337.88,
+          "volume": 1044575.104,
+          "closeTime": 1737676799999
+        },
+        {
+          "openTime": 1737676800000,
+          "open": 3337.87,
+          "high": 3349.75,
+          "low": 3273.94,
+          "close": 3301.2,
+          "volume": 456796.456,
+          "closeTime": 1737691199999
+        }
+      ],
+      "source": "OFFICIAL_ARCHIVE_REPLAY",
+      "marketTime": 1737691199999
+    },
+    "strategyState": {
+      "technicalSignal": {
+        "symbol": "ETHUSDT",
+        "direction": "LONG",
+        "price": 3337.88,
+        "strategy": "breakout24h4h",
+        "reason": "24h breakout (close 3337.88 > prev24hHigh 3296.99)",
+        "timestamp": 1737676799999
+      },
+      "sentiment": {
+        "symbol": "ETHUSDT",
+        "status": "unavailable",
+        "score": null,
+        "label": null,
+        "confidence": null,
+        "articleCount": 0,
+        "updatedAt": "2025-01-23T23:59:59.999Z",
+        "reason": "No fresh articles from configured source"
+      },
+      "sentimentDecision": {
+        "decision": "ALLOW",
+        "reason": "Sentiment unavailable; defer unchanged technical signal to risk"
+      },
+      "riskDecision": {
+        "decision": "APPROVE",
+        "reason": "Existing Risk Manager approved"
+      },
+      "finalDecision": "DRY_RUN_FILLED",
+      "reason": "Existing Risk Manager approved",
+      "execution": {
+        "status": "FILLED",
+        "mode": "DRY_RUN",
+        "symbol": "ETHUSDT",
+        "price": 3338.537574,
+        "quantity": 0.748,
+        "fee": 0.9988904421408001,
+        "pnl": -0.9988904421408001,
+        "timestamp": 1737676800000,
+        "action": "OPEN",
+        "fill": {
+          "status": "FILLED",
+          "mode": "DRY_RUN",
+          "symbol": "ETHUSDT",
+          "price": 3338.537574,
+          "quantity": 0.748,
+          "fee": 0.9988904421408001,
+          "pnl": -0.9988904421408001,
+          "timestamp": 1737676800000,
+          "action": "OPEN"
+        }
+      }
+    },
+    "sentiment": {
+      "symbol": "ETHUSDT",
+      "status": "unavailable",
+      "score": null,
+      "label": null,
+      "confidence": null,
+      "articleCount": 0,
+      "updatedAt": "2025-01-24T03:59:59.999Z",
+      "reason": "No fresh articles from configured source"
+    },
+    "metrics": {
+      "status": "available",
+      "totalWalletBalance": 10150.01347287786,
+      "equity": 10122.08496752586,
+      "dailyPnl": -28.927395794140466,
+      "realizedPnl": -0.9988904421408001,
+      "maxDrawdown": 1.6560280010357518,
+      "openPositions": 1,
+      "day": "2025-01-24",
+      "simulated": true
+    },
+    "positions": [
+      {
+        "symbol": "ETHUSDT",
+        "entryPrice": 3338.537574,
+        "quantity": 0.748,
+        "leverage": 1,
+        "stopLossPrice": 3271.12,
+        "takeProfitPrice": 3471.4
+      }
+    ],
+    "recentSignals": [
+      {
+        "technicalSignal": {
+          "symbol": "ETHUSDT",
+          "direction": "LONG",
+          "price": 3337.88,
+          "strategy": "breakout24h4h",
+          "reason": "24h breakout (close 3337.88 > prev24hHigh 3296.99)",
+          "timestamp": 1737676799999
+        },
+        "sentiment": {
+          "symbol": "ETHUSDT",
+          "status": "unavailable",
+          "score": null,
+          "label": null,
+          "confidence": null,
+          "articleCount": 0,
+          "updatedAt": "2025-01-23T23:59:59.999Z",
+          "reason": "No fresh articles from configured source"
+        },
+        "sentimentDecision": {
+          "decision": "ALLOW",
+          "reason": "Sentiment unavailable; defer unchanged technical signal to risk"
+        },
+        "riskDecision": {
+          "decision": "APPROVE",
+          "reason": "Existing Risk Manager approved"
+        },
+        "finalDecision": "DRY_RUN_FILLED",
+        "reason": "Existing Risk Manager approved",
+        "execution": {
+          "status": "FILLED",
+          "mode": "DRY_RUN",
+          "symbol": "ETHUSDT",
+          "price": 3338.537574,
+          "quantity": 0.748,
+          "fee": 0.9988904421408001,
+          "pnl": -0.9988904421408001,
+          "timestamp": 1737676800000,
+          "action": "OPEN",
+          "fill": {
+            "status": "FILLED",
+            "mode": "DRY_RUN",
+            "symbol": "ETHUSDT",
+            "price": 3338.537574,
+            "quantity": 0.748,
+            "fee": 0.9988904421408001,
+            "pnl": -0.9988904421408001,
+            "timestamp": 1737676800000,
+            "action": "OPEN"
+          }
+        }
+      },
+      {
+        "technicalSignal": {
+          "symbol": "BTCUSDT",
+          "direction": "CLOSE",
+          "price": 102668.4,
+          "strategy": "breakout24h4h",
+          "reason": "death cross",
+          "timestamp": 1737619199999
+        },
+        "sentiment": {
+          "symbol": "BTCUSDT",
+          "status": "unavailable",
+          "score": null,
+          "label": null,
+          "confidence": null,
+          "articleCount": 0,
+          "updatedAt": "2025-01-23T07:59:59.999Z",
+          "reason": "No fresh articles from configured source"
+        },
+        "sentimentDecision": {
+          "decision": "ALLOW",
+          "reason": "Sentiment unavailable; defer unchanged technical signal to risk"
+        },
+        "riskDecision": {
+          "decision": "APPROVE",
+          "reason": "Existing Risk Manager approved"
+        },
+        "finalDecision": "DRY_RUN_FILLED",
+        "reason": "Existing Risk Manager approved",
+        "execution": {
+          "status": "FILLED",
+          "mode": "DRY_RUN",
+          "symbol": "BTCUSDT",
+          "price": 102647.76634,
+          "quantity": 0.025,
+          "fee": 1.0264776634000001,
+          "pnl": 151.97763933660005,
+          "timestamp": 1737619200000,
+          "action": "CLOSE",
+          "fill": {
+            "status": "FILLED",
+            "mode": "DRY_RUN",
+            "symbol": "BTCUSDT",
+            "price": 102647.76634,
+            "quantity": 0.025,
+            "fee": 1.0264776634000001,
+            "pnl": 151.97763933660005,
+            "timestamp": 1737619200000,
+            "action": "CLOSE"
+          }
+        }
+      },
+      {
+        "technicalSignal": {
+          "symbol": "ETHUSDT",
+          "direction": "LONG",
+          "price": 3383.66,
+          "strategy": "breakout24h4h",
+          "reason": "24h breakout (close 3383.66 > prev24hHigh 3377.70)",
+          "timestamp": 1737302399999
+        },
+        "sentiment": {
+          "symbol": "ETHUSDT",
+          "status": "unavailable",
+          "score": null,
+          "label": null,
+          "confidence": null,
+          "articleCount": 0,
+          "updatedAt": "2025-01-19T15:59:59.999Z",
+          "reason": "No fresh articles from configured source"
+        },
+        "sentimentDecision": {
+          "decision": "ALLOW",
+          "reason": "Sentiment unavailable; defer unchanged technical signal to risk"
+        },
+        "riskDecision": {
+          "decision": "REJECT",
+          "reason": "Max positions (1)"
+        },
+        "finalDecision": "REJECTED",
+        "reason": "Max positions (1)",
+        "execution": null
+      },
+      {
+        "technicalSignal": {
+          "symbol": "ETHUSDT",
+          "direction": "LONG",
+          "price": 3472.38,
+          "strategy": "breakout24h4h",
+          "reason": "24h breakout (close 3472.38 > prev24hHigh 3450.00)",
+          "timestamp": 1737158399999
+        },
+        "sentiment": {
+          "symbol": "ETHUSDT",
+          "status": "unavailable",
+          "score": null,
+          "label": null,
+          "confidence": null,
+          "articleCount": 0,
+          "updatedAt": "2025-01-17T23:59:59.999Z",
+          "reason": "No fresh articles from configured source"
+        },
+        "sentimentDecision": {
+          "decision": "ALLOW",
+          "reason": "Sentiment unavailable; defer unchanged technical signal to risk"
+        },
+        "riskDecision": {
+          "decision": "REJECT",
+          "reason": "Max positions (1)"
+        },
+        "finalDecision": "REJECTED",
+        "reason": "Max positions (1)",
+        "execution": null
+      },
+      {
+        "technicalSignal": {
+          "symbol": "ETHUSDT",
+          "direction": "LONG",
+          "price": 3449.8,
+          "strategy": "breakout24h4h",
+          "reason": "24h breakout (close 3449.80 > prev24hHigh 3442.08)",
+          "timestamp": 1736985599999
+        },
+        "sentiment": {
+          "symbol": "ETHUSDT",
+          "status": "unavailable",
+          "score": null,
+          "label": null,
+          "confidence": null,
+          "articleCount": 0,
+          "updatedAt": "2025-01-15T23:59:59.999Z",
+          "reason": "No fresh articles from configured source"
+        },
+        "sentimentDecision": {
+          "decision": "ALLOW",
+          "reason": "Sentiment unavailable; defer unchanged technical signal to risk"
+        },
+        "riskDecision": {
+          "decision": "REJECT",
+          "reason": "Max positions (1)"
+        },
+        "finalDecision": "REJECTED",
+        "reason": "Max positions (1)",
+        "execution": null
+      },
+      {
+        "technicalSignal": {
+          "symbol": "ETHUSDT",
+          "direction": "LONG",
+          "price": 3433.76,
+          "strategy": "breakout24h4h",
+          "reason": "24h breakout (close 3433.76 > prev24hHigh 3353.00)",
+          "timestamp": 1736971199999
+        },
+        "sentiment": {
+          "symbol": "ETHUSDT",
+          "status": "unavailable",
+          "score": null,
+          "label": null,
+          "confidence": null,
+          "articleCount": 0,
+          "updatedAt": "2025-01-15T19:59:59.999Z",
+          "reason": "No fresh articles from configured source"
+        },
+        "sentimentDecision": {
+          "decision": "ALLOW",
+          "reason": "Sentiment unavailable; defer unchanged technical signal to risk"
+        },
+        "riskDecision": {
+          "decision": "REJECT",
+          "reason": "Max positions (1)"
+        },
+        "finalDecision": "REJECTED",
+        "reason": "Max positions (1)",
+        "execution": null
+      },
+      {
+        "technicalSignal": {
+          "symbol": "ETHUSDT",
+          "direction": "LONG",
+          "price": 3332.95,
+          "strategy": "breakout24h4h",
+          "reason": "24h breakout (close 3332.95 > prev24hHigh 3251.69)",
+          "timestamp": 1736956799999
+        },
+        "sentiment": {
+          "symbol": "ETHUSDT",
+          "status": "unavailable",
+          "score": null,
+          "label": null,
+          "confidence": null,
+          "articleCount": 0,
+          "updatedAt": "2025-01-15T15:59:59.999Z",
+          "reason": "No fresh articles from configured source"
+        },
+        "sentimentDecision": {
+          "decision": "ALLOW",
+          "reason": "Sentiment unavailable; defer unchanged technical signal to risk"
+        },
+        "riskDecision": {
+          "decision": "REJECT",
+          "reason": "Max positions (1)"
+        },
+        "finalDecision": "REJECTED",
+        "reason": "Max positions (1)",
+        "execution": null
+      },
+      {
+        "technicalSignal": {
+          "symbol": "BTCUSDT",
+          "direction": "LONG",
+          "price": 96508.4,
+          "strategy": "breakout24h4h",
+          "reason": "24h breakout (close 96508.40 > prev24hHigh 95437.80)",
+          "timestamp": 1736855999999
+        },
+        "sentiment": {
+          "symbol": "BTCUSDT",
+          "status": "unavailable",
+          "score": null,
+          "label": null,
+          "confidence": null,
+          "articleCount": 0,
+          "updatedAt": "2025-01-14T11:59:59.999Z",
+          "reason": "No fresh articles from configured source"
+        },
+        "sentimentDecision": {
+          "decision": "ALLOW",
+          "reason": "Sentiment unavailable; defer unchanged technical signal to risk"
+        },
+        "riskDecision": {
+          "decision": "APPROVE",
+          "reason": "Existing Risk Manager approved"
+        },
+        "finalDecision": "DRY_RUN_FILLED",
+        "reason": "Existing Risk Manager approved",
+        "execution": {
+          "status": "FILLED",
+          "mode": "DRY_RUN",
+          "symbol": "BTCUSDT",
+          "price": 96527.60166,
+          "quantity": 0.025,
+          "fee": 0.9652760166000001,
+          "pnl": -0.9652760166000001,
+          "timestamp": 1736856000000,
+          "action": "OPEN",
+          "fill": {
+            "status": "FILLED",
+            "mode": "DRY_RUN",
+            "symbol": "BTCUSDT",
+            "price": 96527.60166,
+            "quantity": 0.025,
+            "fee": 0.9652760166000001,
+            "pnl": -0.9652760166000001,
+            "timestamp": 1736856000000,
+            "action": "OPEN"
+          }
+        }
+      }
+    ]
+  }
+}

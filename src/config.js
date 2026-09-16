@@ -6,6 +6,7 @@ dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 function loadConfig() {
   const testnet = process.env.BINANCE_TESTNET !== 'false';
+  if (!testnet) require('./exchange/LiveAdapter').denyLive();
 
   if (!testnet) {
     required('BINANCE_API_KEY', process.env.BINANCE_API_KEY);

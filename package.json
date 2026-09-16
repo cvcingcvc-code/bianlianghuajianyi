@@ -4,8 +4,10 @@
   "private": true,
   "description": "Automated Binance USD-M Futures trading bot with risk management",
   "scripts": {
-    "start": "node src/index.js",
-    "start:dry": "cross-env DRY_RUN=true https_proxy=http://127.0.0.1:7890 node src/index.js",
+    "start": "node src/minimal/main.js",
+    "start:dry": "cross-env V1_MODE=dry-run node src/minimal/main.js",
+    "start:testnet": "cross-env V1_MODE=testnet node src/minimal/main.js",
+    "test:v1": "node --test tests/minimalTradingV1.test.js",
     "start:reset-breaker": "node src/index.js --reset-breaker",
     "research": "node src/research/cli.js",
     "research:compare": "node src/research/cli.js --compare",

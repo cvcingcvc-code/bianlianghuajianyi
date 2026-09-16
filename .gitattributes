@@ -1,0 +1,2 @@
+data/minimal-v1/*.csv -text
+data/minimal-v1/*.CHECKSUM -text
