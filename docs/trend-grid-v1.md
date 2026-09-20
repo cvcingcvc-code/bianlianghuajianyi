@@ -61,3 +61,52 @@ development evidence, not a pristine final holdout. No current ETH forecast is s
 
 - https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html
 - https://www.binance.com/en/support/faq/detail/904e47602a3941b99e960a31e152a986
+
+## Runbook and outcome
+
+Preregistration commit: `50a56d9`. No thresholds were changed after seeing results.
+
+```powershell
+powershell -NoProfile -File scripts/fetch-trend-grid.ps1
+node scripts/trend-grid-v1.js --exploratory-paper --serve
+```
+
+Open http://127.0.0.1:3001. The existing `npm start` dashboard is unchanged.
+Without `--exploratory-paper`, only forecast evaluation runs. `--download` uses
+Node fetch where network configuration permits; PowerShell is the working download
+path on this host. Raw archives are cached under `data/market/raw/trend-grid-v1`;
+every run rechecks all official SHA256 checksums and derives bars directly from ZIPs.
+Reports use exclusive writes in new timestamp directories, never replace old reports.
+
+175,296 real 15m bars verified, 2021-2025 inclusive. Evaluation results:
+
+| Horizon | Scored forecasts | Brier / unconditional | Log-return MAE / zero | 80% coverage | Gate |
+| --- | ---: | ---: | ---: | ---: | --- |
+| 30m | 52,607 | 0.249769 / 0.249940 | 0.00290396 / 0.00290602 | 87.47% | PASS |
+| 1w | 137 of 155 eligible | 0.262532 / 0.252081 | 0.0659005 / 0.0630570 | 82.48% | FAIL |
+
+Combined candidate FAIL. Weekly scores are worse in every evaluated year. The tiny
+30m improvement is not evidence of statistically significant or economically
+tradable edge. The 2023 30m band overcovers (94.81%); annual coverage is diagnostic
+under the preregistered gate, which checks pooled coverage. No calibration guarantee.
+
+Exploratory BASE and STRESS runs: 0 grids, 0 fills, 0 PnL. 93,130 decisions lacked
+directional agreement/strength; 12,086 lacked mature labels. Zero PnL is inactivity,
+not success. No thresholds were relaxed to induce orders. The simulator's entry,
+exit, short, gap and expiry paths are tested by arithmetic unit fixtures only;
+there is no executed-trade market evidence for this candidate.
+
+The simulator models market-on-touch fills with adverse slippage, not guaranteed
+limit fills. Intrabar event timestamps denote the containing bar's open, not known
+tick times. End-of-replay liquidation is explicitly forced at the final close.
+Drawdown uses close-marked account equity. Real funding, execution filters, queues,
+liquidation and prospective validation remain absent; live eligibility stays false.
+
+Initial diagnostic runs occurred with uncommitted implementation after committing
+the gate. A subsequent reproducibility run references committed implementation and
+committed archive manifest. Initial diagnostic reports are preserved, not relabeled
+as pristine preregistered holdout evidence.
+
+Verification: 9 new tests pass; full suite 227 tests / 214 pass / 13 existing failures
+(same missing legacy market files and funding checksums as the initial baseline).
+Local API and rendered browser page verified. No new dependency or frozen V4 edit.
