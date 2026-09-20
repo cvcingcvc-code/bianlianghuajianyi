@@ -110,3 +110,6 @@ as pristine preregistered holdout evidence.
 Verification: 9 new tests pass; full suite 227 tests / 214 pass / 13 existing failures
 (same missing legacy market files and funding checksums as the initial baseline).
 Local API and rendered browser page verified. No new dependency or frozen V4 edit.
+
+Implementation commit: `00d398b`. Reproducibility output (clean candidate code):
+`reports/trend-grid-v1/2026-09-20T13-22-17-319Z/report.json`.

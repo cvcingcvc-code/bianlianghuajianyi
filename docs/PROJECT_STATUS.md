@@ -14,7 +14,9 @@
 - Full tests: 227 / 214 pass / 13 pre-existing failures. New tests: 9 / 9 pass.
 - Existing dirty paper-10u-15x files, package.json and .gitattributes left untouched.
 - Runbook, limitations and diagnostic/reproducibility distinction: [trend-grid-v1.md](trend-grid-v1.md).
-- Implementation SHA and reproducibility report recorded in the next handoff update.
+- Implementation SHA: `00d398b`. Reproducibility report:
+  `reports/trend-grid-v1/2026-09-20T13-22-17-319Z/report.json` (clean candidate code,
+  identical FAIL and zero-trade outcome). The first two diagnostic reports remain local.
 
 ## Minimal Trading Research V1 — 2026-09-15
 
