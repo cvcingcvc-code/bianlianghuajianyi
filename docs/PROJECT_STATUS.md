@@ -1,5 +1,21 @@
 # PROJECT_STATUS.md — Binance-Trader Quantitative Research
 
+## ETH dual-horizon trend grid V1 — 2026-09-20
+
+- Preregistration: `50a56d9`; independent candidate explicitly requested by user.
+- Added official checksum-verified ETH 15m acquisition, online mature-label 30m/1w
+  forecast distributions, chronological baseline comparisons, automated exploratory
+  LONG/SHORT paper grid lifecycle and separate local dashboard on port 3001.
+- 2021-2025: 60 archives / 175,296 bars. 2026 remains locked for this work.
+- Combined forecast gate **FAIL**: weekly forecasts worse than baselines every year.
+  30m marginally better; this does not establish a tradable or significant edge.
+- Exploratory grid run: 0 entries; thresholds unchanged. Funding not modeled in this
+  new simulator; no net-profit claim, no live adapter, automatic validated opening disabled.
+- Full tests: 227 / 214 pass / 13 pre-existing failures. New tests: 9 / 9 pass.
+- Existing dirty paper-10u-15x files, package.json and .gitattributes left untouched.
+- Runbook, limitations and diagnostic/reproducibility distinction: [trend-grid-v1.md](trend-grid-v1.md).
+- Implementation SHA and reproducibility report recorded in the next handoff update.
+
 ## Minimal Trading Research V1 — 2026-09-15
 
 - Branch: `feature/minimal-trading-v1`, implementation based on `8cb2dc4`.
