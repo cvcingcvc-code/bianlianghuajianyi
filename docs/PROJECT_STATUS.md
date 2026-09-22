@@ -1,5 +1,15 @@
 # PROJECT_STATUS.md — Binance-Trader Quantitative Research
 
+## 中文界面 — 2026-09-22
+
+- 默认研究工作台已汉化：标题、指标、连接状态、舆情、风控、成交状态和拒绝原因。
+- 趋势网格的验收结果、决策原因、周期和成本情景，以及旧版看板的固定文案已汉化。
+- 仅修改显示层和对应的界面文案断言；策略、参数、接口字段与风控逻辑保持原样。
+- 验证：230 项测试，217 项通过，13 项既有数据缺失/校验失败；无新增失败。
+- 浏览器检查：默认工作台中文状态、信号表和图表显示正常；JavaScript 语法及 diff 检查通过。
+- 原有未提交的模拟控制、paper 分析及配置改动保留在本地，未纳入本次提交。
+- 实现提交：待记录。
+
 ## ETH dual-horizon trend grid V1 — 2026-09-20
 
 - Preregistration: `50a56d9`; independent candidate explicitly requested by user.

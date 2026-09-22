@@ -109,7 +109,7 @@ test('all 5 API contracts are stable, dashboard includes complete execution evid
     assert.equal((await fetch(base + '/api/market/SOLUSDT')).status, 400);
     assert.equal((await fetch(base + '/api/orders', { method: 'POST' })).status, 405);
     assert.equal((await fetch(base + '/api/unknown')).status, 404);
-    const html = await fetch(base); assert.match(html.headers.get('content-security-policy'), /connect-src 'self'/); assert.match(await html.text(), /LIVE DISABLED/);
+    const html = await fetch(base); assert.match(html.headers.get('content-security-policy'), /connect-src 'self'/); assert.match(await html.text(), /实盘已禁用/);
   } finally { server.close(); await once(server, 'close'); pipeline.stop(); }
 });
 
