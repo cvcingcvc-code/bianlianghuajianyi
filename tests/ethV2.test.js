@@ -11,6 +11,7 @@ const path = require('node:path');
 const { once } = require('node:events');
 const { Controller } = require('../src/ethV2/controller');
 const { createServer } = require('../src/ethV2/server');
+const { parseArgs } = require('../scripts/eth-v2');
 // Deterministic arithmetic fixtures, never used as market/research evidence.
 const origin = Date.UTC(2021, 0, 1);
 function training() { return Array.from({ length: 4300 }, (_, i) => ({ time: origin + i * H4, targetTime: origin + (i + 1) * H4, x: [i % 7 / 100, i % 11 / 100, 0.02, i % 3], y: (i % 9 - 4) / 1000 })); }
@@ -163,4 +164,9 @@ test('V2 order ledger records fills and cancels end-of-replay pending entry', ()
   const sim = opened(); assert.equal(sim.s.orders[0].status, 'FILLED'); sim.close(100, bar(1).closeTime, 'TEST');
   sim.queue({ action: 'OPEN', side: 'SHORT', time: bar(1).closeTime }); sim.finish();
   assert.equal(sim.s.orders.at(-1).status, 'CANCELLED_END_OF_REPLAY'); assert.equal(sim.s.pending, null);
+});
+test('V2 CLI permits report creation dates but provides no data-range or holdout override', () => {
+  assert.equal(parseArgs(['--serve', '--report', 'reports/eth-v2/2026-09-22/report.json']).report, 'reports/eth-v2/2026-09-22/report.json');
+  assert.throws(() => parseArgs(['--unlock-holdout']), /Unsupported/);
+  assert.throws(() => parseArgs(['--end', '2026']), /Unsupported/);
 });

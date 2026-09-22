@@ -5,14 +5,22 @@ const { loadData, sha } = require('../src/ethV2/data');
 const { walkForward } = require('../src/ethV2/model');
 const { forecastEvaluation, tradeEvaluation, runTrading } = require('../src/ethV2/evaluate');
 const { ROOT, sourceFingerprint } = require('../src/ethV2/provenance');
+function parseArgs(args) {
+  const options = {};
+  for (let i = 0; i < args.length; i++) {
+    const key = args[i];
+    if (key === '--serve') options.serve = true;
+    else if (['--report', '--session', '--port'].includes(key) && args[i + 1] && !args[i + 1].startsWith('--')) options[key.slice(2)] = args[++i];
+    else throw new Error(`Unsupported option (holdout stays locked): ${key}`);
+  }
+  return options;
+}
 async function main() {
-  const args = process.argv.slice(2);
-  if (args.some(a => /unlock|2026/.test(a))) throw new Error('HOLDOUT_LOCKED');
-  const value = key => { const i = args.indexOf(key); return i >= 0 ? args[i + 1] : null; };
+  const options = parseArgs(process.argv.slice(2));
   const data = await loadData();
-  if (args.includes('--serve')) {
-    const reportPath = value('--report'); if (!reportPath) throw new Error('--report is required');
-    return require('../src/ethV2/server').serve({ data, reportPath, sessionName: value('--session') || 'default', port: Number(value('--port') || 3002) });
+  if (options.serve) {
+    const reportPath = options.report; if (!reportPath) throw new Error('--report is required');
+    return require('../src/ethV2/server').serve({ data, reportPath, sessionName: options.session || 'default', port: Number(options.port || 3002) });
   }
   const source = sourceFingerprint(), git = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
   const dirty = execFileSync('git', ['status', '--porcelain', '--', 'src/ethV2', 'src/research/strategies/ethPredictionV2.js', 'scripts/eth-v2.js'], { cwd: ROOT, encoding: 'utf8' }).trim();
@@ -43,4 +51,4 @@ async function main() {
   console.log(JSON.stringify({ folder, forecast: forecast.status, trading: trading.status, decisions: base.decisions, trades: base.stats.count, fundingProblems: data.funding.problems }, null, 2));
 }
 if (require.main === module) main().catch(e => { console.error(e.stack); process.exitCode = 1; });
-module.exports = { main };
+module.exports = { main, parseArgs };
