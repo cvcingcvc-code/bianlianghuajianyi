@@ -4,7 +4,7 @@
 <h1>先验证预测，再决定开网格。</h1><p>未来 30 分钟决定入场节奏，一周方向过滤交易。分歧、证据不足或成本过高时等待。</p>
 <div class="notice" id="status" role="status">正在加载验证结果…</div><p id="asof"></p>
 <section id="forecasts" class="cards"></section>
-<section><h2>时间外预测检验</h2><p>2021–2022 初始训练，2023–2025 按时间推进；仅学习已结束的收益标签。分数越低越好。</p><div class="scroll"><table><thead><tr><th>周期 / 年份</th><th>样本</th><th>可用率</th><th>Brier / 基准</th><th>绝对误差 / 零收益</th><th>80% 区间覆盖率</th><th>验收</th></tr></thead><tbody id="scores"></tbody></table></div></section>
+<section><h2>时间外预测检验</h2><p>2021–2022 初始训练，2023–2025 按时间推进；仅学习已结束的收益标签。分数越低越好。</p><div class="scroll"><table><thead><tr><th>周期 / 年份</th><th>样本</th><th>可用率</th><th>布里尔分数 / 基准</th><th>绝对误差 / 零收益</th><th>80% 区间覆盖率</th><th>验收</th></tr></thead><tbody id="scores"></tbody></table></div></section>
 <section><h2>自动网格决策</h2><p id="decision"></p><p>双周期上涨概率均 ≥60% 时做多，均 ≤40% 时做空；其余等待。四格、模拟 1 倍、最多分配 25% 资金；30 分钟到期或出界关闭。</p><pre id="counts"></pre></section>
 <section><h2>探索性模拟</h2><p>以下结果未计资金费率，不代表净收益验证通过。按下一根开盘启用；先处理出界停止，同一格不在同一根 K 线内买卖。</p><div id="paper" class="cards"></div></section>
 <footer>本页不是当前 ETH 行情预测。2026 数据仍锁定。实盘下单未连接。</footer></main></body></html>

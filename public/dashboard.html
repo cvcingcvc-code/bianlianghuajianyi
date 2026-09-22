@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Binance Trader Dashboard</title>
+<title>币安交易看板</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Segoe UI', system-ui, monospace; background: #0d1117; color: #c9d1d9; padding: 16px; min-height: 100vh; }
@@ -50,39 +50,39 @@ canvas { width: 100%; height: 100%; }
   <div id="breakerBar" class="breaker-alert full"></div>
 
   <div class="full"><div class="stats-bar">
-    <div class="stat-item"><div class="stat-value up" id="balance">--</div><div class="stat-label">Balance (USDT)</div></div>
-    <div class="stat-item"><div class="stat-value" id="pnl">--</div><div class="stat-label">Realized PnL</div></div>
-    <div class="stat-item"><div class="stat-value" id="trades">--</div><div class="stat-label">Trades</div></div>
-    <div class="stat-item"><div class="stat-value" id="winRate">--</div><div class="stat-label">Win Rate</div></div>
+    <div class="stat-item"><div class="stat-value up" id="balance">--</div><div class="stat-label">余额（USDT）</div></div>
+    <div class="stat-item"><div class="stat-value" id="pnl">--</div><div class="stat-label">已实现盈亏</div></div>
+    <div class="stat-item"><div class="stat-value" id="trades">--</div><div class="stat-label">成交次数</div></div>
+    <div class="stat-item"><div class="stat-value" id="winRate">--</div><div class="stat-label">胜率</div></div>
   </div></div>
 
   <div class="card half">
-    <div class="card-header">Price Chart <select id="chartSymbol" style="background:#0d1117;color:#c9d1d9;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-family:monospace"></select></div>
+    <div class="card-header">价格走势 <select id="chartSymbol" style="background:#0d1117;color:#c9d1d9;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-family:monospace"></select></div>
     <div class="chart-container"><canvas id="chart"></canvas></div>
   </div>
 
   <div class="card half">
-    <div class="card-header">Positions</div>
-    <div class="positions" id="positions"><div style="color:#8b949e;text-align:center;padding:40px">No open positions</div></div>
+    <div class="card-header">持仓</div>
+    <div class="positions" id="positions"><div style="color:#8b949e;text-align:center;padding:40px">暂无持仓</div></div>
   </div>
 
   <div class="card full">
-    <div class="card-header"><span>Live Prices</span><span id="uptime" style="font-size:11px"></span></div>
+    <div class="card-header"><span>实时价格</span><span id="uptime" style="font-size:11px"></span></div>
     <div class="price-tickers" id="tickers"></div>
   </div>
 
   <div class="card full">
-    <div class="card-header">Commands</div>
+    <div class="card-header">操作指令</div>
     <div style="display:flex;gap:8px">
       <input id="cmdInput" type="text" placeholder="/status  /close SYMBOL  /pause  /resume  /strategy  /help" style="flex:1;background:#0d1117;color:#c9d1d9;border:1px solid #30363d;border-radius:6px;padding:8px 12px;font-family:monospace;font-size:14px" onkeydown="if(event.key==='Enter')sendCmd()">
-      <button onclick="sendCmd()" style="background:#238636;color:#fff;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-weight:600">Send</button>
+      <button onclick="sendCmd()" style="background:#238636;color:#fff;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-weight:600">发送</button>
     </div>
     <div id="cmdResult" style="margin-top:8px;font-size:13px;white-space:pre-wrap"></div>
   </div>
 
   <div class="card full">
-    <div class="card-header">Signals</div>
-    <div class="signal-log" id="signals"><div style="color:#8b949e">Waiting for signals...</div></div>
+    <div class="card-header">信号</div>
+    <div class="signal-log" id="signals"><div style="color:#8b949e">等待信号…</div></div>
   </div>
 </div>
 
@@ -128,7 +128,7 @@ function updateTickers(prices) {
 
 function updatePositions(positions) {
   if (!positions || positions.length === 0) {
-    $('positions').innerHTML = '<div style="color:#8b949e;text-align:center;padding:40px">No open positions</div>';
+    $('positions').innerHTML = '<div style="color:#8b949e;text-align:center;padding:40px">暂无持仓</div>';
     return;
   }
   let html = '';
@@ -136,10 +136,10 @@ function updatePositions(positions) {
     const upnl = p.unrealizedPnl || 0;
     html += `<div class="pos-card">
       <div><span class="pos-symbol">${p.symbol}</span> <span style="color:#8b949e;font-size:12px">${p.leverage}x</span></div>
-      <div><div style="font-size:11px;color:#8b949e">Entry / Mark</div><div style="font-size:14px">${fmt(p.entryPrice, 4)} / ${fmt(p.currentPrice || p.entryPrice, 4)}</div></div>
-      <div><div style="font-size:11px;color:#8b949e">PnL</div><div style="font-size:14px" class="${upnl >= 0 ? 'up' : 'down'}">${pnlSign(upnl)}${fmt(upnl, 4)} USDT</div></div>
-      <div><div style="font-size:11px;color:#8b949e">Size</div><div>${p.quantity}</div></div>
-      <div><div style="font-size:11px;color:#8b949e">SL / TP</div><div>${fmt(p.stopLossPrice, 4)} / ${fmt(p.takeProfitPrice, 4)}</div></div>
+      <div><div style="font-size:11px;color:#8b949e">入场价 / 标记价</div><div style="font-size:14px">${fmt(p.entryPrice, 4)} / ${fmt(p.currentPrice || p.entryPrice, 4)}</div></div>
+      <div><div style="font-size:11px;color:#8b949e">盈亏</div><div style="font-size:14px" class="${upnl >= 0 ? 'up' : 'down'}">${pnlSign(upnl)}${fmt(upnl, 4)} USDT</div></div>
+      <div><div style="font-size:11px;color:#8b949e">持仓数量</div><div>${p.quantity}</div></div>
+      <div><div style="font-size:11px;color:#8b949e">止损 / 止盈</div><div>${fmt(p.stopLossPrice, 4)} / ${fmt(p.takeProfitPrice, 4)}</div></div>
       <div></div>
     </div>`;
   }
@@ -162,7 +162,7 @@ function updateBreakers(breakers) {
   const tripped = Object.values(breakers || {}).find(b => b.tripped);
   if (tripped) {
     bar.className = 'breaker-alert active full';
-    bar.textContent = `CIRCUIT BREAKER: ${tripped.reason} — ${Math.max(0, Math.floor((tripped.expiresAt - Date.now()) / 1000))}s remaining`;
+    bar.textContent = `已触发熔断： ${tripped.reason} — ${Math.max(0, Math.floor((tripped.expiresAt - Date.now()) / 1000))} 秒后恢复`;
   } else {
     bar.className = 'breaker-alert full';
   }
@@ -229,7 +229,7 @@ $('chartSymbol').addEventListener('change', function() { selectedChartSymbol = t
 
 setInterval(() => {
   const s = Math.floor((Date.now() - startTime) / 1000);
-  $('uptime').textContent = `Uptime: ${Math.floor(s/3600)}h ${Math.floor(s/60)%60}m ${s%60}s`;
+  $('uptime').textContent = `运行时长： ${Math.floor(s/3600)} 小时 ${Math.floor(s/60)%60} 分 ${s%60} 秒`;
   pollState();
 }, 2000);
 
@@ -240,10 +240,10 @@ async function sendCmd() {
   try {
     const res = await fetch('/api/command', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({text: cmd}) });
     const data = await res.json();
-    $('cmdResult').innerHTML = '<span style="color:#3fb950">> ' + cmd + '</span>\n' + (data.reply || '(ok)');
+    $('cmdResult').innerHTML = '<span style="color:#3fb950">> ' + cmd + '</span>\n' + (data.reply || '（完成）');
     input.value = '';
   } catch(e) {
-    $('cmdResult').innerHTML = '<span style="color:#f85149">Error: ' + e.message + '</span>';
+    $('cmdResult').innerHTML = '<span style="color:#f85149">错误： ' + e.message + '</span>';
   }
 }
 
