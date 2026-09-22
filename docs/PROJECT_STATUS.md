@@ -1,5 +1,11 @@
 # PROJECT_STATUS.md — Binance-Trader Quantitative Research
 
+## ETH 预测与合约模拟 V2 — 预登记阶段 2026-09-22
+
+- 用户明确授权独立V2候选例外；原策略、V1和报告不改，2026仍禁止访问，无Live及自动推送。
+- 审计见 docs/eth-v2/AUDIT.md；固定研究方案见 docs/eth-v2/RESEARCH_PLAN.md，先提交后计算。
+- 基线242项，229通过，13既有失败；待实现唯一4h模型、独立执行与中文页面。
+
 ## Dry-run 保护性止损 / 止盈闭环 — 2026-09-22
 
 - 按用户本轮明确授权，仅补齐模拟执行层保护性退出；冻结策略、UI、成本参数、历史研究结果及 Live 均未修改。
