@@ -20,6 +20,145 @@ const signal = Object.freeze({ symbol: 'ETHUSDT', direction: 'LONG', price: 3337
 const positive = { symbol: 'ETHUSDT', status: 'available', score: 0.8, label: 'bullish', confidence: 0.9, articleCount: 12, updatedAt: '2025-01-23T23:59:59.999Z' };
 function initializedAdapter() { const adapter = new DryRunAdapter(); adapter.ingest('ETHUSDT', rows.ETHUSDT[0]); return adapter; }
 
+// Arithmetic execution fixtures only; these are not market data or research results.
+const fourHours = 4 * 60 * 60 * 1000;
+function protectiveBar(index, prices = {}) {
+  const openTime = Date.UTC(2025, 0, 1) + index * fourHours;
+  return { openTime, closeTime: openTime + fourHours - 1, open: 100, high: 101, low: 99, close: 100, ...prices };
+}
+function protectiveOrder(index = 0) {
+  return { symbol: 'ETHUSDT', action: 'OPEN', quantity: 2, leverage: 1, stopLossPrice: 98, takeProfitPrice: 104,
+    signal: { ...signal, price: 100, timestamp: protectiveBar(index).closeTime } };
+}
+function protectedAdapter() {
+  const adapter = new DryRunAdapter();
+  adapter.ingest('ETHUSDT', protectiveBar(0));
+  adapter.executeOrder(protectiveOrder());
+  adapter.ingest('ETHUSDT', protectiveBar(1));
+  return adapter;
+}
+function near(actual, expected) { assert.ok(Math.abs(actual - expected) < 1e-9, `${actual} != ${expected}`); }
+
+for (const [name, prices, basePrice, exitReason, ambiguous, gap] of [
+  ['stop loss', { low: 98 }, 98, 'STOP_LOSS', false, false],
+  ['take profit', { high: 104 }, 104, 'TAKE_PROFIT', false, false],
+  ['both levels touched: stop first', { low: 97, high: 105 }, 98, 'STOP_LOSS', true, false],
+  ['gap down through stop', { open: 95, low: 94, high: 97, close: 96 }, 95, 'STOP_LOSS', false, true],
+  ['gap up through target', { open: 107, low: 105, high: 108, close: 106 }, 107, 'TAKE_PROFIT', false, true],
+  ['gap up plus both levels: still stop first', { open: 107, low: 97, high: 108 }, 98, 'STOP_LOSS', true, false],
+]) test(`protective exit: ${name}, exact costs and account settlement`, () => {
+  const adapter = protectedAdapter(); const events = [];
+  adapter.events.on('fill', event => {
+    events.push(event);
+    assert.equal(adapter.getPositions().length, 0);
+    assert.equal(adapter.getPendingOrders().length, 0);
+  });
+  const candle = protectiveBar(2, prices);
+  adapter.ingest('ETHUSDT', candle);
+  const fill = adapter.fills.at(-1);
+  assert.equal(adapter.fills.length, 2); assert.equal(events.length, 1); assert.equal(events[0].fill, fill);
+  assert.equal(events[0].order.action, 'CLOSE');
+  assert.equal(fill.status, 'FILLED'); assert.equal(fill.mode, 'DRY_RUN'); assert.equal(fill.symbol, 'ETHUSDT');
+  assert.equal(fill.action, 'CLOSE'); assert.equal(fill.quantity, 2); assert.equal(fill.exitReason, exitReason);
+  assert.equal(fill.intrabarAmbiguous, ambiguous);
+  assert.equal(fill.reason, ambiguous ? 'STOP_LOSS_AMBIGUOUS_BAR' : exitReason);
+  assert.equal(fill.timestamp, gap ? candle.openTime : candle.closeTime);
+  assert.equal(fill.timestampBasis, gap ? 'BAR_OPEN' : 'BAR_CLOSE_DETECTION');
+  const entryPrice = 100 * 1.0002, entryFee = 2 * entryPrice * 0.0004;
+  const exitPrice = basePrice * 0.9998, exitFee = 2 * exitPrice * 0.0004;
+  const closePnl = (exitPrice - entryPrice) * 2 - exitFee;
+  near(fill.price, exitPrice); near(fill.fee, exitFee); near(fill.pnl, closePnl);
+  near(adapter.wallet, 10000 - entryFee + closePnl);
+  near(adapter.getAccountState().realizedPnl, closePnl - entryFee);
+  near(adapter.getAccountState().dailyPnl, closePnl - entryFee);
+  near(adapter.getAccountState().equity, adapter.wallet);
+  adapter.ingest('ETHUSDT', protectiveBar(3, prices));
+  assert.equal(adapter.fills.length, 2); assert.equal(events.length, 1);
+  near(adapter.wallet, 10000 - entryFee + closePnl);
+});
+
+test('protective exit: untouched levels preserve the position and wallet', () => {
+  const adapter = protectedAdapter(), wallet = adapter.wallet, position = adapter.getPositions()[0];
+  adapter.ingest('ETHUSDT', protectiveBar(2));
+  assert.deepEqual(adapter.getPositions(), [position]); assert.equal(adapter.fills.length, 1);
+  assert.equal(adapter.wallet, wallet); assert.equal(adapter.getPendingOrders().length, 0);
+});
+
+test('protective exit: clears pending CLOSE and rejects later strategy CLOSE without double settlement', () => {
+  const adapter = protectedAdapter();
+  const close = { ...protectiveOrder(), action: 'CLOSE', signal: { ...signal, direction: 'CLOSE', timestamp: protectiveBar(2).closeTime } };
+  // A not-yet-eligible queued CLOSE must be invalidated when protection closes its position.
+  adapter.executeOrder(close);
+  adapter.ingest('ETHUSDT', protectiveBar(2, { low: 97 }));
+  assert.equal(adapter.getPendingOrders().length, 0);
+  const wallet = adapter.wallet;
+  assert.throws(() => adapter.executeOrder(close), /missing position/);
+  adapter.ingest('ETHUSDT', protectiveBar(3, { low: 97 }));
+  assert.equal(adapter.fills.length, 2); assert.equal(adapter.wallet, wallet);
+  assert.equal(adapter.getPositions().length, 0);
+});
+
+test('protective exit: queued strategy CLOSE executes at open before later intrabar prices', () => {
+  const adapter = protectedAdapter();
+  adapter.executeOrder({ ...protectiveOrder(), action: 'CLOSE', signal: { ...signal, timestamp: protectiveBar(1).closeTime } });
+  adapter.ingest('ETHUSDT', protectiveBar(2, { low: 97, high: 105 }));
+  assert.equal(adapter.fills.length, 2); assert.equal(adapter.fills[1].exitReason, undefined);
+  near(adapter.fills[1].price, 100 * 0.9998);
+  assert.equal(adapter.fills[1].timestamp, protectiveBar(2).openTime);
+  assert.equal(adapter.getPositions().length, 0); assert.equal(adapter.getPendingOrders().length, 0);
+});
+
+test('protective exit: next-bar entry remains queued and protection activates on the actual fill bar', () => {
+  const adapter = new DryRunAdapter();
+  adapter.ingest('ETHUSDT', protectiveBar(0, { low: 90, high: 110 }));
+  assert.equal(adapter.executeOrder(protectiveOrder()).status, 'QUEUED');
+  assert.equal(adapter.fills.length, 0); assert.equal(adapter.getPositions().length, 0);
+  adapter.ingest('ETHUSDT', protectiveBar(1, { low: 97 }));
+  assert.equal(adapter.fills.length, 2);
+  const [entry, exit] = adapter.fills;
+  assert.equal(entry.action, 'OPEN'); assert.equal(entry.timestamp, protectiveBar(0).closeTime + 1);
+  near(entry.price, 100 * 1.0002);
+  assert.equal(exit.exitReason, 'STOP_LOSS'); assert.ok(exit.timestamp > entry.timestamp);
+  assert.equal(adapter.getPositions().length, 0);
+});
+
+test('protective exit: daily PnL across midnight uses prior marked equity without charging entry fee twice', () => {
+  const adapter = protectedAdapter();
+  const priorEquity = adapter.getAccountState().equity;
+  adapter.ingest('ETHUSDT', protectiveBar(6, { low: 97 }));
+  const fill = adapter.fills.at(-1), account = adapter.getAccountState();
+  assert.equal(account.day, '2025-01-02');
+  near(account.realizedPnl, fill.pnl);
+  near(account.dailyPnl, account.equity - priorEquity);
+  near(account.dailyPnl, (fill.price - 100) * 2 - fill.fee);
+});
+
+test('protective exit: real Pipeline forwards five losing Risk Manager stops to circuit breaker', async () => {
+  const adapter = new DryRunAdapter(), pipeline = new Pipeline({ adapter });
+  const closed = [];
+  pipeline.risk.bus.on('positionClosed', event => closed.push(event));
+  try {
+    adapter.ingest('ETHUSDT', protectiveBar(0), { warmup: true }); await pipeline.queue;
+    for (let i = 0; i < 5; i++) {
+      const index = i * 2;
+      const approval = pipeline.risk.evaluate({ ...signal, price: 100, timestamp: protectiveBar(index).closeTime });
+      assert.equal(approval.decision, 'APPROVE');
+      assert.equal(approval.order.stopLossPrice, 98); assert.equal(approval.order.takeProfitPrice, 104);
+      adapter.executeOrder(approval.order);
+      adapter.ingest('ETHUSDT', protectiveBar(index + 1), { warmup: true }); await pipeline.queue;
+      adapter.ingest('ETHUSDT', protectiveBar(index + 2, { low: 97 }), { warmup: true }); await pipeline.queue;
+      assert.equal(adapter.fills.at(-1).exitReason, 'STOP_LOSS');
+      assert.equal(closed.length, i + 1); assert.ok(closed[i].pnl < 0);
+      assert.equal(pipeline.risk.consecutiveLosses, i + 1);
+      assert.equal(pipeline.error, null);
+    }
+    assert.equal(pipeline.risk.getStatus().status, 'TRIPPED');
+    const rejected = pipeline.risk.evaluate({ ...signal, price: 100, timestamp: protectiveBar(10).closeTime });
+    assert.equal(rejected.decision, 'REJECT'); assert.match(rejected.reason, /Circuit breaker/);
+    assert.equal(adapter.fills.filter(f => f.action === 'CLOSE').length, 5);
+  } finally { pipeline.stop(); }
+});
+
 test('sentiment unavailable retains null score, preserves original signal, never creates orders', async () => {
   const service = new SentimentService({ collector: new Collector({ provider: async () => { throw new Error('offline'); } }) });
   const value = await service.get('ETHUSDT');
