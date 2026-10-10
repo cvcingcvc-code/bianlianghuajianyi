@@ -1,0 +1,325 @@
+{
+  "schema_version": "quant2.audit.v1",
+  "date": "2026-10-10",
+  "timezone": "Asia/Shanghai",
+  "initial_head": "f936aba9a526fc970700e01786c50c9b37e50ef9",
+  "scope": "DOCUMENTATION_AND_READ_ONLY_SOURCE_AUDIT",
+  "architecture_status": "DESIGN_FROZEN",
+  "implementation_status": "NOT_STARTED",
+  "end_to_end_simulation_status": "NOT_RUN",
+  "cloud_deployment_status": "NOT_RUN",
+  "live_trading": false,
+  "real_orders": 0,
+  "inherited_tracked_dirty": [
+    ".gitattributes",
+    "package.json",
+    "public/trend-grid/app.js",
+    "public/trend-grid/index.html",
+    "public/trend-grid/style.css",
+    "scripts/trend-grid-v1.js"
+  ],
+  "inherited_untracked_note": "Existing src/paper, trendGrid control/tests, documentation and runtime data outputs preserved and excluded from this delivery. No market archive or report outcome read for this audit.",
+  "search": {
+    "terms": [
+      "Spider",
+      "Jev",
+      "Grok"
+    ],
+    "before_new_docs": true,
+    "roots": [
+      "src",
+      "scripts",
+      "tests",
+      "docs",
+      "configs",
+      "existing root documentation"
+    ],
+    "named_implementations_found": 0,
+    "limitation": "Bounded repository search; external user systems not assessed."
+  },
+  "source_preservation": {
+    "scope": "git ls-files src scripts tests configs public package.json .gitattributes plus nonignored untracked source files in those roots",
+    "files_checked": 445,
+    "identity_sha256": "2249ef983d06fa9b67e5a8d621d8bb8d55239bc35f2ff9eb4652a29fd78de19b",
+    "changed_files": 0,
+    "inspected_file_hashes": [
+      {
+        "path": "AGENTS.md",
+        "sha256": "3cf74c7cbc73298f60d59355267020d716b6bfb9991c95d1c9c31816650604e3",
+        "tracked": true
+      },
+      {
+        "path": "package.json",
+        "sha256": "9373ed6154f6b603ed65af213ddd616afd41ac4c63c74b55816284810a637b20",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/main.js",
+        "sha256": "08a9883aff4854372bae6bdaeb00db51d0d91f42aa6a2d20346f6b2ea5a27d96",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/marketCollector.js",
+        "sha256": "58fd0dfc2c35e9fef3499ae04b133b0540e9ae2f66a29db15170de54f2888f99",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/providers/canonical.js",
+        "sha256": "c9337383b5b731f837cae0a7cdcf21e881707ce43e77243cbb525b85d79ae26a",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/v4ForwardService.js",
+        "sha256": "a04ae07b5fed4ec684a7b37b83a74a8e2884d03170da65164e8e966ef8c455de",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/v4ForwardAccount.js",
+        "sha256": "d8bf74ce4441d5dec10b40017fc88c486c798e310394ce2ece671adc2c420f40",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/deepseekV4Adapter.js",
+        "sha256": "0ac2b02257cb39fb5dfa505aa0468fc8935d0b40bf1c32f5ffa21fa6dfec33c7",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/deepseek.js",
+        "sha256": "86d2c6cf28f4530734089f11d37c503924a7cf5e59f766ca92c8a090fa947b94",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/evaluationStore.js",
+        "sha256": "944f6f56bf65ce636cd0e33cfeb4cb123900bed1bb4f4dd9638704ebb37d5db8",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/autonomousAgent.js",
+        "sha256": "6ef7d209eaefdf583a5f91d1906f902a2fc375217895c936eba8434b6344ca21",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/v4AiPaperPipeline.js",
+        "sha256": "ee844f347946a46e5f9df0ceb2d235a51cd96db53fdf0d5db5ea5a270aa403bc",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/v4AiPaperPolicy.js",
+        "sha256": "810ac871ef48663660b966a5e0050f4956ab3bd6aae36dcdfd7f8f3170ec02fd",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/paperExecutor.js",
+        "sha256": "88d8c1c98bcf16ea076297a3c95343f158d7e6a72ecf9385357e966e0e4e8e79",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/riskEngine.js",
+        "sha256": "2d44ff833195310e7f662b0e7465697dfcc8d045621ee925c59c6a776f16b374",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/safety.js",
+        "sha256": "5fbc7df4c782876f3f5ba384bd99f2eb7fdf2436fc0b4b918cd69ea071443539",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/mvpReplay.js",
+        "sha256": "cc49610c3b98be0f88f7d9d56a734c658ddaf9b8ac92cd925c34e5034be00398",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/runtime.js",
+        "sha256": "6f9765c4b9fd89e8e712e462ef0b2ef3bbab4f14ac202a609c2c4a81ee8f99a3",
+        "tracked": true
+      },
+      {
+        "path": "src/autonomous/runtimeDiagnostics.js",
+        "sha256": "faef1182c6f4fcbfbfc8a41e9b99d05fdafc9b34236021ef86f8c4d12c6bd738",
+        "tracked": true
+      },
+      {
+        "path": "src/research/data/candleRepository.js",
+        "sha256": "0d5825540c5161fe1f1e5dadcdc4d1b20d169fa57bc62cfa2b92aecbbfdae5b1",
+        "tracked": true
+      },
+      {
+        "path": "src/research/data/resampler.js",
+        "sha256": "bca4e531dca10eb529291ab628c357ead11cf764db680bb1141b1434f86ed555",
+        "tracked": true
+      },
+      {
+        "path": "src/research/backtest/brokerSimulator.js",
+        "sha256": "c6a9b42d976140d1e96433774da6f66f5298696e4004435a474dbb69eb56223d",
+        "tracked": true
+      },
+      {
+        "path": "src/research/strategies/breakout24h4h.js",
+        "sha256": "294ecf16e3fabba2eed8e9ecde8889302007da2dfa6d6321d838763b2ebb325e",
+        "tracked": true
+      },
+      {
+        "path": "src/research/strategies/breakout24hFactory.js",
+        "sha256": "f6642f98aabb9575f1fac61289af9584f2167aee64ed4027a1c357912372e3c0",
+        "tracked": true
+      },
+      {
+        "path": "src/research/holdoutGuard.js",
+        "sha256": "70526569b2254a406b5983650426ca27961833ff8a8015abd02e88b1e0aef37b",
+        "tracked": true
+      },
+      {
+        "path": "scripts/phase8m2-4/history-audit.js",
+        "sha256": "db548bd767fa3cfc7c49a99385efeb76243f0750662ac7fc1a18193f9b63c03b",
+        "tracked": true
+      },
+      {
+        "path": "scripts/phase8m2-3/prepare-history.js",
+        "sha256": "2fca2775690ad1a96c4f94e3a7957bc8a8640ba811db9b9680be0d641ec47326",
+        "tracked": true
+      },
+      {
+        "path": "scripts/fetch-binance-um-history.js",
+        "sha256": "cfe051034b155a275da8e6d45a53b4e3a825d24fd327c6b8a7247d8d6161b225",
+        "tracked": true
+      },
+      {
+        "path": "src/market/websocket.js",
+        "sha256": "55c2626e68dbef256b49338647af2d8dccfcc08360b19792286fe497b99f0465",
+        "tracked": true
+      },
+      {
+        "path": "src/aiTrader/deepseek.js",
+        "sha256": "b3e2ec7bfa5a38bfa9b6c461be11b4a19513f231a66718a6b7e9b587d8dacc11",
+        "tracked": true
+      },
+      {
+        "path": "src/aiTrader/paper.js",
+        "sha256": "2501fcd0883f79a567e155d2a794f920ec86664b0ee51bf7458e7fea068ee625",
+        "tracked": true
+      },
+      {
+        "path": "src/aiTrader/controller.js",
+        "sha256": "bb691616103c2754cdea1f22fa0cb0c597ca0201449d69d1f4a6bc10e1addb65",
+        "tracked": true
+      },
+      {
+        "path": "src/minimal/main.js",
+        "sha256": "b23c8e4c730c59f1239c1b479a786e86859450ab308ac1b400b547390877150f",
+        "tracked": true
+      },
+      {
+        "path": "src/minimal/pipeline.js",
+        "sha256": "b46e2df8c2cb212a831d2217d62ca7023e5c466fa94a64b7554a8a8e3858a506",
+        "tracked": true
+      },
+      {
+        "path": "src/exchange/TestnetAdapter.js",
+        "sha256": "c9fdd01e236168193a906842bc85ef425500ecc4034a996027ef4510eb7426e5",
+        "tracked": true
+      },
+      {
+        "path": "src/exchange/LiveAdapter.js",
+        "sha256": "a9c9fd4fbad59189221a3fbfcd0a351e02ec6e7cbd0566dc7e1e35098915c27d",
+        "tracked": true
+      },
+      {
+        "path": "src/paper/runReplay.js",
+        "sha256": "1c5165f2c6527a4da1854e5b5243d1524eb6bbe110785c6fb919fdf355811d86",
+        "tracked": false
+      },
+      {
+        "path": "src/paper/archive.js",
+        "sha256": "0a7d8a9011113d132abd35a47a28becd6c92494dd6bff25ddf23d20505f229b2",
+        "tracked": false
+      },
+      {
+        "path": "src/paper/LeveragedReplayAdapter.js",
+        "sha256": "44052e4095dddde75a979410cfbb862841c8c86d82c3c6410ffd2cd104de8f17",
+        "tracked": false
+      },
+      {
+        "path": "src/trendGrid/forecast.js",
+        "sha256": "dc159e940b0515c6adcf14a80cc68f7cbff1e63e0e6db811b1476cd2d72074d7",
+        "tracked": true
+      },
+      {
+        "path": "tests/autonomousPaperStore.test.js",
+        "sha256": "f239fd64d482a9cffdeaa9a6eb640b11f30bb918f00e0c08cca939017271b9c2",
+        "tracked": true
+      },
+      {
+        "path": "tests/v4AiPaperPipeline.test.js",
+        "sha256": "cb76a5e5b99686c00d1b11da199fc2c16c83f993a1b229e24b2a51d56a684c0e",
+        "tracked": true
+      },
+      {
+        "path": "tests/phase9SourceVerification.test.js",
+        "sha256": "f8e042b4041c2913cd7cc9d717687245e2c0f9467780942b2c7103f3242ad15a",
+        "tracked": true
+      }
+    ],
+    "identity_recipe": "SHA256 of UTF-8 path<TAB>lowercase sha256<LF> entries in the initial PowerShell Sort-Object -Unique path order; final trailing LF; no BOM"
+  },
+  "tests": {
+    "baseline": {
+      "tests": 1124,
+      "raw_log_sha256": "896c7a1c3c27b61b894470a427efaf8fa1c9d061f32633e3ec44f1562abaed25",
+      "skipped": 0,
+      "pass": 1111,
+      "duration_ms": 151677.2831,
+      "cancelled": 0,
+      "exit_code": 1,
+      "fail": 13
+    },
+    "historical_failure_reference": {
+      "sha256": "ee2dfd32f4232b6090f556227ba69cd08419b221831546f8e3ed8056bef07c83",
+      "exact_name_match": true,
+      "path": "reports/phase8a1/TEST_FAILURE_AUDIT.json"
+    },
+    "log_note": "Raw test logs remain in session temporary storage; summary, failure identities and digests are persisted here. Legacy test scope unchanged, including acquisition/holdout-validator metadata checks; no holdout strategy unlock/execution.",
+    "command": "npm test",
+    "final": {
+      "tests": 1124,
+      "raw_log_sha256": "a9082ac5f757f2ac9bb8055d660938e4621ce639824f1341401bfb3fe5f1a4db",
+      "skipped": 0,
+      "pass": 1111,
+      "duration_ms": 97059.8493,
+      "cancelled": 0,
+      "exit_code": 1,
+      "fail": 13
+    },
+    "resolved_failure_identities": [],
+    "new_failure_identities": [],
+    "failure_names": [
+      "2026 holdout guard blocks strategy execution on 2026 data",
+      "2026 kline data can be read by data validator",
+      "2026 kline data has no duplicates",
+      "2026 kline data has no missing bars",
+      "4h aggregation reuses the V4 resampler (16x15m) on external data",
+      "BNB official data normalization: loads, sorted, contains 2026",
+      "checksum validation: every downloaded official zip matches its .CHECKSUM",
+      "external assets are isolated (independent accounts)",
+      "funding CSV SHAs in manifest match actual files",
+      "listing-date handling: first 4h candle is after the first 15m, first year is partial",
+      "manifest SHA256 matches actual CSV file",
+      "SOL official data normalization: loads, sorted, contains 2026",
+      "warmup: first trade occurs only after EMA/breakout warmup"
+    ]
+  },
+  "authored_specification_hashes": [
+    {
+      "path": "docs/quant2/ARCHITECTURE_FREEZE.md",
+      "sha256": "fa4bbe09e1ac1dc0c7362a53156631dbced5e2938cdfe1adff52e728bb88c963"
+    },
+    {
+      "path": "docs/quant2/DATA_CONTRACTS_V1.md",
+      "sha256": "a7af34aaf3eb2a84acd6138457d22f1c92484c40ce71073d7b240e9dbce65766"
+    },
+    {
+      "path": "docs/quant2/ACCEPTANCE_GATES_V1.md",
+      "sha256": "657a58b0d53b949a457d7a24b087a9e5ffb018c6dcde431a2224ff12393c6a50"
+    }
+  ],
+  "runtime_note": "No new collection, model request, cloud deployment, replay or runtime-service start; no claim about current native process health."
+}
