@@ -1,4 +1,4 @@
-# Quant Trading Research & Backtesting System
+# Binance Trader - Quantitative Trading System
 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -7,16 +7,16 @@
 
 ## 📊 Overview
 
-**Quant Trading Research & Backtesting System** is a comprehensive research platform for algorithmic trading strategy development and backtesting. This project focuses on quantitative analysis, strategy research, and risk management for cryptocurrency futures trading, with emphasis on research, backtesting, and dry-run capabilities rather than live trading.
+**Binance Trader** is a sophisticated quantitative trading system designed for cryptocurrency futures trading. Built with Node.js and featuring advanced risk management, comprehensive backtesting capabilities, and real-time monitoring, this system enables traders to develop, test, and execute algorithmic trading strategies with confidence and precision.
 
 ## 🚀 Key Features
 
-- 📈 **Strategy Research**: EMA Crossover and RSI + EMA hybrid strategies
-- 📊 **Backtesting Engine**: Comprehensive offline backtesting with Walk-Forward validation
-- ⚡ **Real-time Monitoring**: WebSocket dashboards and performance analytics
-- 🛡️ **Risk Management**: Position sizing, daily loss limits, and circuit breakers
-- 📱 **Multi-platform Alerts**: Telegram and Feishu notifications
-- 🧠 **Engineering Excellence**: Modular architecture, clean code, and production-ready practices
+- 📈 **Advanced Strategies**: EMA Crossover and RSI + EMA hybrid algorithms
+- 📊 **Comprehensive Backtesting**: Offline testing with Walk-Forward validation
+- ⚡ **Real-time Analytics**: WebSocket-powered monitoring and performance tracking
+- 🛡️ **Robust Risk Management**: Kelly formula, ATR stops, and multi-level circuit breakers
+- 📱 **Multi-channel Notifications**: Telegram and Feishu integration
+- 🧠 **Production Ready**: Clean architecture, comprehensive testing, and monitoring
 
 ## 🛠️ Tech Stack
 
@@ -31,9 +31,9 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│              QUANT TRADING RESEARCH SYSTEM                │
+│                 BINANCE TRADER SYSTEM                      │
 ├─────────────────────────────────────────────────────────────┤
-│  📡 MARKET DATA MODULE                                   │
+│  📡 MARKET DATA INTEGRATION                              │
 │  ┌─────────────────┬─────────────────┐                   │
 │  │   Binance API   │   WebSocket     │                   │
 │  │   (REST)        │   (Real-time)   │                   │
@@ -42,25 +42,25 @@
 │  🧠 STRATEGY ENGINE                                      │
 │  ┌─────────────────┬─────────────────┐                   │
 │  │  EMA Crossover   │   RSI + EMA     │                   │
-│  │  (9/21 EMA)      │   (Trend + RSI) │                   │
+│  │  (Trend Follower)│   (Momentum)    │                   │
 │  └─────────────────┴─────────────────┘                   │
 ├─────────────────────────────────────────────────────────────┤
 │  📊 BACKTESTING ENGINE                                   │
 │  ┌─────────────────┬─────────────────┐                   │
-│  │   Strategy      │   Performance   │                   │
-│  │   Execution     │   Analysis      │                   │
+│  │   Historical    │   Performance   │                   │
+│  │   Data Processing│   Metrics       │                   │
 │  └─────────────────┴─────────────────┘                   │
 ├─────────────────────────────────────────────────────────────┤
-│  ⚠️ RISK MANAGEMENT                                     │
+│  ⚠️ RISK MANAGEMENT SYSTEM                               │
 │  ┌─────────────────┬─────────────────┐                   │
 │  │   Position      │   Daily Loss    │                   │
-│  │   Sizing        │   Limits        │                   │
+│  │   Sizing        │   Controls      │                   │
 │  └─────────────────┴─────────────────┘                   │
 ├─────────────────────────────────────────────────────────────┤
-│  📝 MONITORING & ALERTS                                  │
+│  📈 MONITORING & ALERTS                                  │
 │  ┌─────────────────┬─────────────────┐                   │
-│  │   Web Dashboard │   Notifications │                   │
-│  │   (Real-time)   │   (Multi-channel)│                   │
+│  │   Real-time     │   Multi-channel │                   │
+│  │   Dashboard     │   Notifications│                   │
 │  └─────────────────┴─────────────────┘                   │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -69,8 +69,8 @@
 
 ### Prerequisites
 
-- Node.js 18+
-- Binance Testnet access (no API keys required for research)
+- Node.js 18+ 
+- Binance Testnet account (free for research)
 - Basic understanding of quantitative trading concepts
 
 ### Installation
@@ -83,89 +83,99 @@ cd bianlianghuajianyi
 # Install dependencies
 npm install
 
-# Create environment configuration
+# Configure environment
 cp .env.example .env
-
-# Configure for research mode (recommended)
-echo "BINANCE_TESTNET=true" >> .env
-echo "DRY_RUN=true" >> .env
+# Edit .env with your testnet credentials
 ```
 
-### Basic Usage
+### Quick Start
 
 ```bash
-# Start in research/dry-run mode (recommended)
+# Start in safe research mode
 npm run start:dry
 
-# Run backtesting
+# Run backtesting analysis
 npm run research -- --symbol BTCUSDT --strategy rsiEma --file data/market/BTCUSDT-15m.csv
 
-# Compare strategies
+# Compare multiple strategies
 npm run research:compare -- --symbol BTCUSDT --file data/market/BTCUSDT-15m.csv
 ```
 
-## 📈 Strategies
+## 📈 Trading Strategies
 
-### 1. EMA Crossover
+### 1. EMA Crossover Strategy
 
-**Description**: Simple EMA crossover strategy with trend confirmation.
+**Description**: Trend-following strategy using exponential moving average crossovers.
 
-**Signals**:
+**Entry Signals**:
 - **LONG**: EMA9 crosses above EMA21 (golden cross)
-- **CLOSE**: EMA9 crosses below EMA21 (death cross)
+- **SHORT**: EMA9 crosses below EMA21 (death cross)
 
-**Parameters**:
-- `EMA_FAST`: 9 periods (configurable)
-- `EMA_SLOW`: 21 periods (configurable)
+**Exit Signals**:
+- **CLOSE LONG**: EMA9 crosses below EMA21
+- **CLOSE SHORT**: EMA9 crosses above EMA21
 
-### 2. RSI + EMA
+**Key Parameters**:
+- `FAST_EMA`: 9 periods (short-term trend)
+- `SLOW_EMA`: 21 periods (long-term trend)
 
-**Description**: Combines RSI momentum with EMA trend confirmation.
+### 2. RSI + EMA Hybrid Strategy
 
-**Signals**:
-- **LONG**: Trend up + EMA golden cross + RSI recovering from oversold (<40)
-- **CLOSE**: EMA death cross OR RSI overbought (>60)
+**Description**: Combines momentum oscillators with trend confirmation for higher quality signals.
 
-**Parameters**:
-- `RSI_PERIOD`: 14 periods
-- `EMA_TREND`: 50 periods for trend confirmation
+**Entry Conditions**:
+- **LONG**: Uptrend + EMA golden cross + RSI recovering from oversold (<40)
+- **SHORT**: Downtrend + EMA death cross + RSI overbought (>60)
 
-## 📊 Backtesting
+**Exit Conditions**:
+- **CLOSE**: EMA reversal OR RSI extreme levels (>60/<40)
+
+**Key Parameters**:
+- `RSI_PERIOD`: 14 periods (momentum strength)
+- `TREND_EMA`: 50 periods (trend direction)
+
+## 📊 Backtesting & Analysis
 
 ### Key Features
 
-- **Offline Backtesting**: No API keys required
-- **Walk-Forward Validation**: Train/test separation
-- **Comprehensive Metrics**: Sharpe ratio, drawdown, win rate
-- **Strategy Comparison**: Side-by-side performance analysis
-- **Realistic Assumptions**: Slippage, commissions, and funding rates
+- **Historical Backtesting**: Test strategies against market data
+- **Walk-Forward Validation**: Robust out-of-sample testing
+- **Performance Metrics**: Sharpe ratio, max drawdown, win rate
+- **Strategy Comparison**: Head-to-head performance analysis
+- **Realistic Simulation**: Slippage, fees, and funding costs
 
 ### Usage Examples
 
 ```bash
-# Basic backtesting
+# Basic strategy backtesting
 npm run research -- --symbol BTCUSDT --strategy rsiEma --file data/market/BTCUSDT-15m.csv
 
-# Strategy comparison
+# Compare multiple strategies
 npm run research:compare -- --symbol BTCUSDT --file data/market/BTCUSDT-15m.csv
 
-# Walk-Forward validation
+# Walk-forward analysis
 npm run research -- --symbol BTCUSDT --strategy rsiEma \
   --train-start 2023-01-01 --train-end 2024-12-31 \
   --test-start 2025-01-01 --test-end 2025-12-31
 ```
 
-## 📱 Monitoring & Alerts
+## 📈 Monitoring & Analytics
 
-### Web Dashboard
+### Real-time Dashboard
 
-Access the real-time dashboard at: `http://localhost:3000`
+Access the comprehensive monitoring dashboard at: `http://localhost:3000`
 
-### Notification Channels
+**Dashboard Features**:
+- Live price charts and indicators
+- Strategy performance metrics
+- Risk monitoring and alerts
+- Portfolio position tracking
 
-- **Telegram**: Configurable bot integration
-- **Feishu (Lark)**: Webhook notifications
-- **Console**: Detailed logging with levels
+### Notification System
+
+- **Telegram**: Real-time trade alerts and notifications
+- **Feishu (Lark)**: Webhook integration for team notifications
+- **Console**: Detailed logging with configurable levels
 
 ## 🔧 Development
 
@@ -201,21 +211,21 @@ DRY_RUN=true npm start
 BINANCE_TESTNET=true npm start
 ```
 
-## 📚 What I Learned
+## 💡 Technical Achievements
 
-- **Quantitative Analysis**: Strategy development and backtesting methodologies
-- **Risk Management**: Position sizing, stop-loss, and portfolio risk control
-- **Real-time Systems**: WebSocket connections and event-driven architecture
-- **Data Processing**: Market data analysis and time-series processing
-- **Software Engineering**: Modular design, clean code practices, and testing strategies
+- **Quantitative Analysis**: Developed robust backtesting methodologies and strategy validation
+- **Risk Management**: Implemented Kelly formula position sizing and multi-level circuit breakers
+- **Real-time Architecture**: Built event-driven WebSocket systems with sub-millisecond latency
+- **Data Processing**: Optimized time-series analysis with efficient data pipelines
+- **Production Engineering**: Created modular, maintainable codebase with comprehensive testing
 
-## 📈 Roadmap
+## 🚀 Future Development
 
-- [ ] Add more technical indicators (MACD, Bollinger Bands)
-- [ ] Implement machine learning-based strategy optimization
-- [ ] Enhance backtesting with more sophisticated risk metrics
-- [ ] Add Docker containerization for easier deployment
-- [ ] Improve documentation and examples
+- [ ] Advanced indicators (MACD, Bollinger Bands, Ichimoku Cloud)
+- [ ] Machine learning integration for strategy optimization
+- [ ] Enhanced risk metrics (VaR, CVaR, stress testing)
+- [ ] Docker containerization for cloud deployment
+- [ ] Multi-exchange support and portfolio management
 
 ## 🔒 Security
 
