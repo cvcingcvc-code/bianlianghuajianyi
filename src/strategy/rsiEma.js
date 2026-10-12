@@ -78,7 +78,10 @@ function computeSignal(symState, close, opts = {}) {
   // Exit: EMA death cross OR RSI dropping from overbought
   if (hasPosition) {
     const emaDeathCross = !fastAboveSlow && symState.emaFastPrev !== null && symState.emaFastPrev > symState.emaSlowPrev;
-    const rsiTakeProfit = rsiWeakening && rsi > 65;
+    // RSI take-profit is a high-to-neutral rollover: the previous RSI was at
+    // or above 60 and the current RSI crossed below 60. The former additional
+    // `rsi > 65` check made this branch unreachable alongside `rsi < 60`.
+    const rsiTakeProfit = rsiWeakening;
 
     if (emaDeathCross || rsiTakeProfit) {
       action = 'CLOSE';

@@ -225,5 +225,5 @@ test('rsiEma remains unchanged (golden master)', () => {
     if (r.action === 'LONG') { events.push(`LONG@${idx}`); inPos = true; }
     else if (r.action === 'CLOSE') { events.push(`CLOSE@${idx}`); inPos = false; }
   });
-  assert.deepEqual(events, ['LONG@109', 'CLOSE@130']);
+  assert.deepEqual(events, ['LONG@109', 'CLOSE@126']);
 });

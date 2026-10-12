@@ -205,7 +205,7 @@ test('PARITY: warmup path (real-time first batch) behaves identically', () => {
 });
 
 // Golden master: lock the exact behavior of the current rsiEma on the verified
-// reference sequence (LONG at bar 109, CLOSE at bar 130).
+// reference sequence (LONG at bar 109, RSI rollover CLOSE at bar 126).
 test('GOLDEN MASTER: rsiEma exact signal bars are locked', () => {
   const seq = SEQUENCES.rsiUptrendPullbackRecovery;
   const st = rsiEma.createState();
@@ -216,5 +216,5 @@ test('GOLDEN MASTER: rsiEma exact signal bars are locked', () => {
     if (r.action === 'LONG') { events.push(`LONG@${i}`); inPos = true; }
     else if (r.action === 'CLOSE') { events.push(`CLOSE@${i}`); inPos = false; }
   }
-  assert.deepEqual(events, ['LONG@109', 'CLOSE@130']);
+  assert.deepEqual(events, ['LONG@109', 'CLOSE@126']);
 });
