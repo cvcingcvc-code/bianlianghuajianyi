@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-15",
+  "scope": "P1 bianliang handoff evidence review",
+  "sensitive_scan": {
+    "status": "PASS",
+    "file_count": 7,
+    "findings": [],
+    "excluded": [
+      ".git",
+      "node_modules",
+      "market/funding/holdout inputs",
+      "unrelated files"
+    ]
+  },
+  "log_copy": "byte-identical",
+  "baseline_failure_count": 15,
+  "after_failure_count": 13,
+  "new_failures": [],
+  "resolved_failures": [
+    "PARITY: rsiEma old vs computeSignal — identical per-bar actions",
+    "PARITY: warmup path (real-time first batch) behaves identically"
+  ],
+  "tracked_changes": [
+    "docs/PROJECT_STATUS.md",
+    "tests/parity.test.js"
+  ],
+  "data_worktree_changes": [],
+  "verification": "Existing completed test logs reused; no repeated data-reading suite in this handoff.",
+  "sha256": {
+    "tests/parity.test.js": "d79ac7d8361a84528f6ff1e8407bfcc47c23407a0729db46f530670ee4894896",
+    "docs/PROJECT_STATUS.md": "4991908b3645e4ce177ac0af0eb7c84da033b32c6f3ef43f52cf451fe1e7d158",
+    "reports/quant2/P1_REPAIR_REPORT.md": "7d42010929990694d733c5d3227c87a820212d213900e47e4f9fb616b7e0cad7",
+    "reports/quant2/evidence/p1-bianliang/SHA256SUMS": "d4a26a1c4def4cbe4b55c98372f07e1d543b42324a6a950de28d19368bf2a465",
+    "reports/quant2/evidence/p1-bianliang/baseline-20261015.log": "b1e816fbe908cedfa467deb6aab436319d5b9b365864914bb8b7e3b622a7cb41",
+    "reports/quant2/evidence/p1-bianliang/full-after-20261015.log": "a5541e1fdb10d33257b59919b0d6550681e543cde3f7ad6aa06c6883c589d9c3",
+    "reports/quant2/evidence/p1-bianliang/parity-after-20261015.log": "3bb35562082babe73002b1b4873cf778f639c1ec9bbab75a41d57cf9b4a49184"
+  }
+}

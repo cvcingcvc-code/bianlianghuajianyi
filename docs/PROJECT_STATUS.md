@@ -2,6 +2,14 @@
 
 > Last updated: 2026-09-15. Status verified against baseline SHA: `8cb2dc4`.
 
+## 2026-10-15 可用性推进：本次实际状态（优先于下方历史状态）
+
+- 当前基线 `b903977`，分支 `codex/offline-usability-bianliang-20261015`；研究/Paper 限定，禁止实盘及留出解锁。
+- P1 基线 **197 项：182 通过、15 失败**；严格 parity 合同修正后 **199 项：186 通过、13 失败、0 跳过**；独立 parity **6/6**，未出现新增失败。
+- 两项旧 parity 参考与已有 `d8bdbf0` 行为冲突已修复，保留旧参考和黄金主测试并增加阈值回归；策略、参数、成本、gate、依赖及锁文件未改。
+- **BLOCKED**：11 项缺失历史数据/归档 + 2 项 funding SHA 不一致；未改预期哈希，未恢复或解锁 2026 输入。下方旧文档中的“全部通过/无阻塞”等不适用于此工作区。
+- 完整分类、命令、前后日志及 SHA256：`reports/quant2/P1_REPAIR_REPORT.md`。云端发布与新会话恢复状态由总交付报告单独记录，本节不代表已发布。
+
 ## Project Goal
 
 Build and validate a systematic long-only futures strategy for Binance USD-M perpetual contracts, using official historical data. The strategy must survive multiple independent validation gates before being considered for final holdout testing.
