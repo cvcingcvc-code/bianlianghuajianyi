@@ -1,0 +1,14 @@
+✔ PARITY: emaCrossover old vs computeSignal — identical per-bar actions (7.835522ms)
+✔ PARITY: rsiEma recorded d8bdbf0 contract vs computeSignal — identical per-bar actions (6.643612ms)
+✔ PARITY: warmup path (real-time first batch) behaves identically (1.2502ms)
+✔ RSI contract history: only the recorded rollover changes the reference sequence exits (1.435642ms)
+✔ RSI rollover contract: exact thresholds, position gating and warmup remain strict (0.683519ms)
+✔ GOLDEN MASTER: rsiEma exact signal bars are locked (1.516724ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 104.306075

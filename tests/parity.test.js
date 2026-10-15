@@ -2,12 +2,14 @@
 //
 // The strategies were refactored (pure-function extraction: createState +
 // computeSignal, with onTick delegating to computeSignal). This test verifies
-// that the extracted computeSignal produces IDENTICAL per-bar actions to the
-// pre-refactor onTick logic, which is reconstructed verbatim from the
+// that the extracted computeSignal preserves the recorded contract. The
+// pre-refactor onTick logic is reconstructed verbatim from the
 // pre-refactor source snapshot (no project-level git history existed before the
 // baseline commit, so this reconstruction is the best available reference).
 //
-// See docs/strategy-parity-audit.md.
+// RSI rollover was deliberately corrected by d8bdbf0. Keep the old reference
+// intact, apply that one documented contract change independently below, and
+// lock both versions' exact signal bars. See docs/strategy-parity-audit.md.
 
 const { test } = require('node:test');
 const assert = require('node:assert');
@@ -109,6 +111,20 @@ function trackOld(symState, rsi, emaFast, emaSlow) {
   symState.emaSlowPrev = emaSlow;
 }
 
+// Independent reference for the existing d8bdbf0 contract. The legacy reference
+// computes its own indicators; production computeSignal is never called here.
+// Capture the prior RSI before oldRsiSignal advances it, then apply only the
+// documented >=60 -> <60 exit correction. Entry and EMA exits stay unchanged.
+function recordedRsiSignal(symState, close, warmup, hasPosition) {
+  const previousRsi = symState.rsiPrev;
+  const action = oldRsiSignal(symState, close, warmup, hasPosition);
+  if (!warmup && hasPosition && previousRsi !== null && previousRsi >= 60 && symState.rsi < 60) {
+    symState.lastSignal = 'CLOSE';
+    return 'CLOSE';
+  }
+  return action;
+}
+
 // Simulate a full sequence with the OLD reference, tracking an internal position.
 function simulateOld(oldSignal, closes, { warmup = false } = {}) {
   const st = { prices: [], lastCrossState: null, rsiPrev: null, emaFastPrev: null, emaSlowPrev: null, lastSignal: null };
@@ -170,9 +186,9 @@ test('PARITY: emaCrossover old vs computeSignal — identical per-bar actions', 
   }
 });
 
-test('PARITY: rsiEma old vs computeSignal — identical per-bar actions', () => {
+test('PARITY: rsiEma recorded d8bdbf0 contract vs computeSignal — identical per-bar actions', () => {
   for (const [name, seq] of Object.entries(SEQUENCES)) {
-    const oldActions = simulateOld(oldRsiSignal, seq);
+    const oldActions = simulateOld(recordedRsiSignal, seq);
     const newActions = simulateNew(rsiEma, seq);
     assert.deepEqual(newActions, oldActions, `rsiEma mismatch on "${name}"`);
   }
@@ -190,7 +206,7 @@ test('PARITY: warmup path (real-time first batch) behaves identically', () => {
   const rsiNew = [], rsiOld = [], emaNew = [];
   for (let i = 0; i < seq.length; i++) {
     const w = i < 60;
-    rsiOld.push(oldRsiSignal(stOld, seq[i], w, inPosOld));
+    rsiOld.push(recordedRsiSignal(stOld, seq[i], w, inPosOld));
     if (rsiOld[i] === 'LONG') inPosOld = true; else if (rsiOld[i] === 'CLOSE') inPosOld = false;
 
     const rn = rsiEma.computeSignal(stNew, seq[i], { hasPosition: inPosNew, warmup: w });
@@ -202,6 +218,41 @@ test('PARITY: warmup path (real-time first batch) behaves identically', () => {
     if (en.action === 'LONG') inPosNewEma = true; else if (en.action === 'CLOSE') inPosNewEma = false;
   }
   assert.deepEqual(rsiNew, rsiOld, 'rsiEma warmup parity');
+});
+
+test('RSI contract history: only the recorded rollover changes the reference sequence exits', () => {
+  const seq = SEQUENCES.rsiUptrendPullbackRecovery;
+  const events = (actions) => actions.flatMap((action, index) => action === 'HOLD' ? [] : [`${action}@${index}`]);
+  const legacy = simulateOld(oldRsiSignal, seq);
+  const recorded = simulateOld(recordedRsiSignal, seq);
+  assert.deepEqual(events(legacy), ['LONG@109', 'CLOSE@130']);
+  assert.deepEqual(events(recorded), ['LONG@109', 'CLOSE@126']);
+  assert.deepEqual(recorded.flatMap((action, index) => action === legacy[index] ? [] : [index]), [126, 130]);
+});
+
+test('RSI rollover contract: exact thresholds, position gating and warmup remain strict', () => {
+  for (const { previousRsi, loss, hasPosition, warmup, action } of [
+    { previousRsi: 60, loss: 3, hasPosition: true, warmup: false, action: 'CLOSE' },
+    { previousRsi: 59, loss: 3, hasPosition: true, warmup: false, action: 'HOLD' },
+    { previousRsi: null, loss: 3, hasPosition: true, warmup: false, action: 'HOLD' },
+    { previousRsi: 60, loss: 2, hasPosition: true, warmup: false, action: 'HOLD' },
+    { previousRsi: 60, loss: 3, hasPosition: false, warmup: false, action: 'HOLD' },
+    { previousRsi: 60, loss: 3, hasPosition: true, warmup: true, action: 'HOLD' },
+  ]) {
+    // Fourteen integer deltas produce RSI exactly 60 (loss=2) or 50 (loss=3).
+    const closes = [100];
+    for (let i = 0; i < 14; i++) closes.push(closes.at(-1) + (i < 7 ? 3 : -loss));
+    const st = rsiEma.createState();
+    st.prices = [...Array(45).fill(100), ...closes.slice(0, -1)];
+    st.rsiPrev = previousRsi;
+    // Prior EMA ordering excludes the independent EMA death-cross exit.
+    st.emaFastPrev = 0;
+    st.emaSlowPrev = 1;
+    const result = rsiEma.computeSignal(st, closes.at(-1), { hasPosition, warmup });
+    assert.equal(st.rsi, loss === 2 ? 60 : 50);
+    assert.equal(result.action, action, JSON.stringify({ previousRsi, loss, hasPosition, warmup }));
+    if (action === 'CLOSE') assert.match(result.reason, /cross<60/);
+  }
 });
 
 // Golden master: lock the exact behavior of the current rsiEma on the verified

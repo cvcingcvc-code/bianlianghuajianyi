@@ -1,0 +1,547 @@
+
+> binance-trader@0.1.0 test
+> node --test "tests/**/*.test.js"
+
+✔ manual winning trade: numbers match the independent formulas (2.812072ms)
+✔ manual losing trade: numbers match the independent formulas (0.282343ms)
+✔ position sizing: 100% outlay leaves cash >= 0 and notional <= equity (no leverage) (0.161286ms)
+✔ position sizing: 25% outlay leaves 75% cash (0.497299ms)
+✔ fee single counting: fees deducted once per fill; cash delta == netPnl == grossPnl - fees (0.264058ms)
+✔ slippage single counting: fills use open*(1+-slip) once; PnL derived from those fills (1.072574ms)
+✔ mark-to-market equity: equity = cash + quantity * close while in position (1.211835ms)
+✔ forced exit: open position at end is closed at last close and flagged forcedExit (0.749516ms)
+✔ total return: 10000 -> 11000 equals exactly 10% (1.362265ms)
+✔ expectancy: outputs dollar and pct-per-trade explicitly (0.452718ms)
+✔ profit factor: gross and net are separate and clearly labeled (0.148205ms)
+✔ sharpe/sortino: bar-level returns, annualized by 15m periodsPerYear (1.627385ms)
+✔ exposure: uses bars-in-market fraction, not trade count (0.468497ms)
+✔ max drawdown: [100,120,90,110,80,130] -> peak 120 (idx1), trough 80 (idx4), 33.33% (0.113275ms)
+✔ buy-hold identity: zero-cost all-in LONG via backtester == BUY_AND_HOLD_REFERENCE (1.410357ms)
+✔ next-bar execution: signal at close N -> fill at open N+1 (5.678112ms)
+✔ no look-ahead: fill uses next-bar OPEN, never next-bar close (0.743286ms)
+✔ losing strategy: enter high, exit low, net negative (0.466818ms)
+✔ winning strategy: enter low, exit high, net positive (0.239273ms)
+✔ zero trades: always HOLD -> flat equity, null metrics (1.180019ms)
+✔ single trade: exactly one round trip recorded (0.314091ms)
+✔ integration: emaCrossover backtest on synthetic fixture runs end-to-end (5.183785ms)
+✔ commission calculation (test case 8) (2.025516ms)
+✔ slippage calculation (test case 9) (0.221642ms)
+✔ broker: rejects invalid commission/slippage (0.71679ms)
+✔ funding: default provider returns 0 and reports not included (0.188057ms)
+✔ funding: constant provider computes cost and reports included (0.437032ms)
+✔ CSV parsing: parses header and rows (1.502854ms)
+✔ CSV parsing: strips BOM and handles CRLF and blank lines (0.265592ms)
+✔ CSV parsing: missing column detection (0.260626ms)
+✔ CSV parsing: rejects empty file (0.491683ms)
+✔ CSV parsing: reads fixture file from disk (0.308411ms)
+✔ invalid candle detection: NaN fields flagged (1.169635ms)
+✔ invalid candle detection: bad OHLC relationship flagged (0.173232ms)
+✔ invalid candle detection: non-positive close flagged (0.190268ms)
+✔ duplicate timestamp detection (0.961317ms)
+✔ out-of-order timestamps flagged as error (0.200315ms)
+✔ loadCandles: valid fixture loads and reports quality (0.991073ms)
+✔ loadCandles: throws on missing required column (0.696141ms)
+✔ loadCandles: throws on out-of-order timestamps (0.389472ms)
+✔ loadCandles: throws on invalid candle row (0.381731ms)
+✔ loadCandles: dedupes duplicate timestamps and reports count (0.352809ms)
+✖ BNB official data normalization: loads, sorted, contains 2026 (2.108793ms)
+✖ SOL official data normalization: loads, sorted, contains 2026 (0.243979ms)
+✖ checksum validation: every downloaded official zip matches its .CHECKSUM (1.060783ms)
+✖ listing-date handling: first 4h candle is after the first 15m, first year is partial (0.262799ms)
+✖ 4h aggregation reuses the V4 resampler (16x15m) on external data (0.510965ms)
+✖ warmup: first trade occurs only after EMA/breakout warmup (1.651857ms)
+✖ external assets are isolated (independent accounts) (0.29698ms)
+✖ 2026 holdout guard blocks strategy execution on 2026 data (0.593215ms)
+✔ candidate freeze metadata: frozen doc exists and references freeze SHA 2e866b3 (2.680455ms)
+✔ position size 25% and cost model are unchanged for external validation (0.893638ms)
+✔ external gate: asset-level pass/fail (0.28197ms)
+✔ external gate: stress gate (0.176761ms)
+✔ year consistency: >=60% of complete buckets must be positive (0.146552ms)
+✔ sample gate: <100 trades on any external asset fails (0.478258ms)
+✔ year concentration: >60% single-year contribution flags HIGH concentration (0.223512ms)
+✔ 2025 regime check: systematic only when all assets negative (0.202625ms)
+✔ funding positive long pays (rate +0.001, qty 2, mark 100) (2.035459ms)
+✔ funding negative long receives (rate -0.001, qty 2, mark 100) (0.563608ms)
+✔ funding zero rate (0.821094ms)
+✔ multiple funding events: +0.0001, +0.0002, -0.0001 (0.752664ms)
+✔ entry boundary excluded (fundingTime == entryTime) (0.520023ms)
+✔ exit boundary excluded (fundingTime == exitTime) (0.300048ms)
+✔ event inside position included (entry < fundingTime < exit) (0.20572ms)
+✔ event before entry excluded (0.338258ms)
+✔ event after exit excluded (0.789913ms)
+✔ markPrice direct from API (0.269736ms)
+✔ invalid funding rate skipped (0.160699ms)
+✔ invalid markPrice skipped (0.619776ms)
+✔ historical provider getEvents with strict boundaries (0.624188ms)
+✔ historical provider getEvents returns empty for no match (0.155486ms)
+✔ historical provider getRate returns null for unknown symbol (0.133791ms)
+✔ verifyFundingData: clean data passes (0.454716ms)
+✔ verifyFundingData: duplicates detected (0.109596ms)
+✔ verifyFundingData: empty data is incomplete (0.3132ms)
+✔ verifyFundingData: 2026 violation detected (0.282668ms)
+✔ saveCSV + loadFundingCSV round-trip (1.673157ms)
+✔ 2026 still locked for research strategies (0.212193ms)
+✔ candidate freeze SHA unchanged (3.494232ms)
+✔ funding affects equity curve (netPnlAfterFunding differs from netPnl) (0.295828ms)
+✔ duplicate funding timestamps are deduplicated by provider (0.561793ms)
+✔ pagination boundary: no duplicate at page boundary (0.13376ms)
+✔ future funding events do not affect past equity (0.239039ms)
+✔ missing funding data for asset is detected (0.094758ms)
+✖ 2026 kline data can be read by data validator (2.162629ms)
+✔ 2026 funding data can be read by data validator (25.600614ms)
+✔ 2026 strategy execution is rejected by holdoutGuard (1.608016ms)
+✔ non-research strategy is not blocked by holdoutGuard (0.134634ms)
+✔ 2026 monthly kline URLs are correctly formatted (0.160492ms)
+✔ 2026 monthly funding URLs are correctly formatted (0.461234ms)
+✔ kline CSV SHAs in manifest match actual files (2.510539ms)
+✖ funding CSV SHAs in manifest match actual files (2.335153ms)
+✔ holdout manifest contains no strategy metrics (0.923942ms)
+✔ candidate freeze SHA remains 2e866b3 (1.413477ms)
+✖ 2026 kline data has no missing bars (0.289709ms)
+✖ 2026 kline data has no duplicates (0.160116ms)
+✔ 2026 funding has no synthetic/mock/fixture sources (19.874152ms)
+✔ 2026 funding markPrice is available for all events (21.395587ms)
+▶ Mark Price Provenance Repair V1
+  ▶ Funding archive schema
+    ✔ funding CSV does NOT contain direct markPrice column (2.570937ms)
+  ✔ Funding archive schema (3.441974ms)
+  ▶ Ordinary candle close rejected as mark price
+    ✔ markPriceSource is never TRADE_KLINE_CLOSE (44.497254ms)
+  ✔ Ordinary candle close rejected as mark price (44.67018ms)
+  ▶ Mark price exact open mapping
+    ✔ maps to exact open when openTime matches fundingTime (0.36929ms)
+  ✔ Mark price exact open mapping (4.89036ms)
+  ▶ Current minute close cannot be used
+    ✔ uses open price not close for exact match (0.267553ms)
+  ✔ Current minute close cannot be used (0.589067ms)
+  ▶ Previous mark fallback
+    ✔ falls back to previous candle close when no exact match (0.246947ms)
+  ✔ Previous mark fallback (0.477881ms)
+  ▶ Future mark forbidden
+    ✔ never uses a candle after fundingTime (0.263178ms)
+  ✔ Future mark forbidden (0.435811ms)
+  ▶ 5m staleness boundary
+    ✔ accepts exactly 5 minutes staleness (0.160722ms)
+    ✔ rejects >5 minutes staleness (0.139174ms)
+  ✔ 5m staleness boundary (0.451086ms)
+  ▶ No data before mark price start
+    ✔ returns NO_DATA when no previous candle exists (0.163438ms)
+  ✔ No data before mark price start (0.240997ms)
+  ▶ Provenance fields required
+    ✔ all funding events have markPriceSource in CSV (20.250632ms)
+  ✔ Provenance fields required (20.412947ms)
+  ▶ Checksum verification
+    ✔ markPriceKlines checksums verified during download (0.166063ms)
+  ✔ Checksum verification (0.259587ms)
+  ▶ Mark price data integrity
+    ✔ all 4 assets have markPriceKlines downloaded (0.633395ms)
+    ✔ markPriceKlines start from 2021-01 (0.430305ms)
+  ✔ Mark price data integrity (1.177415ms)
+  ▶ Old/new funding comparison
+    ✔ corrected net funding differs from candle-close funding (0.284347ms)
+  ✔ Old/new funding comparison (0.360704ms)
+  ▶ 2026 mark data inspection allowed
+    ✔ 2026 markPriceKlines downloaded for all assets (0.348931ms)
+    ✔ 2026 holdout manifest exists (0.368075ms)
+  ✔ 2026 mark data inspection allowed (0.823804ms)
+  ▶ 2026 strategy execution still rejected
+    ✔ holdoutGuard blocks 2026 strategy eval (0.154777ms)
+  ✔ 2026 strategy execution still rejected (0.222537ms)
+  ▶ Candidate freeze unchanged
+    ✔ breakout24h4h strategy file unchanged (0.118132ms)
+  ✔ Candidate freeze unchanged (0.173372ms)
+  ▶ Mark price staleness during dev period
+    ✔ dev period (2021-2025) has no unresolved events for BTC (9.711063ms)
+  ✔ Mark price staleness during dev period (9.787327ms)
+✔ Mark Price Provenance Repair V1 (90.05117ms)
+✔ PnL: LONG round trip without costs (2.636138ms)
+✔ PnL: round trip at same price with commission + slippage loses money (0.587276ms)
+✔ maximum drawdown: tracked from running peak (6.047876ms)
+✔ maximum drawdown: monotonically rising curve has zero drawdown (0.540177ms)
+✔ sharpe: annualized by 15m frequency (1.014214ms)
+✔ sharpe: null when equity is constant (zero variance) (0.220878ms)
+✔ profit factor and win rate (0.463446ms)
+✔ metrics: null values when there are no trades (0.262289ms)
+✔ interval parser: 15m -> 900000 ms and periodsPerYear 35040 (1.289781ms)
+✔ interval parser: 1h -> 3600000 ms and periodsPerYear 8760 (0.655547ms)
+✔ interval parser: 1d -> 86400000 ms and periodsPerYear 365 (1.106609ms)
+✔ interval parser: computeMetrics derives periodsPerYear dynamically from 15m (0.238736ms)
+✔ PARITY: emaCrossover old vs computeSignal — identical per-bar actions (9.094858ms)
+✖ PARITY: rsiEma old vs computeSignal — identical per-bar actions (7.463875ms)
+✖ PARITY: warmup path (real-time first batch) behaves identically (2.214542ms)
+✔ GOLDEN MASTER: rsiEma exact signal bars are locked (0.566112ms)
+✔ real CSV parser rejects synthetic source (1.243913ms)
+✔ real CSV has markPriceSource column with official value (4.10986ms)
+✔ manifest.json exists and has correct structure (1.010752ms)
+✖ manifest SHA256 matches actual CSV file (2.858313ms)
+✔ provenance source validation (0.812154ms)
+✔ 2026 remains locked for research strategies (1.304313ms)
+✔ candidate freeze SHA remains 2e866b3 (1.431739ms)
+✔ real funding reports go to funding-real-v1, not funding-v1 (0.41692ms)
+✔ funding attribution data structure is correct (1.197626ms)
+✔ data/funding-real directory exists (0.327432ms)
+✔ data/funding directory still exists (synthetic preserved) (0.35732ms)
+✔ independent reference: production backtester matches manual math (winning trade) (1.965812ms)
+✔ independent reference: production backtester matches manual math (losing trade) (0.369374ms)
+✔ independent reference: zero-cost trade has zero fees and exact gross PnL (0.367956ms)
+✔ EMA strategy: golden cross produces LONG, death cross produces CLOSE (4.446583ms)
+✔ EMA strategy: no signal with too few bars (warmup respected) (0.213931ms)
+✔ RSI EMA strategy: recovery from RSI < 40 in uptrend produces LONG, then CLOSE (4.161446ms)
+✔ RSI EMA strategy: no signal with too few bars (0.319803ms)
+✔ strategies: createState() produces independent state per run (0.449648ms)
+✔ ATR tracker matches calcATR and never uses future data (4.59112ms)
+✔ ema50 slope is identical whether or not future bars are present (0.927954ms)
+✔ cross count only looks back to endIdx (0.425159ms)
+✔ MFE/MAE use entry-price excursions over the holding path (1.31347ms)
+✔ regime classification buckets trend and volatility (0.307345ms)
+✔ emaTrendFilter: allows LONG on trend-aligned golden cross (1.511054ms)
+✔ emaTrendFilter: no LONG on counter-trend golden cross (close < EMA50) (0.883947ms)
+✔ holdout lock: research candidate on 2026 data is locked without --unlock-holdout (0.303653ms)
+✔ holdout lock: data ending before 2026 is allowed (0.175667ms)
+✔ holdout lock: walk-forward test range touching 2026 is locked (0.216277ms)
+✔ holdout lock: --unlock-holdout disables the lock (0.105692ms)
+✔ holdout lock: non-research (live) strategies are never locked (0.066837ms)
+✔ research strategy registry contains the preregistered candidates (1.132721ms)
+✔ validation (2024-2025) and holdout (2026) date ranges are isolated (10.562226ms)
+✔ rsiEma remains a live (non-research) strategy with intact interface (1.996721ms)
+✔ emaConfirmation: LONG fires at least 1 bar after the golden cross and fills 2 bars later (8.608822ms)
+✔ emaConfirmation: mutating candles after a signal does not change past signals (0.703221ms)
+✔ emaConfirmation: entry does NOT use the confirmation candle high (only its close) (0.311816ms)
+✔ trendPullbackReclaim: LONG fires on pullback+reclaim in an uptrend, not otherwise (2.893406ms)
+✔ breakout24hTrend: entry uses close > prior-96-bar high (current candle high excluded) (1.382968ms)
+✔ breakout24hTrend: no signal before 96 prior bars (warmup) (0.342457ms)
+✔ breakout24hTrend: past signals unchanged when future candles are mutated (1.588754ms)
+✔ all V3A candidates exit only on the EMA9/21 death cross (same rule as baseline) (2.486885ms)
+✔ V3A candidates are holdout-locked on 2026 data (0.345444ms)
+✔ V3A folds are within development data and non-overlapping (0.210391ms)
+✔ V3A candidates are preregistered and loadable (0.276832ms)
+✔ baseline emaCrossover behavior is unchanged (golden master) (0.386025ms)
+✔ rsiEma remains unchanged (golden master) (1.678918ms)
+✔ resample 1h: 4x15m -> exact open/high/low/close/volume/timestamp (3.587225ms)
+✔ resample 4h: 16x15m -> exact OHLCV (0.458416ms)
+✔ resample: strict UTC hour alignment (01:00 candle goes to next hour) (0.182485ms)
+✔ resample: incomplete windows are discarded and reported, never fabricated (0.13885ms)
+✔ resample: mutating a future 15m candle never changes already-formed candles (0.867142ms)
+✔ breakout24h1h uses a 24-bar (24h) lookback; breakout24h4h uses 6 bars (1.267932ms)
+✔ breakout24h4h: entry close must beat prior-6-bar high; current high excluded (2.364638ms)
+✔ next-bar execution: breakout24h1h fills at the next 1h open (2.421345ms)
+✔ next-bar execution: breakout24h4h fills at the next 4h open (2.600254ms)
+✔ 1h/4h breakout candidates exit only on EMA9/21 death cross (5.096199ms)
+✔ V4 candidates are holdout-locked on 2026 data (0.394145ms)
+✔ V3A 15m breakout24hTrend is unchanged and still fires a breakout entry (0.964413ms)
+✔ positionSizePct 25: 25% of equity deployed, no negative cash, no leverage (0.549938ms)
+✔ cost model unchanged: default commission 0.0004 and slippage 0.0002 (0.542165ms)
+✔ walk-forward split: strict separation with no overlap (24.080113ms)
+✔ walk-forward split: respects arbitrary boundaries (7.186551ms)
+ℹ tests 197
+ℹ suites 17
+ℹ pass 182
+ℹ fail 15
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 695.272324
+
+✖ failing tests:
+
+test at tests/externalValidationV1.test.js:26:1
+✖ BNB official data normalization: loads, sorted, contains 2026 (2.108793ms)
+  Error: Historical CSV not found: /workspace/bianlianghuajianyi/data/market/BNBUSDT-15m.csv
+      at loadCandles (/workspace/bianlianghuajianyi/src/research/data/candleRepository.js:93:11)
+      at load15m (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:22:10)
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:27:19)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at tests/externalValidationV1.test.js:34:1
+✖ SOL official data normalization: loads, sorted, contains 2026 (0.243979ms)
+  Error: Historical CSV not found: /workspace/bianlianghuajianyi/data/market/SOLUSDT-15m.csv
+      at loadCandles (/workspace/bianlianghuajianyi/src/research/data/candleRepository.js:93:11)
+      at load15m (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:22:10)
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:35:19)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at tests/externalValidationV1.test.js:42:1
+✖ checksum validation: every downloaded official zip matches its .CHECKSUM (1.060783ms)
+  AssertionError [ERR_ASSERTION]: raw dir for BNBUSDT
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:45:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/externalValidationV1.test.js:59:1
+✖ listing-date handling: first 4h candle is after the first 15m, first year is partial (0.262799ms)
+  Error: Historical CSV not found: /workspace/bianlianghuajianyi/data/market/BNBUSDT-15m.csv
+      at loadCandles (/workspace/bianlianghuajianyi/src/research/data/candleRepository.js:93:11)
+      at load15m (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:22:10)
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:61:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests/externalValidationV1.test.js:72:1
+✖ 4h aggregation reuses the V4 resampler (16x15m) on external data (0.510965ms)
+  Error: Historical CSV not found: /workspace/bianlianghuajianyi/data/market/BNBUSDT-15m.csv
+      at loadCandles (/workspace/bianlianghuajianyi/src/research/data/candleRepository.js:93:11)
+      at load15m (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:22:10)
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:74:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests/externalValidationV1.test.js:90:1
+✖ warmup: first trade occurs only after EMA/breakout warmup (1.651857ms)
+  Error: Historical CSV not found: /workspace/bianlianghuajianyi/data/market/BNBUSDT-15m.csv
+      at loadCandles (/workspace/bianlianghuajianyi/src/research/data/candleRepository.js:93:11)
+      at load15m (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:22:10)
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:91:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests/externalValidationV1.test.js:102:1
+✖ external assets are isolated (independent accounts) (0.29698ms)
+  Error: Historical CSV not found: /workspace/bianlianghuajianyi/data/market/BNBUSDT-15m.csv
+      at loadCandles (/workspace/bianlianghuajianyi/src/research/data/candleRepository.js:93:11)
+      at load15m (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:22:10)
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:103:24)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests/externalValidationV1.test.js:118:1
+✖ 2026 holdout guard blocks strategy execution on 2026 data (0.593215ms)
+  Error: Historical CSV not found: /workspace/bianlianghuajianyi/data/market/BNBUSDT-15m.csv
+      at loadCandles (/workspace/bianlianghuajianyi/src/research/data/candleRepository.js:93:11)
+      at load15m (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:22:10)
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/externalValidationV1.test.js:123:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests/holdoutDataAcquisition.test.js:17:1
+✖ 2026 kline data can be read by data validator (2.162629ms)
+  AssertionError [ERR_ASSERTION]: BTCUSDT 15m CSV exists
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/holdoutDataAcquisition.test.js:20:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/holdoutDataAcquisition.test.js:116:1
+✖ funding CSV SHAs in manifest match actual files (2.335153ms)
+  AssertionError [ERR_ASSERTION]: BTCUSDT funding SHA256 mismatch
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/holdoutDataAcquisition.test.js:125:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '8d1321d99c01d9d351e1ab45aeb9ac5ee2abd5679ee0ed1eb3a3b42dc65ef7ec',
+    expected: '674683b67d80a3d2336dab330e27617a0d31c32324a45661b9d02ceb59fd7d98',
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/holdoutDataAcquisition.test.js:153:1
+✖ 2026 kline data has no missing bars (0.289709ms)
+  Error: ENOENT: no such file or directory, open '/workspace/bianlianghuajianyi/data/market/BTCUSDT-15m.csv'
+      at Object.readFileSync (node:fs:484:20)
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/holdoutDataAcquisition.test.js:157:24)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/workspace/bianlianghuajianyi/data/market/BTCUSDT-15m.csv'
+  }
+
+test at tests/holdoutDataAcquisition.test.js:173:1
+✖ 2026 kline data has no duplicates (0.160116ms)
+  Error: ENOENT: no such file or directory, open '/workspace/bianlianghuajianyi/data/market/BTCUSDT-15m.csv'
+      at Object.readFileSync (node:fs:484:20)
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/holdoutDataAcquisition.test.js:176:24)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/workspace/bianlianghuajianyi/data/market/BTCUSDT-15m.csv'
+  }
+
+test at tests/parity.test.js:173:1
+✖ PARITY: rsiEma old vs computeSignal — identical per-bar actions (7.463875ms)
+  AssertionError [ERR_ASSERTION]: rsiEma mismatch on "rsiUptrendPullbackRecovery"
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/parity.test.js:177:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD',
+      ... 45 more items
+    ],
+    expected: [
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD',
+      ... 45 more items
+    ],
+    operator: 'deepEqual',
+    diff: 'simple'
+  }
+
+test at tests/parity.test.js:181:1
+✖ PARITY: warmup path (real-time first batch) behaves identically (2.214542ms)
+  AssertionError [ERR_ASSERTION]: rsiEma warmup parity
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/parity.test.js:204:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD',
+      ... 45 more items
+    ],
+    expected: [
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD', 'HOLD',
+      'HOLD', 'HOLD',
+      ... 45 more items
+    ],
+    operator: 'deepEqual',
+    diff: 'simple'
+  }
+
+test at tests/realFundingAcquisition.test.js:74:1
+✖ manifest SHA256 matches actual CSV file (2.858313ms)
+  AssertionError [ERR_ASSERTION]: BTCUSDT SHA256 mismatch
+      at TestContext.<anonymous> (/workspace/bianlianghuajianyi/tests/realFundingAcquisition.test.js:83:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '8d1321d99c01d9d351e1ab45aeb9ac5ee2abd5679ee0ed1eb3a3b42dc65ef7ec',
+    expected: '674683b67d80a3d2336dab330e27617a0d31c32324a45661b9d02ceb59fd7d98',
+    operator: '==',
+    diff: 'simple'
+  }
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
