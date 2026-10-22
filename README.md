@@ -88,6 +88,8 @@ cp .env.example .env
 # Edit .env with your testnet credentials
 ```
 
+> 历史行情 CSV 体积较大，不随仓库分发。请把数据放在本地 `data/market/` 或 `data/markprice/` 目录后再运行回测；这两个目录已被 `.gitignore` 排除。
+
 ### Quick Start
 
 ```bash
@@ -233,12 +235,12 @@ BINANCE_TESTNET=true npm start
 
 - **API Key Security**: Never commit `.env` files to version control
 - **Research Mode**: Default to testnet and dry-run for safety
-- **Data Privacy**: Market data files are excluded from git
+- **Data Privacy**: Historical market data (`data/markprice/`, `data/market/*.csv`) stays local and is not tracked
 - **Configuration Management**: Environment variables for sensitive data
 
 ## 📝 License
 
-MIT License - Free for personal and commercial use with proper risk management and testing.
+MIT License - see [LICENSE](LICENSE). Free for personal and commercial use with proper risk management and testing.
 
 ---
 

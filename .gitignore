@@ -4,7 +4,9 @@ data/*.db
 data/*.json
 logs/*.log
 reports/
-# Historical market data lives under data/market/ — never commit large CSV files
+# Historical market data stays local — never commit large CSV/zip files
+data/markprice/
 data/market/*.csv
 data/market/raw/
+data/**/*.zip
 !data/market/.gitkeep
