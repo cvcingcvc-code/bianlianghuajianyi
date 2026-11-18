@@ -8,6 +8,8 @@ const POSITION_SIDE = Object.freeze({ LONG: 'LONG', SHORT: 'SHORT' });
 const ORDER_TYPE = Object.freeze({
   MARKET: 'MARKET',
   LIMIT: 'LIMIT',
+  STOP_MARKET: 'STOP_MARKET',
+  TAKE_PROFIT_MARKET: 'TAKE_PROFIT_MARKET',
   STOP_LOSS_LIMIT: 'STOP_LOSS_LIMIT',
   TAKE_PROFIT_LIMIT: 'TAKE_PROFIT_LIMIT',
 });
@@ -16,7 +18,7 @@ const ORDER_TYPE = Object.freeze({
 const MARGIN_TYPE = Object.freeze({ ISOLATED: 'ISOLATED', CROSSED: 'CROSSED' });
 
 // Signal direction
-const DIRECTION = Object.freeze({ LONG: 'LONG', CLOSE: 'CLOSE' });
+const DIRECTION = Object.freeze({ LONG: 'LONG', SHORT: 'SHORT', CLOSE: 'CLOSE' });
 
 // Order status
 const ORDER_STATUS = Object.freeze({

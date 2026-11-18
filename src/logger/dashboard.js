@@ -67,9 +67,9 @@ function render() {
     console.log('─'.repeat(56));
     for (const pos of positions) {
       const cp = lastTicker[pos.symbol] ? lastTicker[pos.symbol].price : pos.entryPrice;
-      const uPnl = (cp - pos.entryPrice) * pos.quantity;
+      const uPnl = (pos.side === 'SHORT' ? pos.entryPrice - cp : cp - pos.entryPrice) * pos.quantity;
       const sign2 = uPnl >= 0 ? '+' : '';
-      console.log(`  ${pos.symbol} LONG | Entry: ${pos.entryPrice.toFixed(4)} | Now: ${cp.toFixed(4)} | PnL: ${sign2}${uPnl.toFixed(2)} | SL: ${pos.stopLossPrice.toFixed(4)} | TP: ${pos.takeProfitPrice.toFixed(4)}`);
+      console.log(`  ${pos.symbol} ${pos.side || 'LONG'} | Entry: ${pos.entryPrice.toFixed(4)} | Now: ${cp.toFixed(4)} | PnL: ${sign2}${uPnl.toFixed(2)} | SL: ${pos.stopLossPrice.toFixed(4)} | TP: ${pos.takeProfitPrice.toFixed(4)}`);
     }
   }
 

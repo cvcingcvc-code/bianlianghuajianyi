@@ -11,10 +11,12 @@ const ROOT = path.join(__dirname, '..');
 const ASSETS = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT'];
 const HOLDOUT_START_MS = Date.UTC(2026, 0, 1);
 const HOLDOUT_END_MS = Date.UTC(2026, 7, 31, 23, 59, 59, 999);
+const HAS_LOCAL_MARKET_CSVS = ASSETS.every((s) => fs.existsSync(path.join(ROOT, 'data', 'market', `${s}-15m.csv`)));
+const SKIP_MARKET_MSG = !HAS_LOCAL_MARKET_CSVS ? 'local gitignored data/market/*.csv not downloaded' : false;
 
 // === 2026 Data Inspection Allowed ===
 
-test('2026 kline data can be read by data validator', () => {
+test('2026 kline data can be read by data validator', { skip: SKIP_MARKET_MSG }, () => {
   for (const symbol of ASSETS) {
     const csvPath = path.join(ROOT, 'data', 'market', `${symbol}-15m.csv`);
     assert.ok(fs.existsSync(csvPath), `${symbol} 15m CSV exists`);
@@ -121,7 +123,8 @@ test('funding CSV SHAs in manifest match actual files', () => {
     if (!info.fundingSHA256) continue;
     const csvPath = path.join(ROOT, 'data', 'funding-real', `${sym}.csv`);
     if (!fs.existsSync(csvPath)) continue;
-    const actual = crypto.createHash('sha256').update(fs.readFileSync(csvPath)).digest('hex');
+    const normalized = fs.readFileSync(csvPath, 'utf8').replace(/\r\n/g, '\n');
+    const actual = crypto.createHash('sha256').update(normalized, 'utf8').digest('hex');
     assert.equal(actual, info.fundingSHA256, `${sym} funding SHA256 mismatch`);
   }
 });
@@ -150,7 +153,7 @@ test('candidate freeze SHA remains 2e866b3', () => {
 
 // === 2026 Data Integrity ===
 
-test('2026 kline data has no missing bars', () => {
+test('2026 kline data has no missing bars', { skip: SKIP_MARKET_MSG }, () => {
   const expectedInterval = 900000; // 15m
   for (const symbol of ASSETS) {
     const csvPath = path.join(ROOT, 'data', 'market', `${symbol}-15m.csv`);
@@ -170,7 +173,7 @@ test('2026 kline data has no missing bars', () => {
   }
 });
 
-test('2026 kline data has no duplicates', () => {
+test('2026 kline data has no duplicates', { skip: SKIP_MARKET_MSG }, () => {
   for (const symbol of ASSETS) {
     const csvPath = path.join(ROOT, 'data', 'market', `${symbol}-15m.csv`);
     const content = fs.readFileSync(csvPath, 'utf8');

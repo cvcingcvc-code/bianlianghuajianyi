@@ -11,7 +11,7 @@ function init(repo, eventBus, logger) {
       if (count >= CONSECUTIVE_LOSS_THRESHOLD) {
         repo.tripBreaker(BREAKER.CONSECUTIVE_LOSS, { consecutiveLosses: count });
         logger.error('CIRCUIT BREAKER TRIPPED: consecutive losses');
-        eventBus.emit('circuitBreakerTripped', { reason: BREAKER.CONSECUTIVE_LOSS, count });
+        eventBus.emit('circuitBreakerTripped', { reason: BREAKER.CONSECUTIVE_LOSS, count, durationMinutes: 60 });
       }
     } else {
       repo.resetConsecutiveLoss();
@@ -24,7 +24,7 @@ function trackApiError(repo, eventBus, logger) {
   if (count >= API_ERROR_THRESHOLD) {
     repo.tripBreaker(BREAKER.API_ERROR, { errorCount: count });
     logger.error('CIRCUIT BREAKER TRIPPED: too many API errors');
-    eventBus.emit('circuitBreakerTripped', { reason: BREAKER.API_ERROR, count });
+    eventBus.emit('circuitBreakerTripped', { reason: BREAKER.API_ERROR, count, durationMinutes: 60 });
   }
 }
 

@@ -44,7 +44,7 @@ function updatePositions() {
   const positions = repo.getOpenPositions();
   state.positions = positions.map(p => {
     const cp = state.prices[p.symbol] ? state.prices[p.symbol].price : p.entryPrice;
-    const pnl = (cp - p.entryPrice) * p.quantity;
+    const pnl = (p.side === 'SHORT' ? p.entryPrice - cp : cp - p.entryPrice) * p.quantity;
     return { ...p, currentPrice: cp, unrealizedPnl: pnl };
   });
 }
@@ -92,15 +92,15 @@ function start() {
       clients.push(res);
       req.on('close', () => { clients = clients.filter(c => c !== res); });
     } else if (req.url === '/api/command' && req.method === 'POST') {
-      readBody(req).then(body => {
+      readBody(req).then(async (body) => {
         try {
           const data = JSON.parse(body);
           let reply = '';
-          feishuCommands.handleMessage(data.text || '', (r) => { reply = r; });
+          await feishuCommands.handleMessage(data.text || '', (r) => { reply = r; });
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ reply }));
         } catch (e) {
-          res.writeHead(400);
+          res.writeHead(400, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ error: e.message }));
         }
       });

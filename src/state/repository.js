@@ -29,17 +29,19 @@ function getTradeById(orderId) {
 
 // --- Positions ---
 function upsertPosition(pos) {
+  const existing = state.positions[pos.symbol] || {};
   state.positions[pos.symbol] = {
     symbol: pos.symbol,
-    side: pos.side,
-    entryPrice: Number(pos.entryPrice),
-    quantity: Number(pos.quantity),
-    leverage: Number(pos.leverage),
-    stopLossPrice: Number(pos.stopLossPrice || 0),
-    takeProfitPrice: Number(pos.takeProfitPrice || 0),
-    stopLossOrderId: pos.stopLossOrderId || null,
-    takeProfitOrderId: pos.takeProfitOrderId || null,
-    openedAt: pos.openedAt || Date.now(),
+    side: pos.side || existing.side || 'LONG',
+    entryPrice: Number(pos.entryPrice ?? existing.entryPrice ?? 0),
+    quantity: Number(pos.quantity ?? existing.quantity ?? 0),
+    leverage: Number(pos.leverage ?? existing.leverage ?? 1),
+    stopLossPrice: Number(pos.stopLossPrice ?? existing.stopLossPrice ?? 0),
+    takeProfitPrice: Number(pos.takeProfitPrice ?? existing.takeProfitPrice ?? 0),
+    stopLossOrderId: pos.stopLossOrderId !== undefined ? pos.stopLossOrderId : (existing.stopLossOrderId || null),
+    takeProfitOrderId: pos.takeProfitOrderId !== undefined ? pos.takeProfitOrderId : (existing.takeProfitOrderId || null),
+    unrealizedPnl: Number(pos.unrealizedPnl ?? existing.unrealizedPnl ?? 0),
+    openedAt: pos.openedAt || existing.openedAt || Date.now(),
     updatedAt: Date.now(),
   };
 }

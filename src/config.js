@@ -4,6 +4,9 @@ const { required, isNumber, maskSecret } = require('./utils/validators');
 
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
+const VALID_INTERVALS = new Set(['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d']);
+const VALID_STRATEGIES = new Set(['emaCrossover', 'rsiEma']);
+
 function loadConfig() {
   const testnet = process.env.BINANCE_TESTNET !== 'false';
 
@@ -12,11 +15,23 @@ function loadConfig() {
     required('BINANCE_SECRET_KEY', process.env.BINANCE_SECRET_KEY);
   }
 
+  const strategy = process.env.STRATEGY || 'emaCrossover';
+  if (!VALID_STRATEGIES.has(strategy)) {
+    throw new Error(`Invalid STRATEGY "${strategy}". Must be one of: ${[...VALID_STRATEGIES].join(', ')}`);
+  }
+
+  const candleInterval = process.env.CANDLE_INTERVAL || '15m';
+  if (!VALID_INTERVALS.has(candleInterval)) {
+    throw new Error(`Invalid CANDLE_INTERVAL "${candleInterval}". Must be one of: ${[...VALID_INTERVALS].join(', ')}`);
+  }
+
   const config = Object.freeze({
     apiKey: process.env.BINANCE_API_KEY || '',
     secretKey: process.env.BINANCE_SECRET_KEY || '',
     testnet,
     dryRun: process.env.DRY_RUN === 'true',
+    confirmLiveTrading: process.env.CONFIRM_LIVE_TRADING === 'true',
+    webPort: isNumber('WEB_PORT', process.env.WEB_PORT || '3000', 1, 65535),
     tradingPairs: (process.env.TRADING_PAIRS || 'BTCUSDT,ETHUSDT')
       .split(',')
       .map((s) => s.trim().toUpperCase())
@@ -27,10 +42,10 @@ function loadConfig() {
     dailyLossCapPct: isNumber('DAILY_LOSS_CAP_PCT', process.env.DAILY_LOSS_CAP_PCT || '5', 0.1, 100),
     stopLossPct: isNumber('STOP_LOSS_PCT', process.env.STOP_LOSS_PCT || '2', 0.1, 50),
     takeProfitPct: isNumber('TAKE_PROFIT_PCT', process.env.TAKE_PROFIT_PCT || '4', 0.1, 100),
-    strategy: process.env.STRATEGY || 'emaCrossover',
+    strategy,
     emaFast: isNumber('EMA_FAST', process.env.EMA_FAST || '9', 2, 200),
     emaSlow: isNumber('EMA_SLOW', process.env.EMA_SLOW || '21', 2, 200),
-    candleInterval: process.env.CANDLE_INTERVAL || '15m',
+    candleInterval,
     maxSlippage: isNumber('MAX_SLIPPAGE', process.env.MAX_SLIPPAGE || '0.005', 0, 1),
     orderRetryAttempts: isNumber('ORDER_RETRY_ATTEMPTS', process.env.ORDER_RETRY_ATTEMPTS || '3', 1, 10),
     logLevel: process.env.LOG_LEVEL || 'info',
@@ -38,10 +53,10 @@ function loadConfig() {
     telegramBotToken: process.env.TELEGRAM_BOT_TOKEN || '',
     telegramChatId: process.env.TELEGRAM_CHAT_ID || '',
     feishuWebhookUrl: process.env.FEISHU_WEBHOOK_URL || '',
-    maxNotionalPerTrade: Number(process.env.MAX_NOTIONAL_PER_TRADE) || 0,
-    signalCooldownSeconds: Number(process.env.SIGNAL_COOLDOWN_SECONDS) || 300,
-    wsReconnectDelay: Number(process.env.WS_RECONNECT_DELAY) || 1000,
-    dashboardRefreshMs: Number(process.env.DASHBOARD_REFRESH_MS) || 2000,
+    maxNotionalPerTrade: isNumber('MAX_NOTIONAL_PER_TRADE', process.env.MAX_NOTIONAL_PER_TRADE || '0', 0, 10000000),
+    signalCooldownSeconds: isNumber('SIGNAL_COOLDOWN_SECONDS', process.env.SIGNAL_COOLDOWN_SECONDS || '300', 0, 86400),
+    wsReconnectDelay: isNumber('WS_RECONNECT_DELAY', process.env.WS_RECONNECT_DELAY || '1000', 100, 60000),
+    dashboardRefreshMs: isNumber('DASHBOARD_REFRESH_MS', process.env.DASHBOARD_REFRESH_MS || '2000', 200, 60000),
   });
 
   if (config.emaFast >= config.emaSlow) {
@@ -66,6 +81,7 @@ function printConfig(config) {
   console.log(`  Strategy:       ${config.strategy}`);
   console.log(`  EMA:            ${config.emaFast}/${config.emaSlow}`);
   console.log(`  Candle:         ${config.candleInterval}`);
+  console.log(`  Web Dashboard:  http://localhost:${config.webPort}`);
   console.log('==============================\n');
 }
 

@@ -22,4 +22,36 @@ function parseKline(data) {
   return { symbol: data.s, interval: k.i, open: parseFloat(k.o), high: parseFloat(k.h), low: parseFloat(k.l), close: parseFloat(k.c), volume: parseFloat(k.v), closeTime: k.T, isFinal: k.x };
 }
 
-module.exports = { streams, parseMiniTicker, parseMarkPrice, parseKline };
+const MAX_TRACKED_KLINES = 1000;
+
+function processChartTicks(sym, interval, ticks, finalizedSet, emitFn) {
+  const isFirstBatch = finalizedSet.size === 0;
+  const timestamps = Object.keys(ticks).sort();
+  for (let i = 0; i < timestamps.length; i++) {
+    const ts = timestamps[i];
+    if (finalizedSet.has(ts)) continue;
+    const c = ticks[ts];
+    const isFinal = c.isFinal !== false;
+    if (isFinal) {
+      finalizedSet.add(ts);
+      if (finalizedSet.size > MAX_TRACKED_KLINES) {
+        const oldest = finalizedSet.values().next().value;
+        finalizedSet.delete(oldest);
+      }
+    }
+    emitFn('kline', {
+      symbol: sym,
+      interval,
+      open: parseFloat(c.open),
+      high: parseFloat(c.high),
+      low: parseFloat(c.low),
+      close: parseFloat(c.close),
+      volume: parseFloat(c.volume),
+      closeTime: c.closeTime || c.time,
+      isFinal,
+      warmup: isFirstBatch && i < timestamps.length - 1,
+    });
+  }
+}
+
+module.exports = { streams, parseMiniTicker, parseMarkPrice, parseKline, processChartTicks };

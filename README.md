@@ -9,6 +9,11 @@
 
 **Binance Trader** is a sophisticated quantitative trading system designed for cryptocurrency futures trading. Built with Node.js and featuring advanced risk management, comprehensive backtesting capabilities, and real-time monitoring, this system enables traders to develop, test, and execute algorithmic trading strategies with confidence and precision.
 
+> 📌 **核心工程文档导航（持续演进台账）**：
+> - 🗺️ **[系统性架构分析与演进打卡台账 (`docs/SYSTEM_ANALYSIS_AND_ROADMAP.md`)](docs/SYSTEM_ANALYSIS_AND_ROADMAP.md)**：全景架构剖析、已知问题诊断、分阶段优化 Checklist 与完成记录表（**完成哪里记录哪里**）。
+> - 🔌 **[端口与全链路接口速查 (`docs/API_AND_PORTS.md`)](docs/API_AND_PORTS.md)**：本地 `:3000` 监控/指令端口、HTTP/SSE 接口、飞书回调与内部 `eventBus` 事件契约。
+> - 📈 **[量化投研进度状态 (`docs/PROJECT_STATUS.md`)](docs/PROJECT_STATUS.md)**：V1–V4 策略假设检验、跨资产验证与真实资金费率归因记录。
+
 ## 🚀 Key Features
 
 - 📈 **Advanced Strategies**: EMA Crossover and RSI + EMA hybrid algorithms

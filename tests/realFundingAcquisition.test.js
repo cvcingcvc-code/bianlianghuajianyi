@@ -79,7 +79,8 @@ test('manifest SHA256 matches actual CSV file', () => {
     if (info.error || !info.sha256) continue;
     const csvPath = path.join(ROOT, 'data', 'funding-real', `${sym}.csv`);
     if (!fs.existsSync(csvPath)) continue;
-    const actualHash = crypto.createHash('sha256').update(fs.readFileSync(csvPath)).digest('hex');
+    const normalized = fs.readFileSync(csvPath, 'utf8').replace(/\r\n/g, '\n');
+    const actualHash = crypto.createHash('sha256').update(normalized, 'utf8').digest('hex');
     assert.equal(actualHash, info.sha256, `${sym} SHA256 mismatch`);
   }
 });

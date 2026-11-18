@@ -35,14 +35,19 @@ async function main() {
 
     // 5. Live trading confirmation
     if (!config.testnet && !config.dryRun) {
-      logger.warn('===================================================');
-      logger.warn('  REAL MONEY trading on Binance LIVE Futures');
-      logger.warn('  Type "yes" to continue, anything else to exit');
-      logger.warn('===================================================');
-      const readline = require('readline');
-      const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-      const answer = await new Promise((r) => rl.question('> ', (ans) => { rl.close(); r(ans.trim()); }));
-      if (answer !== 'yes') { logger.info('Aborted'); process.exit(0); }
+      if (!config.confirmLiveTrading) {
+        if (!process.stdin.isTTY) {
+          throw new Error('Live trading in non-interactive mode requires CONFIRM_LIVE_TRADING=true');
+        }
+        logger.warn('===================================================');
+        logger.warn('  REAL MONEY trading on Binance LIVE Futures');
+        logger.warn('  Type "yes" to continue, anything else to exit');
+        logger.warn('===================================================');
+        const readline = require('readline');
+        const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+        const answer = await new Promise((r) => rl.question('> ', (ans) => { rl.close(); r(ans.trim()); }));
+        if (answer !== 'yes') { logger.info('Aborted'); process.exit(0); }
+      }
       logger.warn('Starting live trading in 5 seconds...');
       await new Promise((r) => setTimeout(r, 5000));
     }

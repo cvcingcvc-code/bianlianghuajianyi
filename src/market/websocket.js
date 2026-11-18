@@ -1,5 +1,5 @@
 const Binance = require('node-binance-api');
-const { parseMiniTicker, parseMarkPrice } = require('./streams');
+const { parseMiniTicker, parseMarkPrice, processChartTicks } = require('./streams');
 const sleep = require('../utils/sleep');
 
 let binance, config, eventBus, logger;
@@ -48,21 +48,7 @@ async function connect() {
     for (const symbol of config.tradingPairs) {
       emittedKlines[symbol] = new Set();
       const ep = binance.futuresChart(symbol, config.candleInterval, (sym, interval, ticks) => {
-        const seen = emittedKlines[sym];
-        const isFirstBatch = seen.size === 0;
-        const newTimestamps = Object.keys(ticks).filter(ts => !seen.has(ts)).sort();
-        for (const ts of newTimestamps) {
-          seen.add(ts);
-          const c = ticks[ts];
-          eventBus.emit('kline', {
-            symbol: sym, interval,
-            open: parseFloat(c.open), high: parseFloat(c.high),
-            low: parseFloat(c.low), close: parseFloat(c.close),
-            volume: parseFloat(c.volume), closeTime: c.closeTime || c.time,
-            isFinal: c.isFinal !== false,
-            warmup: isFirstBatch && ts !== newTimestamps[newTimestamps.length - 1]
-          });
-        }
+        processChartTicks(sym, interval, ticks, emittedKlines[sym], (ev, payload) => eventBus.emit(ev, payload));
       });
       subsEndpoints.push(ep);
     }
@@ -118,4 +104,4 @@ async function disconnect() {
 
 function getBinance() { return binance; }
 
-module.exports = { init, connect, disconnect, getBinance };
+module.exports = { init, connect, disconnect, getBinance, processChartTicks };

@@ -19,7 +19,7 @@ function init(cfg, repository, bus, log, executor, strategy) {
 
 function register(name, fn) { commands[name] = fn; }
 
-function handleMessage(text, reply) {
+async function handleMessage(text, reply) {
   const content = text.trim();
   if (!content.startsWith('/')) return false;
 
@@ -29,7 +29,7 @@ function handleMessage(text, reply) {
 
   if (!commands[cmd]) { reply('未知命令。发送 /help 查看可用命令'); return true; }
 
-  try { commands[cmd](args, reply); }
+  try { await commands[cmd](args, reply); }
   catch (e) { logger.error(`Command error: ${e.message}`); reply(`命令失败: ${e.message}`); }
   return true;
 }
@@ -58,14 +58,13 @@ function cmdPositions(args, reply) {
   reply(msg);
 }
 
-function cmdClose(args, reply) {
+async function cmdClose(args, reply) {
   if (args.length === 0) { reply('用法: /close SYMBOL (例如: /close ETHUSDT)'); return; }
   const symbol = args[0].toUpperCase();
   const pos = repo.getPosition(symbol);
   if (!pos) { reply(`${symbol} 无持仓`); return; }
-  repo.removePosition(symbol);
-  eventBus.emit('positionClosed', { symbol, pnl: 0, pnlPct: 0, reason: '手动平仓(Feishu)' });
-  reply(`✅ 已平仓 ${symbol}`);
+  await orderExecutor.closePosition(symbol, '手动平仓(Feishu/Web)');
+  reply(`✅ 已执行平仓 ${symbol}`);
 }
 
 function cmdPause(args, reply) {

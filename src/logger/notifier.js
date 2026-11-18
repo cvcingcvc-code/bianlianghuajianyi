@@ -9,7 +9,7 @@ function init(cfg, bus, log, repository, strategy) {
   repo = repository; strategyEngine = strategy;
 
   eventBus.on('positionOpened', (d) => {
-    send(`🟢 开仓 | ${d.symbol} LONG | 数量:${d.quantity} | 价格:${d.entryPrice?.toFixed(4) || '—'}`);
+    send(`🟢 开仓 | ${d.symbol} ${d.side || 'LONG'} | 数量:${d.quantity} | 价格:${d.entryPrice?.toFixed(4) || '—'}`);
   });
 
   eventBus.on('positionClosed', (d) => {
@@ -19,20 +19,22 @@ function init(cfg, bus, log, repository, strategy) {
   });
 
   eventBus.on('strategySignal', (s) => {
-    if (s.direction === 'LONG') {
-      send(`📊 信号 | ${s.symbol} LONG @ ${s.price?.toFixed(2) || '—'} | ${s.reason}`);
+    if (s.direction === 'LONG' || s.direction === 'SHORT') {
+      send(`📊 信号 | ${s.symbol} ${s.direction} @ ${s.price?.toFixed(2) || '—'} | ${s.reason}`);
     }
   });
 
   eventBus.on('riskRejected', (s) => {
-    if (s.reason?.includes('loss') || s.reason?.includes('breaker') || s.reason?.includes('margin')) {
+    if (s.reason?.includes('loss') || s.reason?.includes('breaker') || s.reason?.includes('margin') || s.reason?.includes('Margin') || s.reason?.includes('Circuit')) {
       send(`⚠️ 风控拒绝 | ${s.signal?.symbol} | ${s.reason}`);
     }
   });
 
-  eventBus.on('breakerTripped', (b) => {
-    send(`🚨 熔断触发 | ${b.reason} | ${b.durationMinutes}分钟`);
-  });
+  const onBreakerTripped = (b) => {
+    send(`🚨 熔断触发 | ${b.reason} | ${b.durationMinutes ?? 60}分钟`);
+  };
+  eventBus.on('circuitBreakerTripped', onBreakerTripped);
+  eventBus.on('breakerTripped', onBreakerTripped);
 
   eventBus.on('dailyLimitReached', (d) => {
     send(`🛑 日内亏损上限 | 亏损:${d.loss?.toFixed(2) || '—'} USDT`);

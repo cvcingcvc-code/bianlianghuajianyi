@@ -17,13 +17,17 @@ const { checkHoldoutLock, HOLDOUT_START_MS } = require('../src/research/holdoutG
 const { assetGate, stressGate, yearPass, samplePass, yearConcentration, check2025Regime } = require('../src/research/externalGate');
 
 const ROOT = path.join(__dirname, '..');
+const HAS_EXT_CSVS = ['BNBUSDT', 'SOLUSDT'].every((s) => fs.existsSync(path.join(ROOT, 'data', 'market', `${s}-15m.csv`)));
+const HAS_EXT_RAW = ['BNBUSDT', 'SOLUSDT'].every((s) => fs.existsSync(path.join(ROOT, 'data', 'market', 'raw', s)));
+const SKIP_EXT_CSV = !HAS_EXT_CSVS ? 'local gitignored data/market/{BNBUSDT,SOLUSDT}-15m.csv not downloaded' : false;
+const SKIP_EXT_RAW = !HAS_EXT_RAW ? 'local gitignored data/market/raw/{BNBUSDT,SOLUSDT} not downloaded' : false;
 
 function load15m(symbol) {
   return loadCandles({ file: path.join(ROOT, 'data', 'market', `${symbol}-15m.csv`), symbol }).candles;
 }
 
 // ---- official data normalization ----
-test('BNB official data normalization: loads, sorted, contains 2026', () => {
+test('BNB official data normalization: loads, sorted, contains 2026', { skip: SKIP_EXT_CSV }, () => {
   const candles = load15m('BNBUSDT');
   assert.ok(candles.length > 0);
   assert.equal(candles[0].timestamp, 1581321600000); // 2020-02-10 08:00 UTC
@@ -31,7 +35,7 @@ test('BNB official data normalization: loads, sorted, contains 2026', () => {
   for (let i = 1; i < candles.length; i++) assert.ok(candles[i].timestamp > candles[i - 1].timestamp);
 });
 
-test('SOL official data normalization: loads, sorted, contains 2026', () => {
+test('SOL official data normalization: loads, sorted, contains 2026', { skip: SKIP_EXT_CSV }, () => {
   const candles = load15m('SOLUSDT');
   assert.ok(candles.length > 0);
   assert.equal(candles[0].timestamp, 1600066800000); // 2020-09-14 07:00 UTC
@@ -39,7 +43,7 @@ test('SOL official data normalization: loads, sorted, contains 2026', () => {
 });
 
 // ---- checksum re-verification ----
-test('checksum validation: every downloaded official zip matches its .CHECKSUM', () => {
+test('checksum validation: every downloaded official zip matches its .CHECKSUM', { skip: SKIP_EXT_RAW }, () => {
   for (const symbol of ['BNBUSDT', 'SOLUSDT']) {
     const dir = path.join(ROOT, 'data', 'market', 'raw', symbol);
     assert.ok(fs.existsSync(dir), `raw dir for ${symbol}`);
@@ -56,7 +60,7 @@ test('checksum validation: every downloaded official zip matches its .CHECKSUM',
 });
 
 // ---- listing-date handling ----
-test('listing-date handling: first 4h candle is after the first 15m, first year is partial', () => {
+test('listing-date handling: first 4h candle is after the first 15m, first year is partial', { skip: SKIP_EXT_CSV }, () => {
   for (const symbol of ['BNBUSDT', 'SOLUSDT']) {
     const dev = load15m(symbol);
     const h4 = resample(dev, TARGETS['4h']);
@@ -69,7 +73,7 @@ test('listing-date handling: first 4h candle is after the first 15m, first year 
 });
 
 // ---- 4h aggregation reuse ----
-test('4h aggregation reuses the V4 resampler (16x15m) on external data', () => {
+test('4h aggregation reuses the V4 resampler (16x15m) on external data', { skip: SKIP_EXT_CSV }, () => {
   for (const symbol of ['BNBUSDT', 'SOLUSDT']) {
     const dev = load15m(symbol);
     const h4 = resample(dev, TARGETS['4h']);
@@ -87,7 +91,7 @@ test('4h aggregation reuses the V4 resampler (16x15m) on external data', () => {
 });
 
 // ---- warmup date handling ----
-test('warmup: first trade occurs only after EMA/breakout warmup', () => {
+test('warmup: first trade occurs only after EMA/breakout warmup', { skip: SKIP_EXT_CSV }, () => {
   const dev = load15m('BNBUSDT');
   const h4 = resample(dev, TARGETS['4h']).candles.slice(0, 300);
   const broker = { commissionPct: 0, slippagePct: 0, entryFillPrice: (o) => o, exitFillPrice: (o) => o, commission: () => 0, fundingCost: () => 0, fundingIncluded: () => false };
@@ -99,7 +103,7 @@ test('warmup: first trade occurs only after EMA/breakout warmup', () => {
 });
 
 // ---- external asset isolation ----
-test('external assets are isolated (independent accounts)', () => {
+test('external assets are isolated (independent accounts)', { skip: SKIP_EXT_CSV }, () => {
   const bnb = resample(load15m('BNBUSDT'), TARGETS['4h']).candles.slice(0, 400);
   const sol = resample(load15m('SOLUSDT'), TARGETS['4h']).candles.slice(0, 400);
   const broker = { commissionPct: 0, slippagePct: 0, entryFillPrice: (o) => o, exitFillPrice: (o) => o, commission: () => 0, fundingCost: () => 0, fundingIncluded: () => false };
@@ -119,9 +123,11 @@ test('2026 holdout guard blocks strategy execution on 2026 data', () => {
   assert.equal(isResearchStrategy('breakout24h4h'), true);
   assert.equal(checkHoldoutLock({ strategy: 'breakout24h4h', candles: [{ timestamp: HOLDOUT_START_MS + 1 }] }).locked, true);
   // Data now exists but strategy execution is still locked
-  for (const symbol of ['BNBUSDT', 'SOLUSDT']) {
-    const dev = load15m(symbol);
-    assert.ok(dev.some((c) => c.timestamp >= HOLDOUT_START_MS), `${symbol} has 2026 data (but strategy is locked)`);
+  if (HAS_EXT_CSVS) {
+    for (const symbol of ['BNBUSDT', 'SOLUSDT']) {
+      const dev = load15m(symbol);
+      assert.ok(dev.some((c) => c.timestamp >= HOLDOUT_START_MS), `${symbol} has 2026 data (but strategy is locked)`);
+    }
   }
 });
 

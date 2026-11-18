@@ -7,11 +7,13 @@ const EMA_FAST = 9;
 const EMA_SLOW = 21;
 const EMA_TREND = 50;
 
-const state = { prices: {}, rsi: {}, emaFast: {}, emaSlow: {}, emaTrend: {}, lastSignal: {}, rsiPrev: {}, emaFastPrev: {}, emaSlowPrev: {} };
+const state = { prices: {}, rsi: {}, emaFast: {}, emaSlow: {}, emaTrend: {}, lastSignal: {}, rsiPrev: {}, emaFastPrev: {}, emaSlowPrev: {}, emaFastPeriod: EMA_FAST, emaSlowPeriod: EMA_SLOW };
 
 function name() { return 'rsiEma'; }
 
 function init(config) {
+  state.emaFastPeriod = config.emaFast || EMA_FAST;
+  state.emaSlowPeriod = config.emaSlow || EMA_SLOW;
   for (const symbol of config.tradingPairs) {
     state.prices[symbol] = [];
     state.rsi[symbol] = null;
@@ -40,16 +42,19 @@ function createState() {
 function computeSignal(symState, close, opts = {}) {
   const hasPosition = !!opts.hasPosition;
   const warmup = !!opts.warmup;
+  const fastPeriod = opts.emaFast || EMA_FAST;
+  const slowPeriod = opts.emaSlow || EMA_SLOW;
+  const maxBuffer = Math.max(PRICE_BUFFER_SIZE, slowPeriod + 10);
 
   symState.prices.push(close);
-  if (symState.prices.length > PRICE_BUFFER_SIZE) symState.prices.shift();
+  if (symState.prices.length > maxBuffer) symState.prices.shift();
 
   const prices = symState.prices;
-  if (prices.length < Math.max(RSI_PERIOD + 1, EMA_TREND + 1)) return { action: 'HOLD', reason: null };
+  if (prices.length < Math.max(RSI_PERIOD + 1, EMA_TREND + 1, slowPeriod)) return { action: 'HOLD', reason: null };
 
   const rsi = calcRSI(prices, RSI_PERIOD);
-  const emaFast = calcEMA(prices, EMA_FAST);
-  const emaSlow = calcEMA(prices, EMA_SLOW);
+  const emaFast = calcEMA(prices, fastPeriod);
+  const emaSlow = calcEMA(prices, slowPeriod);
   const emaTrend = calcEMA(prices, EMA_TREND);
 
   symState.rsi = rsi;
@@ -113,6 +118,8 @@ function onTick(kline, repo, eventBus, logger) {
   const { action, reason } = computeSignal(symState, close, {
     hasPosition: repo.hasPosition(symbol),
     warmup,
+    emaFast: state.emaFastPeriod,
+    emaSlow: state.emaSlowPeriod,
   });
 
   state.prices[symbol] = symState.prices;

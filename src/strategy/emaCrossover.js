@@ -2,11 +2,13 @@
 const { DIRECTION } = require('../utils/constants');
 
 const PRICE_BUFFER_SIZE = 60;
-const state = { prices: {}, emaCache: {}, lastCrossState: {} };
+const state = { prices: {}, emaCache: {}, lastCrossState: {}, emaFastPeriod: 9, emaSlowPeriod: 21 };
 
 function name() { return 'emaCrossover'; }
 
 function init(config) {
+  state.emaFastPeriod = config.emaFast || 9;
+  state.emaSlowPeriod = config.emaSlow || 21;
   for (const symbol of config.tradingPairs) {
     state.prices[symbol] = [];
     state.lastCrossState[symbol] = null;
@@ -25,15 +27,18 @@ function createState() {
 function computeSignal(symState, close, opts = {}) {
   const hasPosition = !!opts.hasPosition;
   const warmup = !!opts.warmup;
+  const fastPeriod = opts.emaFast || 9;
+  const slowPeriod = opts.emaSlow || 21;
+  const maxBuffer = Math.max(PRICE_BUFFER_SIZE, slowPeriod + 10);
 
   symState.prices.push(close);
-  if (symState.prices.length > PRICE_BUFFER_SIZE) symState.prices.shift();
+  if (symState.prices.length > maxBuffer) symState.prices.shift();
 
   const prices = symState.prices;
-  if (prices.length < 21) return { action: 'HOLD', reason: null };
+  if (prices.length < slowPeriod) return { action: 'HOLD', reason: null };
 
-  const fastEma = calcEMA(prices, 9);
-  const slowEma = calcEMA(prices, 21);
+  const fastEma = calcEMA(prices, fastPeriod);
+  const slowEma = calcEMA(prices, slowPeriod);
   if (fastEma === null || slowEma === null) return { action: 'HOLD', reason: null };
 
   const currentCross = fastEma > slowEma ? 'above' : 'below';
@@ -46,11 +51,11 @@ function computeSignal(symState, close, opts = {}) {
 
   if (previousCross === 'below' && currentCross === 'above') {
     if (!hasPosition) {
-      return { action: 'LONG', reason: 'EMA 9/21 golden cross' };
+      return { action: 'LONG', reason: `EMA ${fastPeriod}/${slowPeriod} golden cross` };
     }
   } else if (previousCross === 'above' && currentCross === 'below') {
     if (hasPosition) {
-      return { action: 'CLOSE', reason: 'EMA 9/21 death cross' };
+      return { action: 'CLOSE', reason: `EMA ${fastPeriod}/${slowPeriod} death cross` };
     }
   }
   return { action: 'HOLD', reason: null };
@@ -64,6 +69,8 @@ function onTick(kline, repo, eventBus, logger) {
   const { action, reason } = computeSignal(symState, close, {
     hasPosition: repo.hasPosition(symbol),
     warmup,
+    emaFast: state.emaFastPeriod,
+    emaSlow: state.emaSlowPeriod,
   });
   state.prices[symbol] = symState.prices;
   state.lastCrossState[symbol] = symState.lastCrossState;
