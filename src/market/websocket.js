@@ -1,12 +1,14 @@
 const Binance = require('node-binance-api');
-const { parseMiniTicker, parseMarkPrice, processChartTicks } = require('./streams');
+const { parseMiniTicker, parseMarkPrice, processChartTicks, syncFuturesServerTime } = require('./streams');
 const sleep = require('../utils/sleep');
 
 let binance, config, eventBus, logger;
 let subsEndpoints = [];
 let emittedKlines = {};
 let reconnectAttempts = 0;
+let timeSyncTimer = null;
 const MAX_RECONNECT_DELAY = 60000;
+const TIME_SYNC_INTERVAL_MS = 30 * 60 * 1000;
 
 function init(cfg, bus, log) {
   config = cfg; eventBus = bus; logger = log;
@@ -22,6 +24,25 @@ function init(cfg, bus, log) {
     binance.fstream = binance.fstreamTest;
   }
   logger.info(`WebSocket init: ${config.testnet ? 'testnet' : 'LIVE'}`);
+}
+
+async function syncTime() {
+  if (!config?.useServerTime || !binance) return null;
+  try {
+    const res = await syncFuturesServerTime(binance, logger);
+    if (!timeSyncTimer) {
+      timeSyncTimer = setInterval(() => {
+        syncFuturesServerTime(binance, logger).catch((e) => {
+          logger.warn(`Periodic server time sync failed: ${e.message}`);
+        });
+      }, TIME_SYNC_INTERVAL_MS);
+      if (typeof timeSyncTimer.unref === 'function') timeSyncTimer.unref();
+    }
+    return res;
+  } catch (err) {
+    logger.warn(`Futures server time sync failed (using local clock): ${err.message}`);
+    return null;
+  }
 }
 
 async function connect() {
@@ -95,6 +116,10 @@ async function doReconnect() {
 }
 
 async function disconnect() {
+  if (timeSyncTimer) {
+    clearInterval(timeSyncTimer);
+    timeSyncTimer = null;
+  }
   for (const ep of subsEndpoints) {
     try { binance.futuresTerminate(ep); } catch (e) { /* ignore */ }
   }
@@ -104,4 +129,4 @@ async function disconnect() {
 
 function getBinance() { return binance; }
 
-module.exports = { init, connect, disconnect, getBinance, processChartTicks };
+module.exports = { init, syncTime, connect, disconnect, getBinance, processChartTicks };

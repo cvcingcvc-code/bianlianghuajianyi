@@ -72,7 +72,10 @@ canvas { width: 100%; height: 100%; }
   </div>
 
   <div class="card full">
-    <div class="card-header">Commands</div>
+    <div class="card-header"><span>Commands</span><span id="authBadge" style="font-size:11px;text-transform:none"></span></div>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <input id="tokenInput" type="password" placeholder="Admin Token (DASHBOARD_ADMIN_TOKEN, optional on localhost)" style="width:360px;max-width:100%;background:#0d1117;color:#c9d1d9;border:1px solid #30363d;border-radius:6px;padding:6px 10px;font-family:monospace;font-size:12px">
+    </div>
     <div style="display:flex;gap:8px">
       <input id="cmdInput" type="text" placeholder="/status  /close SYMBOL  /pause  /resume  /strategy  /help" style="flex:1;background:#0d1117;color:#c9d1d9;border:1px solid #30363d;border-radius:6px;padding:8px 12px;font-family:monospace;font-size:14px" onkeydown="if(event.key==='Enter')sendCmd()">
       <button onclick="sendCmd()" style="background:#238636;color:#fff;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-weight:600">Send</button>
@@ -211,6 +214,14 @@ async function pollState() {
     const data = await res.json();
     updateStats(data); updateTickers(data.prices); updatePositions(data.positions);
     updateSignals(data.signals); updateBreakers(data.breakers);
+    if (data.authRequired) {
+      const hasToken = Boolean(($('tokenInput').value || '').trim());
+      $('authBadge').textContent = hasToken ? '🔒 Token Configured' : '⚠️ Admin Token Required';
+      $('authBadge').style.color = hasToken ? '#3fb950' : '#f85149';
+    } else {
+      $('authBadge').textContent = 'Loopback Mode';
+      $('authBadge').style.color = '#8b949e';
+    }
     if (data.priceHistory) { allHistory = data.priceHistory; drawChart(); }
   } catch (e) {}
 }
@@ -233,13 +244,26 @@ setInterval(() => {
   pollState();
 }, 2000);
 
+const savedToken = sessionStorage.getItem('dashboardAdminToken') || '';
+if (savedToken) $('tokenInput').value = savedToken;
+$('tokenInput').addEventListener('input', function() {
+  sessionStorage.setItem('dashboardAdminToken', this.value.trim());
+});
+
 async function sendCmd() {
   const input = $('cmdInput');
   const cmd = input.value.trim();
   if (!cmd) return;
+  const token = ($('tokenInput').value || '').trim();
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = 'Bearer ' + token;
   try {
-    const res = await fetch('/api/command', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({text: cmd}) });
+    const res = await fetch('/api/command', { method: 'POST', headers, body: JSON.stringify({text: cmd}) });
     const data = await res.json();
+    if (!res.ok) {
+      $('cmdResult').innerHTML = '<span style="color:#f85149">> ' + cmd + '\n' + (data.error || ('HTTP ' + res.status)) + '</span>';
+      return;
+    }
     $('cmdResult').innerHTML = '<span style="color:#3fb950">> ' + cmd + '</span>\n' + (data.reply || '(ok)');
     input.value = '';
   } catch(e) {

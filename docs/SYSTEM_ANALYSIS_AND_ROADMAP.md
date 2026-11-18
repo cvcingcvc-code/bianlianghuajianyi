@@ -79,11 +79,11 @@ flowchart TD
 
 | 方法 | 路径 | 用途 | 鉴权现状 |
 |---|---|---|---|
-| `GET` | `/` | 加载 `public/dashboard.html` 实时可视化监控台 | 无（公开页面） |
-| `GET` | `/api/state` | 拉取行情、持仓、当日盈亏、信号日志、熔断器快照 JSON | 无 |
+| `GET` | `/` | 加载 `public/dashboard.html` 实时可视化监控台 | 无（默认仅 `127.0.0.1` 可达） |
+| `GET` | `/api/state` | 拉取行情、持仓、当日盈亏、信号日志、熔断器快照 JSON（含 `authRequired`） | 无 |
 | `GET` | `/api/stream` | SSE 实时推送最新逐笔价格与分时曲线 | 无 |
-| `POST` | `/api/command` | 执行控制指令（`/status` `/positions` `/close SYMBOL` `/pause` `/resume` `/strategy` `/help`） | **待加固（Phase 1）** |
-| `POST` | `/feishu/callback` | 飞书事件订阅回调（`url_verification` 与聊天指令接收） | **待加固（Phase 1）** |
+| `POST` | `/api/command` | 执行控制指令（`/status` `/positions` `/close SYMBOL` `/pause` `/resume` `/strategy` `/help`） | ✅ `Bearer <DASHBOARD_ADMIN_TOKEN>`（未配置时仅允许本机回环，远端 `403`）+ `64KB` 上限 |
+| `POST` | `/feishu/callback` | 飞书事件订阅回调（`url_verification` 与聊天指令接收） | ✅ `FEISHU_VERIFICATION_TOKEN` 常量时间比对 + `64KB` 上限 |
 
 ---
 
@@ -144,12 +144,12 @@ flowchart TD
 - [x] **P0-8**：固定并打印 `WEB_PORT=3000` 端口配置，移除 `package.json` 硬编码本地代理，支持 `CONFIRM_LIVE_TRADING=true` 守护进程启动，整理 `docs/API_AND_PORTS.md`。
 - [x] **P0-9**：同步 `manifest.json` 资金费率 CSV 哈希，兼容 Windows CRLF 换行符与离线大体积数据自动跳过，新增 `tests/runtime-execution-risk.test.js` 与 `.github/workflows/ci.yml`，全量测试 `0 fail`。
 
-### Phase 1：接口鉴权与运行期安全加固（待办）
-- [ ] **P1-1**：为 `webDashboard.js` 增加 `WEB_HOST` 配置（默认绑定 `127.0.0.1`），防止公网裸奔 `:3000` 端口。
-- [ ] **P1-2**：为 `POST /api/command` 增加 `DASHBOARD_ADMIN_TOKEN` 鉴权校验，并在 `public/dashboard.html` 支持输入保存 Token。
-- [ ] **P1-3**：为 `POST /feishu/callback` 增加飞书 `FEISHU_VERIFICATION_TOKEN` 校验，并为 `readBody()` 增加 `64KB` 请求体上限保护。
-- [ ] **P1-4**：在 `websocket.js` 实盘/测试网模式下支持服务器时间校准（`useServerTime`），消除本地时钟偏移导致的 `-1021` 拒单风险。
-- [ ] **P1-5**：在 `orderExecutor.js` 中接入 `MAX_SLIPPAGE` 保护（支持 `LIMIT` + `IOC` 可成交限价单模式）。
+### Phase 1：接口鉴权与运行期安全加固（已完成 ✅）
+- [x] **P1-1**：为 `webDashboard.js` 增加 `WEB_HOST` 配置（默认绑定 `127.0.0.1`），防止公网裸奔 `:3000` 端口。
+- [x] **P1-2**：为 `POST /api/command` 增加 `DASHBOARD_ADMIN_TOKEN` 鉴权校验（SHA-256 + `timingSafeEqual`，未配置时阻断非回环远端请求），并在 `public/dashboard.html` 支持输入保存 Token（`sessionStorage`）。
+- [x] **P1-3**：为 `POST /feishu/callback` 增加飞书 `FEISHU_VERIFICATION_TOKEN` 校验，并为 `readBody()` 增加 `64KB` 请求体上限保护（超限返回 HTTP `413`）。
+- [x] **P1-4**：在 `websocket.js` / `streams.js` 实盘与测试网模式下支持合约服务器时间校准（`syncFuturesServerTime` + 每 30 分钟后台刷新），消除本地时钟偏移导致的 `-1021` 拒单风险且避开现货 451 地域封锁。
+- [x] **P1-5**：在 `orderExecutor.js` 中接入 `MAX_SLIPPAGE` 保护（支持按 `tickSize` 对齐的 `LIMIT` + `IOC` 可成交限价单模式，正确处理部分成交真实数量对齐与 0 成交超滑点安全放弃）。
 
 ### Phase 2：挂单自愈对账与异常恢复（待办）
 - [ ] **P2-1**：启动时 `positionTracker.syncAccount()` 同步拉取 `futuresOpenOrders()`，自动回填已有仓位的止损/止盈 `orderId`。
@@ -176,3 +176,4 @@ flowchart TD
 | 日期 | 阶段 / 编号 | 完成内容摘要 | 关键涉及文件 | 测试 / 验证结果 |
 |---|---|---|---|---|
 | 2026-11-18 | **Phase 0 (P0-1 ~ P0-9)** | 完成全仓库系统性代码审计；修复 K 线去重丢包、合约保护单签名与 3 倍重复开仓、飞书 `/close` 假平仓、WS 账户同步抹除止损单 ID、风控冷却与并发锁、熔断告警事件名不一致、EMA 配置失效及 CSV 哈希不一致问题；建立 `:3000` 端口与接口规范文档及 GitHub Actions CI。 | `src/execution/*`、`src/market/*`、`src/risk/*`、`src/logger/*`、`src/strategy/*`、`src/config.js`、`tests/runtime-execution-risk.test.js`、`docs/API_AND_PORTS.md`、`docs/SYSTEM_ANALYSIS_AND_ROADMAP.md` | `npm test` 通过（20 个测试文件，191 pass / 0 fail / 13 离线大文件自动 skip） |
+| 2026-11-18 | **Phase 1 (P1-1 ~ P1-5)** | 完成接口鉴权与运行期安全加固：`:3000` 默认绑定 `WEB_HOST=127.0.0.1`；`/api/command` 接入 `DASHBOARD_ADMIN_TOKEN` 与非回环阻断，前端面板支持 Token 保存；`/feishu/callback` 接入 `FEISHU_VERIFICATION_TOKEN` 与 `64KB` 请求体上限拦截（HTTP 413）；实现合约 `futuresTime()` 服务器时钟校准与定期刷新；`orderExecutor` 接入 `MAX_SLIPPAGE`（`LIMIT` + `IOC`）滑点保护。 | `src/config.js`、`src/index.js`、`src/logger/webDashboard.js`、`public/dashboard.html`、`src/market/streams.js`、`src/market/websocket.js`、`src/risk/manager.js`、`src/execution/orderExecutor.js`、`.env.example`、`tests/phase1-security-execution.test.js` | `npm test` 通过（21 个测试文件，194 pass / 0 fail / 13 离线大文件自动 skip） |

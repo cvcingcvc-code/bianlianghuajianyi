@@ -52,8 +52,11 @@ async function main() {
       await new Promise((r) => setTimeout(r, 5000));
     }
 
-    // 6. Init WebSocket
+    // 6. Init WebSocket & sync exchange server clock
     websocket.init(config, eventBus, logger);
+    if (config.useServerTime) {
+      await websocket.syncTime();
+    }
 
     // 7. Sync account (non-fatal in dry-run mode)
     await positionTracker.init(websocket.getBinance(), repository, eventBus, logger);

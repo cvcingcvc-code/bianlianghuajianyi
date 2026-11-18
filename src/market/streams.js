@@ -54,4 +54,31 @@ function processChartTicks(sym, interval, ticks, finalizedSet, emitFn) {
   }
 }
 
-module.exports = { streams, parseMiniTicker, parseMarkPrice, parseKline, processChartTicks };
+async function syncFuturesServerTime(binanceClient, logger) {
+  if (!binanceClient || typeof binanceClient.futuresTime !== 'function') {
+    return null;
+  }
+  const before = Date.now();
+  const res = await binanceClient.futuresTime();
+  const after = Date.now();
+  const serverTime = typeof res === 'number' ? res : Number(res?.serverTime);
+  if (!Number.isFinite(serverTime) || serverTime <= 0) {
+    throw new Error(`Invalid futures serverTime response: ${JSON.stringify(res)}`);
+  }
+  const localMidpoint = Math.round((before + after) / 2);
+  const offset = serverTime - localMidpoint;
+
+  if (typeof binanceClient.setOption === 'function') {
+    binanceClient.setOption('timeOffset', offset);
+    binanceClient.setOption('useServerTime', true);
+  }
+  if (binanceClient.info && typeof binanceClient.info === 'object') {
+    binanceClient.info.timeOffset = offset;
+  }
+  if (logger && typeof logger.info === 'function') {
+    logger.info(`Server time synced via Futures API (offset: ${offset >= 0 ? '+' : ''}${offset}ms)`);
+  }
+  return { serverTime, offset };
+}
+
+module.exports = { streams, parseMiniTicker, parseMarkPrice, parseKline, processChartTicks, syncFuturesServerTime };

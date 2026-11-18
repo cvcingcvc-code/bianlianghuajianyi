@@ -31,7 +31,11 @@ function loadConfig() {
     testnet,
     dryRun: process.env.DRY_RUN === 'true',
     confirmLiveTrading: process.env.CONFIRM_LIVE_TRADING === 'true',
+    useServerTime: process.env.USE_SERVER_TIME !== 'false',
+    webHost: (process.env.WEB_HOST || '127.0.0.1').trim() || '127.0.0.1',
     webPort: isNumber('WEB_PORT', process.env.WEB_PORT || '3000', 1, 65535),
+    dashboardAdminToken: (process.env.DASHBOARD_ADMIN_TOKEN || '').trim(),
+    feishuVerificationToken: (process.env.FEISHU_VERIFICATION_TOKEN || '').trim(),
     tradingPairs: (process.env.TRADING_PAIRS || 'BTCUSDT,ETHUSDT')
       .split(',')
       .map((s) => s.trim().toUpperCase())
@@ -81,7 +85,9 @@ function printConfig(config) {
   console.log(`  Strategy:       ${config.strategy}`);
   console.log(`  EMA:            ${config.emaFast}/${config.emaSlow}`);
   console.log(`  Candle:         ${config.candleInterval}`);
-  console.log(`  Web Dashboard:  http://localhost:${config.webPort}`);
+  console.log(`  Slippage Cap:   ${(config.maxSlippage * 100).toFixed(2)}% (${config.maxSlippage > 0 ? 'LIMIT IOC' : 'MARKET'})`);
+  console.log(`  Server Time:    ${config.useServerTime ? 'SYNC ENABLED' : 'LOCAL CLOCK'}`);
+  console.log(`  Web Dashboard:  http://${config.webHost}:${config.webPort} (${config.dashboardAdminToken ? 'token-protected' : 'loopback-only'})`);
   console.log('==============================\n');
 }
 

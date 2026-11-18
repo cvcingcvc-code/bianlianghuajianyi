@@ -120,11 +120,13 @@ function handleSignal(signal) {
 
   lastSignalAt[signal.symbol] = now;
   const orderSide = isLong ? 'BUY' : 'SELL';
+  const referencePrice = (markPrices && Number.isFinite(markPrices[signal.symbol])) ? markPrices[signal.symbol] : price;
   logger.signal(`APPROVED: ${signal.symbol} ${signal.direction} qty=${qty} sl=${slPrice} tp=${tpPrice}`);
   eventBus.emit('riskApproved', {
     signal, action: 'OPEN', symbol: signal.symbol, side: orderSide,
     quantity: qty, leverage: config.maxLeverage,
     stopLossPrice: slPrice, takeProfitPrice: tpPrice, notional: qty * price,
+    referencePrice, symbolInfo,
   });
 }
 

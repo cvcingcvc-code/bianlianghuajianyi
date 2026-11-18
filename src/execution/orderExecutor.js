@@ -1,4 +1,5 @@
 const { ORDER_TYPE, MARGIN_TYPE, POSITION_SIDE } = require('../utils/constants');
+const limits = require('../risk/limits');
 const breaker = require('../risk/circuitBreaker');
 const sleep = require('../utils/sleep');
 
@@ -76,12 +77,17 @@ async function withRetry(fn, label) {
 }
 
 async function executeOpen(data) {
-  const { symbol, side = 'BUY', quantity, leverage, stopLossPrice, takeProfitPrice } = data;
+  const { symbol, side = 'BUY', quantity, leverage, stopLossPrice, takeProfitPrice, symbolInfo } = data;
   const isLong = side === 'BUY';
   const posSide = isLong ? POSITION_SIDE.LONG : POSITION_SIDE.SHORT;
   const closeSide = isLong ? 'SELL' : 'BUY';
+  const refPrice = Number(data.referencePrice || data.signal?.price || 0);
+  const useSlippageLimit = Number(config.maxSlippage) > 0 && refPrice > 0;
+  const limitPrice = useSlippageLimit
+    ? limits.roundPrice(isLong ? refPrice * (1 + config.maxSlippage) : refPrice * (1 - config.maxSlippage), symbolInfo)
+    : null;
 
-  // Phase 1: Leverage, isolated margin, and market entry (retry only if market order has NOT executed)
+  // Phase 1: Leverage, isolated margin, and entry order (LIMIT IOC when maxSlippage > 0, else MARKET)
   let order;
   try {
     order = await withRetry(async () => {
@@ -93,6 +99,13 @@ async function executeOpen(data) {
           throw marginErr;
         }
       }
+      if (useSlippageLimit) {
+        logger.trade(`${side} ${symbol} qty=${quantity} LIMIT IOC @ ${limitPrice} (maxSlippage=${(config.maxSlippage * 100).toFixed(2)}%)`);
+        return await binance.futuresOrder(side, symbol, quantity, limitPrice, {
+          type: ORDER_TYPE.LIMIT,
+          timeInForce: 'IOC',
+        });
+      }
       logger.trade(`${side} ${symbol} qty=${quantity}`);
       return isLong
         ? await binance.futuresMarketBuy(symbol, quantity)
@@ -102,14 +115,25 @@ async function executeOpen(data) {
     return;
   }
 
-  const fillPrice = order?.avgPrice ? parseFloat(order.avgPrice) : (data.signal?.price || 0);
+  // Handle IOC zero-fill / partial-fill safely
+  const rawExecutedQty = order?.executedQty !== undefined ? parseFloat(order.executedQty) : quantity;
+  const orderStatus = order?.status || order?.orderStatus;
+  if (!Number.isFinite(rawExecutedQty) || rawExecutedQty <= 0 || ((orderStatus === 'EXPIRED' || orderStatus === 'CANCELED') && !(rawExecutedQty > 0))) {
+    logger.warn(`Slippage protection triggered for ${symbol}: IOC order @ ${limitPrice} had 0 fill (status=${orderStatus || 'EXPIRED'})`);
+    eventBus.emit('slippageRejected', { symbol, side, referencePrice: refPrice, limitPrice });
+    return;
+  }
+  const filledQty = rawExecutedQty;
+  const fillPrice = (order?.avgPrice && parseFloat(order.avgPrice) > 0)
+    ? parseFloat(order.avgPrice)
+    : (limitPrice || refPrice);
 
   // Phase 2: Protective orders using 5-arg node-binance-api futuresOrder signature + STOP_MARKET
   let slResp = null;
   let tpResp = null;
   try {
     slResp = await withRetry(
-      () => binance.futuresOrder(closeSide, symbol, quantity, false, {
+      () => binance.futuresOrder(closeSide, symbol, filledQty, false, {
         type: ORDER_TYPE.STOP_MARKET,
         stopPrice: stopLossPrice,
         reduceOnly: true,
@@ -121,8 +145,8 @@ async function executeOpen(data) {
   } catch (slErr) {
     logger.error(`CRITICAL: SL failed for ${symbol}, unwinding position immediately!`, slErr.message);
     try {
-      if (isLong) await binance.futuresMarketSell(symbol, quantity, { reduceOnly: true });
-      else await binance.futuresMarketBuy(symbol, quantity, { reduceOnly: true });
+      if (isLong) await binance.futuresMarketSell(symbol, filledQty, { reduceOnly: true });
+      else await binance.futuresMarketBuy(symbol, filledQty, { reduceOnly: true });
     } catch (unwindErr) {
       logger.error(`EMERGENCY UNWIND FAILED for ${symbol}! Manual intervention required!`, unwindErr.message);
     }
@@ -131,7 +155,7 @@ async function executeOpen(data) {
 
   try {
     tpResp = await withRetry(
-      () => binance.futuresOrder(closeSide, symbol, quantity, false, {
+      () => binance.futuresOrder(closeSide, symbol, filledQty, false, {
         type: ORDER_TYPE.TAKE_PROFIT_MARKET,
         stopPrice: takeProfitPrice,
         reduceOnly: true,
@@ -148,7 +172,7 @@ async function executeOpen(data) {
     symbol,
     side: posSide,
     entryPrice: fillPrice,
-    quantity,
+    quantity: filledQty,
     leverage,
     stopLossPrice,
     takeProfitPrice,
@@ -156,7 +180,7 @@ async function executeOpen(data) {
     takeProfitOrderId: tpResp?.orderId || null,
   });
 
-  eventBus.emit('positionOpened', { symbol, side: posSide, quantity, entryPrice: fillPrice, sl: stopLossPrice, tp: takeProfitPrice });
+  eventBus.emit('positionOpened', { symbol, side: posSide, quantity: filledQty, entryPrice: fillPrice, sl: stopLossPrice, tp: takeProfitPrice });
   breaker.resetApiErrors(repo);
 }
 

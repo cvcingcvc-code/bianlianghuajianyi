@@ -4,7 +4,7 @@
 
 | 服务 / 用途 | 默认端口 / 地址 | 环境变量 | 所在源码 |
 |---|---|---|---|
-| **本地 Web 监控面板 & HTTP/飞书回调服务** | **`3000`** (`http://localhost:3000`) | `WEB_PORT=3000` | `src/config.js`、`src/logger/webDashboard.js` |
+| **本地 Web 监控面板 & HTTP/飞书回调服务** | **`3000`** (`http://127.0.0.1:3000`) | `WEB_HOST=127.0.0.1`、`WEB_PORT=3000` | `src/config.js`、`src/logger/webDashboard.js` |
 | 币安 USD-M 合约**测试网** REST | `https://testnet.binancefuture.com/fapi/` (`443`) | `BINANCE_TESTNET=true` | `src/market/websocket.js` |
 | 币安 USD-M 合约**测试网** WebSocket | `wss://stream.binancefuture.com/stream` (`443`) | `BINANCE_TESTNET=true` | `src/market/websocket.js` |
 | 币安 USD-M 合约**实盘** REST | `https://fapi.binance.com/fapi/` (`443`) | `BINANCE_TESTNET=false` | `src/market/websocket.js` |
@@ -19,10 +19,10 @@
 | 方法 | 路径 | 请求体 / 参数 | 返回格式 | 功能说明 |
 |---|---|---|---|---|
 | `GET` | `/` | 无 | `text/html` | 返回前端监控页面 `public/dashboard.html` |
-| `GET` | `/api/state` | 无 | `application/json` | 获取快照状态：`prices`、`positions`、`balance`、`pnl`、`trades`、`wins`、`signals`、`breakers`、`priceHistory` |
+| `GET` | `/api/state` | 无 | `application/json` | 获取快照状态：`prices`、`positions`、`balance`、`pnl`、`trades`、`wins`、`signals`、`breakers`、`priceHistory`、`authRequired` |
 | `GET` | `/api/stream` | 无 | `text/event-stream` (SSE) | 实时推送行情 `tick` 与价格历史曲线（连接成功首帧为 `{"type":"connected"}`） |
-| `POST` | `/api/command` | `{"text": "/status"}` | `{"reply": "..."}` | Web 面板命令入口，转发给 `feishuCommands.handleMessage` 异步执行并返回结果 |
-| `POST` | `/feishu/callback` | 飞书事件订阅 JSON | `application/json` | 接收飞书 `url_verification` 握手及 `im.message.receive_v1` 消息指令，并通过 `FEISHU_WEBHOOK_URL` 异步推送回复 |
+| `POST` | `/api/command` | `{"text": "/status"}`（Header: `Authorization: Bearer <DASHBOARD_ADMIN_TOKEN>`，最大 `64KB`） | `{"reply": "..."}` | Web 面板命令入口，鉴权通过后转发给 `feishuCommands.handleMessage` 异步执行并返回结果（未配置 Token 时仅允许回环 IP 访问） |
+| `POST` | `/feishu/callback` | 飞书事件订阅 JSON（校验 `FEISHU_VERIFICATION_TOKEN`，最大 `64KB`） | `application/json` | 接收飞书 `url_verification` 握手及 `im.message.receive_v1` 消息指令，并通过 `FEISHU_WEBHOOK_URL` 异步推送回复 |
 
 ### 支持的控制命令（`/api/command` 与飞书共用）
 
@@ -51,6 +51,7 @@
 | `riskApproved` | `risk/manager.js` | `execution/orderExecutor.js` | `{ signal, action: 'OPEN'\|'CLOSE', symbol, side, quantity, leverage, stopLossPrice, takeProfitPrice }` |
 | `riskRejected` | `risk/manager.js` | `logger/webDashboard.js`、`logger/notifier.js` | `{ signal, reason }` |
 | `positionOpened` | `execution/orderExecutor.js` | `logger/webDashboard.js`、`logger/notifier.js` | `{ symbol, side, quantity, entryPrice, sl, tp }` |
+| `slippageRejected` | `execution/orderExecutor.js` | 监控 / 测试订阅方 | `{ symbol, side, referencePrice, limitPrice }` |
 | `positionClosed` | `execution/orderExecutor.js`、`execution/positionTracker.js` | `risk/circuitBreaker.js`、`logger/webDashboard.js`、`logger/notifier.js` | `{ symbol, pnl, pnlPct, entryPrice, exitPrice, reason }` |
 | `circuitBreakerTripped` | `risk/circuitBreaker.js` | `logger/notifier.js` | `{ reason, count, durationMinutes }` |
 | `dailyLimitReached` | `risk/manager.js` | `logger/notifier.js` | `{ loss, cap }` |
