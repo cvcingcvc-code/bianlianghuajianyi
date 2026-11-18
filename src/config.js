@@ -59,6 +59,7 @@ function loadConfig() {
     feishuWebhookUrl: process.env.FEISHU_WEBHOOK_URL || '',
     maxNotionalPerTrade: isNumber('MAX_NOTIONAL_PER_TRADE', process.env.MAX_NOTIONAL_PER_TRADE || '0', 0, 10000000),
     signalCooldownSeconds: isNumber('SIGNAL_COOLDOWN_SECONDS', process.env.SIGNAL_COOLDOWN_SECONDS || '300', 0, 86400),
+    reconcileIntervalSeconds: isNumber('RECONCILE_INTERVAL_SECONDS', process.env.RECONCILE_INTERVAL_SECONDS || '300', 0, 3600),
     wsReconnectDelay: isNumber('WS_RECONNECT_DELAY', process.env.WS_RECONNECT_DELAY || '1000', 100, 60000),
     dashboardRefreshMs: isNumber('DASHBOARD_REFRESH_MS', process.env.DASHBOARD_REFRESH_MS || '2000', 200, 60000),
   });

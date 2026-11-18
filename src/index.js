@@ -58,8 +58,9 @@ async function main() {
       await websocket.syncTime();
     }
 
-    // 7. Sync account (non-fatal in dry-run mode)
-    await positionTracker.init(websocket.getBinance(), repository, eventBus, logger);
+    // 7-10. Init executor, notifier, tracker, risk & strategy
+    orderExecutor.init(config, websocket.getBinance(), repository, eventBus, logger);
+    positionTracker.init(websocket.getBinance(), repository, eventBus, logger, config, orderExecutor);
     try {
       await positionTracker.syncAccount();
     } catch (acctErr) {
@@ -71,14 +72,16 @@ async function main() {
       }
     }
 
-    // 8-10. Init risk, executor, strategy
     riskManager.init(config, repository, eventBus, logger, positionTracker);
-    orderExecutor.init(config, websocket.getBinance(), repository, eventBus, logger);
     strategyEngine.init(config, repository, eventBus, logger);
-
-    // 9b. Init notifier & feishu commands
     notifier.init(config, eventBus, logger, repository, strategyEngine);
     feishuCommands.init(config, repository, eventBus, logger, orderExecutor, strategyEngine);
+
+    // Initial SL self-healing check & periodic reconciliation loop
+    if (!config.dryRun) {
+      await positionTracker.reconcilePositions({ repairMissingStopLoss: true });
+      positionTracker.startReconcileLoop();
+    }
 
     // 11. Start dashboards
     dashboard.init(config, repository, eventBus, logger);
@@ -104,6 +107,7 @@ async function main() {
       logger.info('Shutting down...');
       clearInterval(saveInterval);
       clearInterval(summaryInterval);
+      positionTracker.stopReconcileLoop();
       dashboard.stop();
       webDashboard.stop();
       websocket.disconnect();

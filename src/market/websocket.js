@@ -6,6 +6,7 @@ let binance, config, eventBus, logger;
 let subsEndpoints = [];
 let emittedKlines = {};
 let reconnectAttempts = 0;
+let hasConnectedOnce = false;
 let timeSyncTimer = null;
 const MAX_RECONNECT_DELAY = 60000;
 const TIME_SYNC_INTERVAL_MS = 30 * 60 * 1000;
@@ -19,6 +20,7 @@ function init(cfg, bus, log) {
     test: config.testnet,
     recvWindow: 15000,
   });
+  hasConnectedOnce = false;
   if (config.testnet) {
     binance.fapi = binance.fapiTest;
     binance.fstream = binance.fstreamTest;
@@ -98,8 +100,14 @@ async function connect() {
       logger.warn('No API keys set — skipping user data stream (public market data OK)');
     }
 
+    const wasReconnect = hasConnectedOnce;
+    hasConnectedOnce = true;
+    const prevAttempts = reconnectAttempts;
     reconnectAttempts = 0;
     logger.info('All WebSocket streams connected');
+    if (wasReconnect) {
+      eventBus.emit('wsReconnected', { attempts: prevAttempts, timestamp: Date.now() });
+    }
   } catch (err) {
     logger.error('WS connection failed', err.message);
     await doReconnect();

@@ -128,6 +128,13 @@ async function executeOpen(data) {
     ? parseFloat(order.avgPrice)
     : (limitPrice || refPrice);
 
+  // Record entry commission if returned synchronously
+  const entryCommission = parseFloat(order?.commission || 0);
+  const entryCommAsset = order?.commissionAsset || 'USDT';
+  if (entryCommission > 0 && entryCommAsset === 'USDT' && typeof repo.recordOrderExecution === 'function') {
+    repo.recordOrderExecution({ orderId: order?.orderId, isClose: false, commission: entryCommission });
+  }
+
   // Phase 2: Protective orders using 5-arg node-binance-api futuresOrder signature + STOP_MARKET
   let slResp = null;
   let tpResp = null;
@@ -205,17 +212,62 @@ async function executeClose(data) {
     const entryPrice = pos ? pos.entryPrice : 0;
     const exitPrice = order?.avgPrice ? parseFloat(order.avgPrice) : 0;
     const priceDiff = isShort ? (entryPrice - exitPrice) : (exitPrice - entryPrice);
-    const pnl = entryPrice > 0 && exitPrice > 0 ? priceDiff * closeQty : 0;
-    const pnlPct = entryPrice > 0 && exitPrice > 0 ? (priceDiff / entryPrice) * 100 : 0;
+    const estimatedGross = entryPrice > 0 && exitPrice > 0 ? priceDiff * closeQty : 0;
+    const rawRealized = parseFloat(order?.realizedProfit ?? order?.cumPnl ?? NaN);
+    const grossPnl = Number.isFinite(rawRealized) ? rawRealized : estimatedGross;
+    const commAsset = order?.commissionAsset || 'USDT';
+    const commission = commAsset === 'USDT' ? (parseFloat(order?.commission || 0) || 0) : 0;
 
-    repo.updateDailyPnl(pnl, pnl > 0);
+    let netPnl = grossPnl - commission;
+    if (typeof repo.recordOrderExecution === 'function') {
+      const settlement = repo.recordOrderExecution({
+        orderId: order?.orderId,
+        isClose: true,
+        grossPnl,
+        commission,
+      });
+      netPnl = settlement.netPnl;
+    } else {
+      repo.updateDailyPnl(netPnl, netPnl > 0);
+    }
+
+    const notionalEntry = entryPrice * closeQty;
+    const pnlPct = notionalEntry > 0 ? (netPnl / notionalEntry) * 100 : 0;
+
     repo.removePosition(symbol);
-    eventBus.emit('positionClosed', { symbol, pnl, pnlPct, entryPrice, exitPrice, reason });
+    eventBus.emit('positionClosed', { symbol, pnl: netPnl, grossPnl, commission, pnlPct, entryPrice, exitPrice, reason });
   } catch (err) {
     logger.error(`Close failed: ${symbol}`, err.message);
     breaker.trackApiError(repo, eventBus, logger);
     throw err;
   }
+}
+
+async function ensureStopLoss(pos, stopLossPrice) {
+  if (!pos || !pos.symbol || !(pos.quantity > 0) || !(stopLossPrice > 0)) {
+    throw new Error('Invalid position or stopLossPrice for SL repair');
+  }
+  if (config?.dryRun) {
+    repo.upsertPosition({ symbol: pos.symbol, stopLossPrice, stopLossOrderId: `DRY_SL_${Date.now()}` });
+    return { orderId: `DRY_SL_${Date.now()}` };
+  }
+  const closeSide = pos.side === POSITION_SIDE.SHORT ? 'BUY' : 'SELL';
+  const slResp = await withRetry(
+    () => binance.futuresOrder(closeSide, pos.symbol, pos.quantity, false, {
+      type: ORDER_TYPE.STOP_MARKET,
+      stopPrice: stopLossPrice,
+      reduceOnly: true,
+      workingType: 'MARK_PRICE',
+    }),
+    `Repair SL ${pos.symbol}`
+  );
+  repo.upsertPosition({
+    symbol: pos.symbol,
+    stopLossPrice,
+    stopLossOrderId: slResp?.orderId || null,
+  });
+  logger.trade(`Repaired missing SL: ${pos.symbol} @ ${stopLossPrice} (orderId=${slResp?.orderId || 'n/a'})`);
+  return slResp;
 }
 
 async function closePosition(symbol, reason = 'manual_close') {
@@ -224,4 +276,4 @@ async function closePosition(symbol, reason = 'manual_close') {
   await handleApproved({ action: 'CLOSE', symbol, quantity: pos.quantity, reason });
 }
 
-module.exports = { init, isPending, getPendingCount, closePosition, handleApproved };
+module.exports = { init, isPending, getPendingCount, closePosition, ensureStopLoss, handleApproved };

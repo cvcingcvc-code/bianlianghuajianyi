@@ -70,8 +70,21 @@ function getPositionCount() {
 function getDailyStats() {
   const today = getDateKey();
   if (!state.dailyStats || state.dailyStats.date !== today) {
-    state.dailyStats = { date: today, startBalance: 0, currentBalance: 0, realizedPnl: 0, tradeCount: 0, winningTrades: 0 };
+    state.dailyStats = {
+      date: today,
+      startBalance: 0,
+      currentBalance: 0,
+      realizedPnl: 0,
+      grossPnl: 0,
+      totalCommission: 0,
+      tradeCount: 0,
+      winningTrades: 0,
+    };
+    state.settledOrders = {};
   }
+  if (state.dailyStats.grossPnl === undefined) state.dailyStats.grossPnl = 0;
+  if (state.dailyStats.totalCommission === undefined) state.dailyStats.totalCommission = 0;
+  if (!state.settledOrders) state.settledOrders = {};
   return state.dailyStats;
 }
 
@@ -81,12 +94,82 @@ function setStartBalance(balance) {
   stats.currentBalance = balance;
 }
 
+function updateCurrentBalance(balance) {
+  const stats = getDailyStats();
+  if (stats.startBalance <= 0) {
+    stats.startBalance = balance;
+  }
+  stats.currentBalance = balance;
+}
+
 function updateDailyPnl(pnl, isWin) {
   const stats = getDailyStats();
   stats.realizedPnl += pnl;
+  stats.grossPnl = (stats.grossPnl || 0) + pnl;
   stats.currentBalance += pnl;
   stats.tradeCount += 1;
   if (isWin) stats.winningTrades += 1;
+}
+
+function recordOrderExecution({ orderId, isClose = false, grossPnl = 0, commission = 0 }) {
+  const stats = getDailyStats();
+  const key = orderId !== undefined && orderId !== null && orderId !== '' ? String(orderId) : null;
+  const fee = Number.isFinite(Number(commission)) ? Math.max(0, Number(commission)) : 0;
+  const gross = Number.isFinite(Number(grossPnl)) ? Number(grossPnl) : 0;
+
+  // Entry order commission accounting (idempotent per orderId)
+  if (!isClose) {
+    const prev = key ? state.settledOrders[key] : null;
+    if (prev?.commissionRecorded) {
+      return { netPnl: -prev.commission, commission: prev.commission, duplicate: true };
+    }
+    if (fee > 0) {
+      stats.totalCommission += fee;
+      stats.realizedPnl -= fee;
+      stats.currentBalance -= fee;
+    }
+    if (key) {
+      state.settledOrders[key] = { ...(prev || {}), commission: fee, commissionRecorded: true };
+    }
+    return { netPnl: -fee, commission: fee, duplicate: false };
+  }
+
+  // Closing order settlement & idempotent WS delta reconciliation
+  const netPnl = gross - fee;
+  const isWin = netPnl > 0;
+  const prev = key ? state.settledOrders[key] : null;
+
+  if (prev && prev.countedAsTrade) {
+    const deltaGross = gross - prev.grossPnl;
+    const deltaFee = fee - prev.commission;
+    const deltaNet = netPnl - prev.netPnl;
+    stats.grossPnl += deltaGross;
+    stats.totalCommission += deltaFee;
+    stats.realizedPnl += deltaNet;
+    stats.currentBalance += deltaNet;
+    if (isWin !== prev.isWin) {
+      stats.winningTrades = Math.max(0, stats.winningTrades + (isWin ? 1 : -1));
+    }
+    state.settledOrders[key] = { grossPnl: gross, commission: fee, netPnl, isWin, countedAsTrade: true, commissionRecorded: true };
+    return { netPnl, grossPnl: gross, commission: fee, firstSettlement: false, reconciledDelta: deltaNet };
+  }
+
+  // If fee was somehow recorded earlier before close classification, only apply remaining fee delta
+  const priorFee = prev?.commissionRecorded ? (prev.commission || 0) : 0;
+  const remainingFee = fee - priorFee;
+  const netDelta = gross - remainingFee;
+
+  stats.grossPnl += gross;
+  stats.totalCommission += remainingFee;
+  stats.realizedPnl += netDelta;
+  stats.currentBalance += netDelta;
+  stats.tradeCount += 1;
+  if (isWin) stats.winningTrades += 1;
+
+  if (key) {
+    state.settledOrders[key] = { grossPnl: gross, commission: fee, netPnl, isWin, countedAsTrade: true, commissionRecorded: true };
+  }
+  return { netPnl, grossPnl: gross, commission: fee, firstSettlement: true, reconciledDelta: netDelta };
 }
 
 function isDailyLossCapExceeded(capPct) {
@@ -170,7 +253,7 @@ function save() {
 module.exports = {
   saveTrade, getRecentTrades, getTradeById,
   upsertPosition, removePosition, getOpenPositions, getPosition, hasPosition, getPositionCount,
-  getDailyStats, setStartBalance, updateDailyPnl, isDailyLossCapExceeded,
+  getDailyStats, setStartBalance, updateCurrentBalance, updateDailyPnl, recordOrderExecution, isDailyLossCapExceeded,
   getBreakerState, tripBreaker, isBreakerTripped, resetBreaker,
   incrementConsecutiveLoss, resetConsecutiveLoss, getConsecutiveLosses,
   incrementApiErrors, resetApiErrors,

@@ -40,6 +40,16 @@ function init(cfg, bus, log, repository, strategy) {
     send(`🛑 日内亏损上限 | 亏损:${d.loss?.toFixed(2) || '—'} USDT`);
   });
 
+  eventBus.on('reconcileAlert', (a) => {
+    if (a.type === 'missing_sl_repaired') {
+      send(`🛡️ 对账自愈 | ${a.symbol} ${a.side} 检测到缺失止损单，已自动补挂 STOP_MARKET @ ${a.stopLossPrice}`);
+    } else if (a.type === 'missing_sl_failed') {
+      send(`🚨 对账严重告警 | ${a.symbol} ${a.side} 缺失止损且自动补挂失败: ${a.error || '未知错误'}`);
+    } else if (a.type === 'ghost_position_removed') {
+      send(`🧹 对账同步 | ${a.symbol} 交易所已无持仓，已清理本地残留记录`);
+    }
+  });
+
   logger.info('Notifier ready (Feishu)');
 }
 
@@ -81,7 +91,7 @@ function sendSummary() {
   const tripped = Object.values(breakers).find(b => b.tripped);
 
   let msg = `**📊 定时报告**\n`;
-  msg += `余额: ${(stats.currentBalance || 0).toFixed(2)} USDT | PnL: ${(stats.realizedPnl >= 0 ? '+' : '')}${(stats.realizedPnl || 0).toFixed(2)}\n`;
+  msg += `余额: ${(stats.currentBalance || 0).toFixed(2)} USDT | 净PnL: ${(stats.realizedPnl >= 0 ? '+' : '')}${(stats.realizedPnl || 0).toFixed(2)} (手续费: ${(stats.totalCommission || 0).toFixed(2)})\n`;
   msg += `交易: ${stats.tradeCount || 0}次 | 胜率: ${stats.tradeCount > 0 ? (stats.winningTrades / stats.tradeCount * 100).toFixed(0) : '—'}%\n`;
   msg += `持仓: ${positions.length}/${config.maxOpenPositions}`;
   if (tripped) msg += ` | ⚠️熔断:${tripped.reason}`;

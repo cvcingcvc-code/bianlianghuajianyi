@@ -151,11 +151,11 @@ flowchart TD
 - [x] **P1-4**：在 `websocket.js` / `streams.js` 实盘与测试网模式下支持合约服务器时间校准（`syncFuturesServerTime` + 每 30 分钟后台刷新），消除本地时钟偏移导致的 `-1021` 拒单风险且避开现货 451 地域封锁。
 - [x] **P1-5**：在 `orderExecutor.js` 中接入 `MAX_SLIPPAGE` 保护（支持按 `tickSize` 对齐的 `LIMIT` + `IOC` 可成交限价单模式，正确处理部分成交真实数量对齐与 0 成交超滑点安全放弃）。
 
-### Phase 2：挂单自愈对账与异常恢复（待办）
-- [ ] **P2-1**：启动时 `positionTracker.syncAccount()` 同步拉取 `futuresOpenOrders()`，自动回填已有仓位的止损/止盈 `orderId`。
-- [ ] **P2-2**：增加定时对账巡检（Reconciliation Loop，如每 5 分钟）：检测交易所实际持仓与本地内存是否一致、持仓是否缺失有效止损单，缺失时自动补挂并飞书告警。
-- [ ] **P2-3**：WebSocket 用户数据流（`listenKey`）断线重连后自动触发一次全量 `syncAccount()`，弥补断线窗口期漏推的成交事件。
-- [ ] **P2-4**：细化手续费与已实现盈亏核算：从成交回报中读取真实 `commission` 与 `realizedPnl` 写入 `dailyStats`，替代纯价差粗略估算。
+### Phase 2：挂单自愈对账与异常恢复（已完成 ✅）
+- [x] **P2-1**：启动时 `positionTracker.syncAccount()` 同步拉取 `futuresOpenOrders()`，自动回填已有仓位的止损/止盈 `orderId` 与触发价，并清除本地陈旧失效的挂单 ID。
+- [x] **P2-2**：增加定时对账巡检（Reconciliation Loop，默认每 300s，`RECONCILE_INTERVAL_SECONDS`）：检测交易所实际持仓与本地内存是否一致、持仓是否缺失有效止损单，缺失时自动通过 `ensureStopLoss()` 补挂 `STOP_MARKET` 并触发飞书 `reconcileAlert` 告警。
+- [x] **P2-3**：WebSocket 断线重连后发射 `wsReconnected` 事件，自动触发一次全量 `reconcilePositions()` 对账同步（弥补断线窗口期漏推的成交与持仓变更，且保持当日初始本金 `startBalance` 不被覆盖）。
+- [x] **P2-4**：细化手续费与已实现盈亏核算：在 `repository.recordOrderExecution()` 实现按 `orderId` 幂等的开仓手续费扣减与平仓 `realizedProfit - commission` 净利结算（支持先 REST 粗算、后 WS 精确回报差额修正，杜绝双倍记账与胜率虚高）。
 
 ### Phase 3：打通投研成果与实盘引擎（待办）
 - [ ] **P3-1**：封装 `breakout24h4h` 实盘策略适配器并注册到 `src/strategy/engine.js`（保持 `src/research/strategies/breakout24h4h.js` 冻结源码一字不改）。
@@ -177,3 +177,4 @@ flowchart TD
 |---|---|---|---|---|
 | 2026-11-18 | **Phase 0 (P0-1 ~ P0-9)** | 完成全仓库系统性代码审计；修复 K 线去重丢包、合约保护单签名与 3 倍重复开仓、飞书 `/close` 假平仓、WS 账户同步抹除止损单 ID、风控冷却与并发锁、熔断告警事件名不一致、EMA 配置失效及 CSV 哈希不一致问题；建立 `:3000` 端口与接口规范文档及 GitHub Actions CI。 | `src/execution/*`、`src/market/*`、`src/risk/*`、`src/logger/*`、`src/strategy/*`、`src/config.js`、`tests/runtime-execution-risk.test.js`、`docs/API_AND_PORTS.md`、`docs/SYSTEM_ANALYSIS_AND_ROADMAP.md` | `npm test` 通过（20 个测试文件，191 pass / 0 fail / 13 离线大文件自动 skip） |
 | 2026-11-18 | **Phase 1 (P1-1 ~ P1-5)** | 完成接口鉴权与运行期安全加固：`:3000` 默认绑定 `WEB_HOST=127.0.0.1`；`/api/command` 接入 `DASHBOARD_ADMIN_TOKEN` 与非回环阻断，前端面板支持 Token 保存；`/feishu/callback` 接入 `FEISHU_VERIFICATION_TOKEN` 与 `64KB` 请求体上限拦截（HTTP 413）；实现合约 `futuresTime()` 服务器时钟校准与定期刷新；`orderExecutor` 接入 `MAX_SLIPPAGE`（`LIMIT` + `IOC`）滑点保护。 | `src/config.js`、`src/index.js`、`src/logger/webDashboard.js`、`public/dashboard.html`、`src/market/streams.js`、`src/market/websocket.js`、`src/risk/manager.js`、`src/execution/orderExecutor.js`、`.env.example`、`tests/phase1-security-execution.test.js` | `npm test` 通过（21 个测试文件，194 pass / 0 fail / 13 离线大文件自动 skip） |
+| 2026-11-18 | **Phase 2 (P2-1 ~ P2-4)** | 完成挂单自愈对账与精确净盈亏核算：`syncAccount` 联动 `futuresOpenOrders` 回填存续仓位 SL/TP `orderId`；新增 `reconcilePositions` 定时巡检自动为裸仓补挂 `STOP_MARKET` 并推送飞书告警；WS 断线重连后自动触发 `wsReconnected` 全量对账且保护 `startBalance`；实现 `recordOrderExecution` 按 `orderId` 幂等核算开平仓 `commission` 与 `realizedProfit` 差额修正。 | `src/execution/positionTracker.js`、`src/execution/orderExecutor.js`、`src/state/database.js`、`src/state/repository.js`、`src/market/websocket.js`、`src/logger/notifier.js`、`src/logger/webDashboard.js`、`src/index.js`、`src/config.js`、`tests/phase2-reconciliation-pnl.test.js` | `npm test` 通过（22 个测试文件，197 pass / 0 fail / 13 离线大文件自动 skip） |

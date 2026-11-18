@@ -132,6 +132,8 @@ function handleRequest(req, res) {
       positions: state.positions,
       balance: stats.currentBalance || 0,
       pnl: stats.realizedPnl || 0,
+      grossPnl: stats.grossPnl || 0,
+      totalCommission: stats.totalCommission || 0,
       trades: stats.tradeCount || 0,
       wins: stats.winningTrades || 0,
       signals: state.signals.slice(0, 20),

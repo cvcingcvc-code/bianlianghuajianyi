@@ -12,6 +12,7 @@ const state = {
   eventLog: [],
   appState: {},
   orderIndex: {},
+  settledOrders: {},
 };
 
 function init() {
@@ -20,10 +21,21 @@ function init() {
   }
 
   const today = getDateKey();
-  state.dailyStats = { date: today, startBalance: 0, currentBalance: 0, realizedPnl: 0, tradeCount: 0, winningTrades: 0 };
+  state.dailyStats = {
+    date: today,
+    startBalance: 0,
+    currentBalance: 0,
+    realizedPnl: 0,
+    grossPnl: 0,
+    totalCommission: 0,
+    tradeCount: 0,
+    winningTrades: 0,
+  };
   state.breakers = {};
   state.eventLog = [];
   state.appState = { schema_version: 1, consecutiveLosses: 0, apiErrors: 0, apiErrorWindowStart: 0 };
+  state.orderIndex = {};
+  state.settledOrders = {};
 
   loadState();
   return state;
@@ -47,7 +59,13 @@ function loadState() {
         const key = file.replace('.json', '');
         if (key === 'trades') state.trades = data;
         else if (key === 'positions') state.positions = data;
-        else if (key === 'dailyStats' && data.date === getDateKey()) state.dailyStats = data;
+        else if (key === 'dailyStats' && data.date === getDateKey()) {
+          state.dailyStats = {
+            grossPnl: 0,
+            totalCommission: 0,
+            ...data,
+          };
+        }
         else if (key === 'breakers') state.breakers = data;
         else if (key === 'appState') Object.assign(state.appState, data);
       }

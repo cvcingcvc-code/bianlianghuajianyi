@@ -19,7 +19,7 @@
 | 方法 | 路径 | 请求体 / 参数 | 返回格式 | 功能说明 |
 |---|---|---|---|---|
 | `GET` | `/` | 无 | `text/html` | 返回前端监控页面 `public/dashboard.html` |
-| `GET` | `/api/state` | 无 | `application/json` | 获取快照状态：`prices`、`positions`、`balance`、`pnl`、`trades`、`wins`、`signals`、`breakers`、`priceHistory`、`authRequired` |
+| `GET` | `/api/state` | 无 | `application/json` | 获取快照状态：`prices`、`positions`、`balance`、`pnl`（扣除手续费净值）、`grossPnl`、`totalCommission`、`trades`、`wins`、`signals`、`breakers`、`priceHistory`、`authRequired` |
 | `GET` | `/api/stream` | 无 | `text/event-stream` (SSE) | 实时推送行情 `tick` 与价格历史曲线（连接成功首帧为 `{"type":"connected"}`） |
 | `POST` | `/api/command` | `{"text": "/status"}`（Header: `Authorization: Bearer <DASHBOARD_ADMIN_TOKEN>`，最大 `64KB`） | `{"reply": "..."}` | Web 面板命令入口，鉴权通过后转发给 `feishuCommands.handleMessage` 异步执行并返回结果（未配置 Token 时仅允许回环 IP 访问） |
 | `POST` | `/feishu/callback` | 飞书事件订阅 JSON（校验 `FEISHU_VERIFICATION_TOKEN`，最大 `64KB`） | `application/json` | 接收飞书 `url_verification` 握手及 `im.message.receive_v1` 消息指令，并通过 `FEISHU_WEBHOOK_URL` 异步推送回复 |
@@ -52,6 +52,8 @@
 | `riskRejected` | `risk/manager.js` | `logger/webDashboard.js`、`logger/notifier.js` | `{ signal, reason }` |
 | `positionOpened` | `execution/orderExecutor.js` | `logger/webDashboard.js`、`logger/notifier.js` | `{ symbol, side, quantity, entryPrice, sl, tp }` |
 | `slippageRejected` | `execution/orderExecutor.js` | 监控 / 测试订阅方 | `{ symbol, side, referencePrice, limitPrice }` |
+| `wsReconnected` | `market/websocket.js` | `execution/positionTracker.js` | `{ attempts, timestamp }` |
+| `reconcileAlert` | `execution/positionTracker.js` | `logger/notifier.js` | `{ type: 'missing_sl_repaired'\|'missing_sl_failed'\|'ghost_position_removed', symbol, ... }` |
 | `positionClosed` | `execution/orderExecutor.js`、`execution/positionTracker.js` | `risk/circuitBreaker.js`、`logger/webDashboard.js`、`logger/notifier.js` | `{ symbol, pnl, pnlPct, entryPrice, exitPrice, reason }` |
 | `circuitBreakerTripped` | `risk/circuitBreaker.js` | `logger/notifier.js` | `{ reason, count, durationMinutes }` |
 | `dailyLimitReached` | `risk/manager.js` | `logger/notifier.js` | `{ loss, cap }` |
@@ -62,7 +64,7 @@
 ## 4. 外部交易所与告警集成接口
 
 - **币安 REST（通过 `node-binance-api`）**：
-  - 账户与合约元数据：`futuresAccount()`、`futuresPositionRisk()`、`futuresExchangeInfo()`
+  - 账户、持仓与挂单同步：`futuresTime()`、`futuresAccount()`、`futuresPositionRisk()`、`futuresOpenOrders()`、`futuresExchangeInfo()`
   - 杠杆与逐仓配置：`futuresLeverage(symbol, leverage)`、`futuresMarginType(symbol, 'ISOLATED')`
   - 开平仓与保护单：`futuresMarketBuy`、`futuresMarketSell`、`futuresOrder`（`STOP_MARKET` / `TAKE_PROFIT_MARKET`，带 `reduceOnly: true`、`workingType: 'MARK_PRICE'`）、`futuresCancel`
 - **币安 WebSocket（通过 `node-binance-api`）**：
