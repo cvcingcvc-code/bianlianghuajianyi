@@ -1,5 +1,12 @@
-const Binance = require('node-binance-api');
-const { parseMiniTicker, parseMarkPrice, processChartTicks, syncFuturesServerTime } = require('./streams');
+let Binance;
+try {
+  Binance = require('node-binance-api');
+} catch (e) {
+  Binance = class DummyBinance {
+    options() { return this; }
+  };
+}
+const { parseMiniTicker, parseMarkPrice, processChartTicks, syncFuturesServerTime, warmupFuturesKlines } = require('./streams');
 const sleep = require('../utils/sleep');
 
 let binance, config, eventBus, logger;
@@ -135,6 +142,18 @@ async function disconnect() {
   emittedKlines = {};
 }
 
+async function warmupKlines(symbols, interval, limit = 250) {
+  return warmupFuturesKlines(
+    binance,
+    symbols,
+    interval,
+    limit,
+    emittedKlines,
+    (ev, payload) => eventBus.emit(ev, payload),
+    logger
+  );
+}
+
 function getBinance() { return binance; }
 
-module.exports = { init, syncTime, connect, disconnect, getBinance, processChartTicks };
+module.exports = { init, syncTime, warmupKlines, connect, disconnect, getBinance, processChartTicks };

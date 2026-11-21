@@ -104,10 +104,18 @@ function handleSignal(signal) {
   const ratio = limits.calculateMarginRatio(balance, simulated, markPrices);
   if (ratio < MIN_MARGIN_RATIO) { reject(signal, `Margin ratio ${ratio.toFixed(1)}% < ${MIN_MARGIN_RATIO}%`); return; }
 
-  // 8 & 9. Stop-loss & Take-profit (symmetric LONG / SHORT)
+  // 8 & 9. Stop-loss & Take-profit (symmetric LONG / SHORT, supports ATR or percentage mode)
   const isLong = signal.direction === DIRECTION.LONG;
-  const slPrice = limits.roundPrice(limits.calculateStopLoss(price, config.stopLossPct, signal.direction), symbolInfo);
-  const tpPrice = limits.roundPrice(limits.calculateTakeProfit(price, config.takeProfitPct, signal.direction), symbolInfo);
+  let rawSl, rawTp;
+  if (config.stopLossMode === 'atr' && Number.isFinite(signal.atr) && signal.atr > 0) {
+    rawSl = limits.calculateAtrStopLoss(price, signal.atr, config.stopLossAtrMultiplier || 2.0, signal.direction);
+    rawTp = limits.calculateAtrTakeProfit(price, signal.atr, config.takeProfitAtrMultiplier || 4.0, signal.direction);
+  } else {
+    rawSl = limits.calculateStopLoss(price, config.stopLossPct, signal.direction);
+    rawTp = limits.calculateTakeProfit(price, config.takeProfitPct, signal.direction);
+  }
+  const slPrice = limits.roundPrice(rawSl, symbolInfo);
+  const tpPrice = limits.roundPrice(rawTp, symbolInfo);
 
   if (isLong && slPrice >= price) { reject(signal, 'SL above entry'); return; }
   if (isLong && tpPrice <= price) { reject(signal, 'TP below entry'); return; }

@@ -1,7 +1,13 @@
 const emaCrossover = require('./emaCrossover');
 const rsiEma = require('./rsiEma');
+const breakout24h4h = require('./breakout24h4h');
 
-const strategies = { emaCrossover, rsiEma };
+const strategies = {
+  emaCrossover,
+  rsiEma,
+  breakout24h4h,
+  breakout24h: breakout24h4h,
+};
 
 let activeStrategy, config, repo, eventBus, logger;
 

@@ -81,4 +81,81 @@ async function syncFuturesServerTime(binanceClient, logger) {
   return { serverTime, offset };
 }
 
-module.exports = { streams, parseMiniTicker, parseMarkPrice, parseKline, processChartTicks, syncFuturesServerTime };
+async function warmupFuturesKlines(binanceClient, symbols, interval, limit, emittedKlines, emitFn, logger) {
+  if (!binanceClient || !symbols || symbols.length === 0 || limit <= 0) return 0;
+  let totalEmitted = 0;
+  for (const sym of symbols) {
+    if (emittedKlines && !emittedKlines[sym]) {
+      emittedKlines[sym] = new Set();
+    }
+    try {
+      let rawCandles = [];
+      if (typeof binanceClient.futuresCandles === 'function') {
+        rawCandles = await binanceClient.futuresCandles(sym, interval, { limit });
+      } else if (typeof binanceClient.futuresGetData === 'function') {
+        rawCandles = await binanceClient.futuresGetData('/fapi/v1/klines', { symbol: sym, interval, limit });
+      }
+
+      if (!Array.isArray(rawCandles) || rawCandles.length === 0) {
+        if (logger && typeof logger.warn === 'function') {
+          logger.warn(`No warmup candles returned for ${sym}`);
+        }
+        continue;
+      }
+
+      for (const c of rawCandles) {
+        let openTime, open, high, low, close, volume, closeTime;
+        if (Array.isArray(c)) {
+          openTime = c[0];
+          open = parseFloat(c[1]);
+          high = parseFloat(c[2]);
+          low = parseFloat(c[3]);
+          close = parseFloat(c[4]);
+          volume = parseFloat(c[5]);
+          closeTime = c[6];
+        } else if (c && typeof c === 'object') {
+          openTime = c.openTime || c.t;
+          open = parseFloat(c.open || c.o);
+          high = parseFloat(c.high || c.h);
+          low = parseFloat(c.low || c.l);
+          close = parseFloat(c.close || c.c);
+          volume = parseFloat(c.volume || c.v);
+          closeTime = c.closeTime || c.T || c.time;
+        } else {
+          continue;
+        }
+
+        const tsKey = String(openTime || closeTime);
+        if (emittedKlines && emittedKlines[sym]) {
+          emittedKlines[sym].add(tsKey);
+        }
+
+        if (typeof emitFn === 'function') {
+          emitFn('kline', {
+            symbol: sym,
+            interval,
+            open,
+            high,
+            low,
+            close,
+            volume,
+            closeTime,
+            isFinal: true,
+            warmup: true,
+          });
+        }
+        totalEmitted++;
+      }
+      if (logger && typeof logger.info === 'function') {
+        logger.info(`Warmup complete for ${sym}: fed ${rawCandles.length} historical candles (${interval})`);
+      }
+    } catch (err) {
+      if (logger && typeof logger.warn === 'function') {
+        logger.warn(`Failed to warmup candles for ${sym}: ${err.message}`);
+      }
+    }
+  }
+  return totalEmitted;
+}
+
+module.exports = { streams, parseMiniTicker, parseMarkPrice, parseKline, processChartTicks, syncFuturesServerTime, warmupFuturesKlines };

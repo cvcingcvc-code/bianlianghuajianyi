@@ -31,7 +31,7 @@
 - `/close <SYMBOL>`：触发真实平仓（撤销止盈止损保护单并发送 `reduceOnly` 市价平仓单；`DRY_RUN=true` 时执行模拟平仓）
 - `/pause`：暂停新开仓信号（允许平仓信号继续执行）
 - `/resume`：恢复新开仓信号
-- `/strategy [name]`：查询当前及可用策略（`emaCrossover`、`rsiEma`）
+- `/strategy [name]`：查询当前及可用策略（`emaCrossover`、`rsiEma`、`breakout24h4h`、`breakout24h`）
 - `/help`：输出命令列表
 
 ---
@@ -47,7 +47,7 @@
 | `kline` | `market/websocket.js` (`streams.processChartTicks`) | `strategy/engine.js` | `{ symbol, interval, open, high, low, close, volume, closeTime, isFinal, warmup }` |
 | `accountUpdate` | `market/websocket.js` (`userFutureData`) | `execution/positionTracker.js` | 币安 `ACCOUNT_UPDATE` 原始或解析结构 |
 | `orderUpdate` | `market/websocket.js` (`userFutureData`) | `execution/positionTracker.js` | 币安 `ORDER_TRADE_UPDATE` 原始或解析结构 |
-| `strategySignal` | `strategy/emaCrossover.js`、`strategy/rsiEma.js` | `risk/manager.js`、`logger/webDashboard.js`、`logger/notifier.js` | `{ symbol, direction: 'LONG'\|'SHORT'\|'CLOSE', price, reason }` |
+| `strategySignal` | `strategy/emaCrossover.js`、`strategy/rsiEma.js`、`strategy/breakout24h4h.js` | `risk/manager.js`、`logger/webDashboard.js`、`logger/notifier.js` | `{ symbol, direction: 'LONG'\|'SHORT'\|'CLOSE', price, reason, atr? }` |
 | `riskApproved` | `risk/manager.js` | `execution/orderExecutor.js` | `{ signal, action: 'OPEN'\|'CLOSE', symbol, side, quantity, leverage, stopLossPrice, takeProfitPrice }` |
 | `riskRejected` | `risk/manager.js` | `logger/webDashboard.js`、`logger/notifier.js` | `{ signal, reason }` |
 | `positionOpened` | `execution/orderExecutor.js` | `logger/webDashboard.js`、`logger/notifier.js` | `{ symbol, side, quantity, entryPrice, sl, tp }` |
@@ -64,6 +64,7 @@
 ## 4. 外部交易所与告警集成接口
 
 - **币安 REST（通过 `node-binance-api`）**：
+  - 启动 K 线历史预热：`futuresCandles(symbol, interval, { limit })`（支持 `WARMUP_CANDLES` 默认 250 根）
   - 账户、持仓与挂单同步：`futuresTime()`、`futuresAccount()`、`futuresPositionRisk()`、`futuresOpenOrders()`、`futuresExchangeInfo()`
   - 杠杆与逐仓配置：`futuresLeverage(symbol, leverage)`、`futuresMarginType(symbol, 'ISOLATED')`
   - 开平仓与保护单：`futuresMarketBuy`、`futuresMarketSell`、`futuresOrder`（`STOP_MARKET` / `TAKE_PROFIT_MARKET`，带 `reduceOnly: true`、`workingType: 'MARK_PRICE'`）、`futuresCancel`
@@ -72,3 +73,19 @@
   - 私有用户流：`userFutureData`（需配置 `BINANCE_API_KEY` 与 `BINANCE_SECRET_KEY`）
 - **飞书告警出站接口**：
   - 向 `FEISHU_WEBHOOK_URL` 发送 `POST` JSON（`msg_type: "text"`）
+
+---
+
+## 5. 策略与风控新增配置字典
+
+| 配置项 | 默认值 | 可选值 / 范围 | 说明 |
+|---|---|---|---|
+| `STRATEGY` | `emaCrossover` | `emaCrossover`、`rsiEma`、`breakout24h4h`、`breakout24h` | 实盘执行策略选择 |
+| `STOP_LOSS_MODE` | `pct` | `pct`、`atr` | 止损模式（固定百分比 或 波动率动态 ATR） |
+| `STOP_LOSS_ATR_MULTIPLIER` | `2.0` | `0.1` ~ `20.0` | ATR 止损乘数（止损价 = 入场价 ± ATR × 乘数） |
+| `TAKE_PROFIT_ATR_MULTIPLIER` | `4.0` | `0.1` ~ `50.0` | ATR 止盈乘数（止盈价 = 入场价 ± ATR × 乘数） |
+| `WARMUP_CANDLES` | `250` | `0` ~ `1000` | 启动时通过 REST 拉取并预热的历史 K 线数量 |
+
+### 样本外校验工具
+- `npm run research:holdout-check`（执行 `scripts/check-holdout-readiness.js`）：一键巡检本地市场数据是否包含 2026 样本外数据，并输出解封执行指南。
+

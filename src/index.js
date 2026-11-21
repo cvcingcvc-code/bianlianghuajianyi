@@ -77,6 +77,15 @@ async function main() {
     notifier.init(config, eventBus, logger, repository, strategyEngine);
     feishuCommands.init(config, repository, eventBus, logger, orderExecutor, strategyEngine);
 
+    // Warm up strategy indicators with historical candles before live streaming
+    if (config.warmupCandles > 0) {
+      try {
+        await websocket.warmupKlines(config.tradingPairs, config.candleInterval, config.warmupCandles);
+      } catch (warmupErr) {
+        logger.warn(`Strategy warmup failed (proceeding without pre-warmup): ${warmupErr.message}`);
+      }
+    }
+
     // Initial SL self-healing check & periodic reconciliation loop
     if (!config.dryRun) {
       await positionTracker.reconcilePositions({ repairMissingStopLoss: true });

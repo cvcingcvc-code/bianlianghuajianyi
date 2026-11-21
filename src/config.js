@@ -5,7 +5,7 @@ const { required, isNumber, maskSecret } = require('./utils/validators');
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 const VALID_INTERVALS = new Set(['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d']);
-const VALID_STRATEGIES = new Set(['emaCrossover', 'rsiEma']);
+const VALID_STRATEGIES = new Set(['emaCrossover', 'rsiEma', 'breakout24h4h', 'breakout24h']);
 
 function loadConfig() {
   const testnet = process.env.BINANCE_TESTNET !== 'false';
@@ -44,8 +44,12 @@ function loadConfig() {
     positionSizePct: isNumber('POSITION_SIZE_PCT', process.env.POSITION_SIZE_PCT || '5', 0.1, 100),
     maxOpenPositions: isNumber('MAX_OPEN_POSITIONS', process.env.MAX_OPEN_POSITIONS || '3', 1, 20),
     dailyLossCapPct: isNumber('DAILY_LOSS_CAP_PCT', process.env.DAILY_LOSS_CAP_PCT || '5', 0.1, 100),
+    stopLossMode: (process.env.STOP_LOSS_MODE || 'pct').trim().toLowerCase() === 'atr' ? 'atr' : 'pct',
     stopLossPct: isNumber('STOP_LOSS_PCT', process.env.STOP_LOSS_PCT || '2', 0.1, 50),
+    stopLossAtrMultiplier: isNumber('STOP_LOSS_ATR_MULTIPLIER', process.env.STOP_LOSS_ATR_MULTIPLIER || '2.0', 0.1, 20),
     takeProfitPct: isNumber('TAKE_PROFIT_PCT', process.env.TAKE_PROFIT_PCT || '4', 0.1, 100),
+    takeProfitAtrMultiplier: isNumber('TAKE_PROFIT_ATR_MULTIPLIER', process.env.TAKE_PROFIT_ATR_MULTIPLIER || '4.0', 0.1, 50),
+    warmupCandles: isNumber('WARMUP_CANDLES', process.env.WARMUP_CANDLES || '250', 0, 1000),
     strategy,
     emaFast: isNumber('EMA_FAST', process.env.EMA_FAST || '9', 2, 200),
     emaSlow: isNumber('EMA_SLOW', process.env.EMA_SLOW || '21', 2, 200),
@@ -81,9 +85,10 @@ function printConfig(config) {
   console.log(`  Position Size:  ${config.positionSizePct}% per trade`);
   console.log(`  Max Positions:  ${config.maxOpenPositions}`);
   console.log(`  Daily Loss Cap: ${config.dailyLossCapPct}%`);
-  console.log(`  Stop Loss:      ${config.stopLossPct}%`);
-  console.log(`  Take Profit:    ${config.takeProfitPct}%`);
+  console.log(`  Stop Loss:      ${config.stopLossMode === 'atr' ? `ATR ${config.stopLossAtrMultiplier}x` : `${config.stopLossPct}%`}`);
+  console.log(`  Take Profit:    ${config.stopLossMode === 'atr' ? `ATR ${config.takeProfitAtrMultiplier}x` : `${config.takeProfitPct}%`}`);
   console.log(`  Strategy:       ${config.strategy}`);
+  console.log(`  Warmup Candles: ${config.warmupCandles}`);
   console.log(`  EMA:            ${config.emaFast}/${config.emaSlow}`);
   console.log(`  Candle:         ${config.candleInterval}`);
   console.log(`  Slippage Cap:   ${(config.maxSlippage * 100).toFixed(2)}% (${config.maxSlippage > 0 ? 'LIMIT IOC' : 'MARKET'})`);

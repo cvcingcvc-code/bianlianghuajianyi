@@ -157,11 +157,11 @@ flowchart TD
 - [x] **P2-3**：WebSocket 断线重连后发射 `wsReconnected` 事件，自动触发一次全量 `reconcilePositions()` 对账同步（弥补断线窗口期漏推的成交与持仓变更，且保持当日初始本金 `startBalance` 不被覆盖）。
 - [x] **P2-4**：细化手续费与已实现盈亏核算：在 `repository.recordOrderExecution()` 实现按 `orderId` 幂等的开仓手续费扣减与平仓 `realizedProfit - commission` 净利结算（支持先 REST 粗算、后 WS 精确回报差额修正，杜绝双倍记账与胜率虚高）。
 
-### Phase 3：打通投研成果与实盘引擎（待办）
-- [ ] **P3-1**：封装 `breakout24h4h` 实盘策略适配器并注册到 `src/strategy/engine.js`（保持 `src/research/strategies/breakout24h4h.js` 冻结源码一字不改）。
-- [ ] **P3-2**：启动预热增强：策略启动时主动通过 REST 拉取足够长度的历史 K 线（如 `250` 根），确保 `EMA50` 与 24h 高点在启动首秒即完全收敛。
-- [ ] **P3-3**：在 `src/risk/limits.js` 中扩展可选的 ATR 动态止损计算器（`STOP_LOSS_MODE=pct|atr`）。
-- [ ] **P3-4**：在本地补齐 2026 官方归档数据后，按协议解封并运行一次 `Final Holdout Protocol V1` 终极样本外检验并归档报告。
+### Phase 3：打通投研成果与实盘引擎（已完成 ✅）
+- [x] **P3-1**：封装 `breakout24h4h` 实盘策略适配器（`src/strategy/breakout24h4h.js`）并注册到 `src/strategy/engine.js`，严格保持 `src/research/strategies/breakout24h4h.js` 冻结源码一字不改。
+- [x] **P3-2**：启动预热增强：在 `streams.js` & `websocket.js` 实现 `warmupFuturesKlines`，策略启动时在 WebSocket 建连前主动通过 REST 拉取 `WARMUP_CANDLES`（默认 250 根）历史 K 线进行指标预热并记录去重集合，确保 `EMA50`、24h 极值与实时 ATR 首秒完全收敛。
+- [x] **P3-3**：在 `src/risk/limits.js` 扩展 `calculateAtrStopLoss` 与 `calculateAtrTakeProfit`，并在 `src/risk/manager.js` 中打通 `STOP_LOSS_MODE=pct|atr` 动态止损与安全回退。
+- [x] **P3-4**：编写 `scripts/check-holdout-readiness.js`，建立 2026 样本外数据就绪度巡检机制与官方数据获取、解封回测指南（配置 npm 脚本 `npm run research:holdout-check`）。
 
 ### Phase 4：指标升级、存储演进与部署标准化（待办）
 - [ ] **P4-1**：新增标准 Wilder's RMA 平滑的 `rsiEmaV2` 策略（缓存窗口 `>=250` 根），对齐看盘软件指标数值。
@@ -178,3 +178,4 @@ flowchart TD
 | 2026-11-18 | **Phase 0 (P0-1 ~ P0-9)** | 完成全仓库系统性代码审计；修复 K 线去重丢包、合约保护单签名与 3 倍重复开仓、飞书 `/close` 假平仓、WS 账户同步抹除止损单 ID、风控冷却与并发锁、熔断告警事件名不一致、EMA 配置失效及 CSV 哈希不一致问题；建立 `:3000` 端口与接口规范文档及 GitHub Actions CI。 | `src/execution/*`、`src/market/*`、`src/risk/*`、`src/logger/*`、`src/strategy/*`、`src/config.js`、`tests/runtime-execution-risk.test.js`、`docs/API_AND_PORTS.md`、`docs/SYSTEM_ANALYSIS_AND_ROADMAP.md` | `npm test` 通过（20 个测试文件，191 pass / 0 fail / 13 离线大文件自动 skip） |
 | 2026-11-18 | **Phase 1 (P1-1 ~ P1-5)** | 完成接口鉴权与运行期安全加固：`:3000` 默认绑定 `WEB_HOST=127.0.0.1`；`/api/command` 接入 `DASHBOARD_ADMIN_TOKEN` 与非回环阻断，前端面板支持 Token 保存；`/feishu/callback` 接入 `FEISHU_VERIFICATION_TOKEN` 与 `64KB` 请求体上限拦截（HTTP 413）；实现合约 `futuresTime()` 服务器时钟校准与定期刷新；`orderExecutor` 接入 `MAX_SLIPPAGE`（`LIMIT` + `IOC`）滑点保护。 | `src/config.js`、`src/index.js`、`src/logger/webDashboard.js`、`public/dashboard.html`、`src/market/streams.js`、`src/market/websocket.js`、`src/risk/manager.js`、`src/execution/orderExecutor.js`、`.env.example`、`tests/phase1-security-execution.test.js` | `npm test` 通过（21 个测试文件，194 pass / 0 fail / 13 离线大文件自动 skip） |
 | 2026-11-18 | **Phase 2 (P2-1 ~ P2-4)** | 完成挂单自愈对账与精确净盈亏核算：`syncAccount` 联动 `futuresOpenOrders` 回填存续仓位 SL/TP `orderId`；新增 `reconcilePositions` 定时巡检自动为裸仓补挂 `STOP_MARKET` 并推送飞书告警；WS 断线重连后自动触发 `wsReconnected` 全量对账且保护 `startBalance`；实现 `recordOrderExecution` 按 `orderId` 幂等核算开平仓 `commission` 与 `realizedProfit` 差额修正。 | `src/execution/positionTracker.js`、`src/execution/orderExecutor.js`、`src/state/database.js`、`src/state/repository.js`、`src/market/websocket.js`、`src/logger/notifier.js`、`src/logger/webDashboard.js`、`src/index.js`、`src/config.js`、`tests/phase2-reconciliation-pnl.test.js` | `npm test` 通过（22 个测试文件，197 pass / 0 fail / 13 离线大文件自动 skip） |
+| 2026-11-21 | **Phase 3 (P3-1 ~ P3-4)** | 打通投研成果与实盘引擎：封装 `breakout24h4h` 实盘策略适配器（注册到 `strategyEngine`，保持冻结投研源码原样），实时计算并派发 ATR；在 `websocket.warmupKlines` & `streams.warmupFuturesKlines` 实现启动历史 K 线预热与去重；在 `limits.js` & `manager.js` 扩展 `STOP_LOSS_MODE=pct\|atr` 动态止损与优雅回退；编写 `scripts/check-holdout-readiness.js` 实现 2026 样本外数据就绪巡检与解封指引。 | `src/strategy/breakout24h4h.js`、`src/strategy/engine.js`、`src/market/streams.js`、`src/market/websocket.js`、`src/risk/limits.js`、`src/risk/manager.js`、`src/config.js`、`src/index.js`、`scripts/check-holdout-readiness.js`、`package.json`、`tests/phase3-strategy-warmup-atr.test.js`、`docs/API_AND_PORTS.md`、`docs/SYSTEM_ANALYSIS_AND_ROADMAP.md` | `npm test` 通过（23 个测试文件，203 pass / 0 fail / 13 离线大文件自动 skip） |

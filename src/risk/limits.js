@@ -18,6 +18,26 @@ function calculateTakeProfit(entryPrice, takeProfitPct, direction) {
   return entryPrice * (1 - takeProfitPct / 100);
 }
 
+function calculateAtrStopLoss(entryPrice, atr, multiplier = 2.0, direction = 'LONG') {
+  if (!Number.isFinite(entryPrice) || entryPrice <= 0) return 0;
+  if (!Number.isFinite(atr) || atr <= 0) return 0;
+  const dist = atr * multiplier;
+  if (direction === 'LONG') {
+    return Math.max(0, entryPrice - dist);
+  }
+  return entryPrice + dist;
+}
+
+function calculateAtrTakeProfit(entryPrice, atr, multiplier = 4.0, direction = 'LONG') {
+  if (!Number.isFinite(entryPrice) || entryPrice <= 0) return 0;
+  if (!Number.isFinite(atr) || atr <= 0) return 0;
+  const dist = atr * multiplier;
+  if (direction === 'LONG') {
+    return entryPrice + dist;
+  }
+  return Math.max(0, entryPrice - dist);
+}
+
 function calculateMarginRatio(accountBalance, openPositions, markPrices) {
   let totalMaintenanceMargin = 0;
   for (const pos of openPositions) {
@@ -46,5 +66,6 @@ function checkMinNotional(quantity, price) {
 
 module.exports = {
   calculatePositionSize, calculateStopLoss, calculateTakeProfit,
+  calculateAtrStopLoss, calculateAtrTakeProfit,
   calculateMarginRatio, roundToLotSize, roundPrice, checkMinNotional,
 };

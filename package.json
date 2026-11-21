@@ -9,6 +9,7 @@
     "start:reset-breaker": "node src/index.js --reset-breaker",
     "research": "node src/research/cli.js",
     "research:compare": "node src/research/cli.js --compare",
+    "research:holdout-check": "node scripts/check-holdout-readiness.js",
     "test": "node --test \"tests/**/*.test.js\""
   },
   "dependencies": {
