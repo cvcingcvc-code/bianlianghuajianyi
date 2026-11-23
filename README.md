@@ -16,21 +16,22 @@
 
 ## 🚀 Key Features
 
-- 📈 **Advanced Strategies**: EMA Crossover and RSI + EMA hybrid algorithms
-- 📊 **Comprehensive Backtesting**: Offline testing with Walk-Forward validation
-- ⚡ **Real-time Analytics**: WebSocket-powered monitoring and performance tracking
-- 🛡️ **Robust Risk Management**: Kelly formula, ATR stops, and multi-level circuit breakers
-- 📱 **Multi-channel Notifications**: Telegram and Feishu integration
-- 🧠 **Production Ready**: Clean architecture, comprehensive testing, and monitoring
+- 📈 **Advanced Strategies**: EMA Crossover, Wilder RSI + EMA (V1/V2), and 24h Breakout (4h scale)
+- 📊 **Comprehensive Backtesting**: Offline research engine with Walk-Forward validation and holdout protection
+- ⚡ **Real-time Analytics**: WebSocket-powered live monitoring with local `:3000` Web Dashboard
+- 🛡️ **Robust Risk Management**: Strict position sizing, ATR/Percentage dynamic stops, limit-IOC slippage cap, and multi-level circuit breakers
+- 📱 **Multi-channel Notifications**: Dual Feishu Webhook & Telegram Bot integration
+- 🐳 **Containerized Deployment**: One-click Dockerfile and Docker Compose deployment with healthchecks
+- 🧠 **Production Ready**: Clean architecture, stop-loss self-healing, server clock synchronization, and 100% test coverage
 
 ## 🛠️ Tech Stack
 
-- **Language**: Node.js / JavaScript
-- **API**: Binance Futures API
-- **Database**: SQLite
-- **Real-time Data**: WebSocket connections
-- **Testing**: Unit testing framework
-- **Monitoring**: Web dashboard and logging
+- **Runtime**: Node.js 18+ / 22+ (ES6+ / CommonJS)
+- **API**: Binance USD-M Futures (REST & WebSocket streams)
+- **Persistence**: Atomic JSON file ledger (`data/*.json` with atomic tmp-rename writes)
+- **Monitoring & Control**: Web Dashboard (`:3000`, SSE stream & command terminal) + Feishu/Telegram alerts
+- **Deployment**: Docker & Docker Compose (`node:22-alpine`)
+- **Testing**: Node.js built-in test runner (`node:test`, `node:assert`)
 
 ## 🏗️ Architecture
 
@@ -106,6 +107,23 @@ npm run research -- --symbol BTCUSDT --strategy rsiEma --file data/market/BTCUSD
 
 # Compare multiple strategies
 npm run research:compare -- --symbol BTCUSDT --file data/market/BTCUSDT-15m.csv
+
+# Run 2026 Holdout data readiness check
+npm run research:holdout-check
+```
+
+### Docker 容器化一键部署
+
+```bash
+# 1. 配置环境变量
+cp .env.example .env
+
+# 2. 启动容器（后台常驻，自动挂载 data/ 与 logs/，并开启健康检查）
+docker compose up -d
+
+# 3. 查看运行日志与健康状态
+docker compose logs -f
+docker compose ps
 ```
 
 ## 📈 Trading Strategies

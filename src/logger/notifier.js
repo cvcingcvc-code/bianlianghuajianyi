@@ -50,11 +50,16 @@ function init(cfg, bus, log, repository, strategy) {
     }
   });
 
-  logger.info('Notifier ready (Feishu)');
+  logger.info(`Notifier ready (Feishu: ${Boolean(config?.feishuWebhookUrl)}, Telegram: ${Boolean(config?.telegramBotToken && config?.telegramChatId)})`);
 }
 
 function send(text) {
-  const url = config.feishuWebhookUrl;
+  sendFeishu(text);
+  sendTelegram(text);
+}
+
+function sendFeishu(text) {
+  const url = config?.feishuWebhookUrl;
   if (!url) return;
 
   const body = JSON.stringify({
@@ -83,6 +88,43 @@ function send(text) {
   req.end();
 }
 
+function sendTelegram(text) {
+  const token = config?.telegramBotToken;
+  const chatId = config?.telegramChatId;
+  if (!token || !chatId) return;
+
+  const body = JSON.stringify({
+    chat_id: chatId,
+    text: `*Binance Trader*\n${text}`,
+    parse_mode: 'Markdown',
+  });
+
+  const req = https.request({
+    hostname: 'api.telegram.org',
+    port: 443,
+    path: `/bot${token}/sendMessage`,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(body),
+    },
+    timeout: 10000,
+  }, (res) => {
+    if (res.statusCode !== 200) {
+      let data = '';
+      res.on('data', (c) => { data += c; });
+      res.on('end', () => {
+        try { logger.warn(`Telegram ${res.statusCode}: ${data}`); } catch (e) {}
+      });
+    }
+  });
+  req.on('error', (e) => {
+    logger.warn(`Telegram send failed: ${e.message}`);
+  });
+  req.write(body);
+  req.end();
+}
+
 function sendSummary() {
   if (!repo || !config.feishuWebhookUrl) return;
   const stats = repo.getDailyStats();
@@ -104,4 +146,4 @@ function sendSummary() {
   send(msg);
 }
 
-module.exports = { init, sendSummary };
+module.exports = { init, send, sendSummary, sendFeishu, sendTelegram };

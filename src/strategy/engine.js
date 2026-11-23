@@ -1,10 +1,12 @@
 const emaCrossover = require('./emaCrossover');
 const rsiEma = require('./rsiEma');
+const rsiEmaV2 = require('./rsiEmaV2');
 const breakout24h4h = require('./breakout24h4h');
 
 const strategies = {
   emaCrossover,
   rsiEma,
+  rsiEmaV2,
   breakout24h4h,
   breakout24h: breakout24h4h,
 };

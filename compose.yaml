@@ -1,0 +1,20 @@
+services:
+  binance-trader:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: binance-trader:latest
+    container_name: binance-trader
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

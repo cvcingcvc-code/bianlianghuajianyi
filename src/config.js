@@ -5,7 +5,7 @@ const { required, isNumber, maskSecret } = require('./utils/validators');
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 const VALID_INTERVALS = new Set(['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d']);
-const VALID_STRATEGIES = new Set(['emaCrossover', 'rsiEma', 'breakout24h4h', 'breakout24h']);
+const VALID_STRATEGIES = new Set(['emaCrossover', 'rsiEma', 'rsiEmaV2', 'breakout24h4h', 'breakout24h']);
 
 function loadConfig() {
   const testnet = process.env.BINANCE_TESTNET !== 'false';

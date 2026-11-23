@@ -1,0 +1,11 @@
+node_modules/
+.git/
+.github/
+data/market/
+data/markprice/
+tests/
+reports/
+*.log
+.env
+.env.example
+docs/

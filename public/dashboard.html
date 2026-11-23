@@ -84,6 +84,28 @@ canvas { width: 100%; height: 100%; }
   </div>
 
   <div class="card full">
+    <div class="card-header"><span>Recent Executions</span><span style="font-size:11px;color:#8b949e">Last 50 trades</span></div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;font-family:monospace">
+        <thead>
+          <tr style="color:#8b949e;border-bottom:1px solid #30363d;text-align:left">
+            <th style="padding:6px 8px">Time</th>
+            <th style="padding:6px 8px">Symbol</th>
+            <th style="padding:6px 8px">Side</th>
+            <th style="padding:6px 8px">Price</th>
+            <th style="padding:6px 8px">Qty</th>
+            <th style="padding:6px 8px">Fee (USDT)</th>
+            <th style="padding:6px 8px">PnL</th>
+          </tr>
+        </thead>
+        <tbody id="tradeRows">
+          <tr><td colspan="7" style="color:#8b949e;text-align:center;padding:16px">No executions recorded</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card full">
     <div class="card-header">Signals</div>
     <div class="signal-log" id="signals"><div style="color:#8b949e">Waiting for signals...</div></div>
   </div>
@@ -160,6 +182,36 @@ function updateSignals(signals) {
   $('signals').innerHTML = html;
 }
 
+function updateRecentTrades(trades) {
+  if (!trades || trades.length === 0) {
+    $('tradeRows').innerHTML = '<tr><td colspan="7" style="color:#8b949e;text-align:center;padding:16px">No executions recorded</td></tr>';
+    return;
+  }
+  let html = '';
+  // Show most recent trades first
+  const rev = trades.slice().reverse();
+  for (const t of rev) {
+    const timeStr = t.time ? new Date(t.time).toLocaleTimeString() : '—';
+    const sideCls = t.side === 'BUY' ? 'up' : 'down';
+    const feeStr = t.commission !== undefined && t.commission !== null ? fmt(t.commission, 4) : '—';
+    let pnlHtml = '<span style="color:#8b949e">—</span>';
+    if (t.realizedPnl !== undefined && t.realizedPnl !== null && t.action === 'CLOSE') {
+      const pnlVal = t.realizedPnl;
+      pnlHtml = `<span class="${pnlVal >= 0 ? 'up' : 'down'}">${pnlSign(pnlVal)}${fmt(pnlVal, 2)}</span>`;
+    }
+    html += `<tr style="border-bottom:1px solid #21262d">
+      <td style="padding:6px 8px;color:#8b949e">${timeStr}</td>
+      <td style="padding:6px 8px;font-weight:bold">${t.symbol}</td>
+      <td style="padding:6px 8px" class="${sideCls}">${t.side}</td>
+      <td style="padding:6px 8px">${fmt(t.price, 2)}</td>
+      <td style="padding:6px 8px">${t.quantity}</td>
+      <td style="padding:6px 8px">${feeStr}</td>
+      <td style="padding:6px 8px">${pnlHtml}</td>
+    </tr>`;
+  }
+  $('tradeRows').innerHTML = html;
+}
+
 function updateBreakers(breakers) {
   const bar = $('breakerBar');
   const tripped = Object.values(breakers || {}).find(b => b.tripped);
@@ -214,6 +266,7 @@ async function pollState() {
     const data = await res.json();
     updateStats(data); updateTickers(data.prices); updatePositions(data.positions);
     updateSignals(data.signals); updateBreakers(data.breakers);
+    updateRecentTrades(data.recentTrades);
     if (data.authRequired) {
       const hasToken = Boolean(($('tokenInput').value || '').trim());
       $('authBadge').textContent = hasToken ? '🔒 Token Configured' : '⚠️ Admin Token Required';

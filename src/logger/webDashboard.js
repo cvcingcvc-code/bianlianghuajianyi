@@ -126,6 +126,7 @@ function handleRequest(req, res) {
   } else if (req.url === '/api/state' && req.method === 'GET') {
     updatePositions();
     const stats = repo.getDailyStats();
+    const recentTrades = typeof repo.getRecentTrades === 'function' ? repo.getRecentTrades(50) : [];
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
       prices: state.prices,
@@ -137,10 +138,17 @@ function handleRequest(req, res) {
       trades: stats.tradeCount || 0,
       wins: stats.winningTrades || 0,
       signals: state.signals.slice(0, 20),
+      recentTrades,
       breakers: repo.getBreakerState(),
       priceHistory,
       authRequired: Boolean(config?.dashboardAdminToken),
     }));
+  } else if (req.url.startsWith('/api/trades') && req.method === 'GET') {
+    const urlObj = new URL(req.url, 'http://127.0.0.1');
+    const limit = Math.min(100, Math.max(1, parseInt(urlObj.searchParams.get('limit') || '50', 10)));
+    const trades = typeof repo.getRecentTrades === 'function' ? repo.getRecentTrades(limit) : [];
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(trades));
   } else if (req.url === '/api/stream' && req.method === 'GET') {
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',

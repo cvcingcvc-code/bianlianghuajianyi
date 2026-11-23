@@ -163,11 +163,11 @@ flowchart TD
 - [x] **P3-3**：在 `src/risk/limits.js` 扩展 `calculateAtrStopLoss` 与 `calculateAtrTakeProfit`，并在 `src/risk/manager.js` 中打通 `STOP_LOSS_MODE=pct|atr` 动态止损与安全回退。
 - [x] **P3-4**：编写 `scripts/check-holdout-readiness.js`，建立 2026 样本外数据就绪度巡检机制与官方数据获取、解封回测指南（配置 npm 脚本 `npm run research:holdout-check`）。
 
-### Phase 4：指标升级、存储演进与部署标准化（待办）
-- [ ] **P4-1**：新增标准 Wilder's RMA 平滑的 `rsiEmaV2` 策略（缓存窗口 `>=250` 根），对齐看盘软件指标数值。
-- [ ] **P4-2**：补齐 `notifier.js` 的 Telegram Bot 告警推送（或清理未使用的 `TELEGRAM_*` 配置项），修正 `README.md` 中与实际实现不符的描述。
-- [ ] **P4-3**：评估使用 Node 22+ 原生 `node:sqlite` 升级状态持久化层，保留历史成交流水查询接口并在 Web 面板展示最近成交记录表。
-- [ ] **P4-4**：编写 `Dockerfile` 与 `compose.yaml`（含健康检查 `GET /api/state`、日志轮转与数据卷挂载），支持服务器一键容器化部署。
+### Phase 4：指标升级、存储演进与部署标准化（已完成 ✅）
+- [x] **P4-1**：新增标准 Wilder's RMA 平滑的 `rsiEmaV2` 策略（缓存窗口扩充至 `300` 根），对齐看盘软件指标数值，同步集成实时 ATR 动态止损跟踪。
+- [x] **P4-2**：补齐 `notifier.js` 的 Telegram Bot 双渠道告警推送（支持 Markdown 消息与 10s 容错超时），全面校准 `README.md` 中与实际代码实现不符的描述。
+- [x] **P4-3**：在 `webDashboard.js` 扩展 `/api/trades` 路由与 `/api/state` 的 `recentTrades` 数据通道，并在前端 `public/dashboard.html` 增加最近 50 条成交流水表格。
+- [x] **P4-4**：编写生产级 `Dockerfile` 与 `compose.yaml`（含健康检查 `GET /api/state`、日志轮转与数据卷挂载），支持服务器一键容器化部署。
 
 ---
 
@@ -179,3 +179,4 @@ flowchart TD
 | 2026-11-18 | **Phase 1 (P1-1 ~ P1-5)** | 完成接口鉴权与运行期安全加固：`:3000` 默认绑定 `WEB_HOST=127.0.0.1`；`/api/command` 接入 `DASHBOARD_ADMIN_TOKEN` 与非回环阻断，前端面板支持 Token 保存；`/feishu/callback` 接入 `FEISHU_VERIFICATION_TOKEN` 与 `64KB` 请求体上限拦截（HTTP 413）；实现合约 `futuresTime()` 服务器时钟校准与定期刷新；`orderExecutor` 接入 `MAX_SLIPPAGE`（`LIMIT` + `IOC`）滑点保护。 | `src/config.js`、`src/index.js`、`src/logger/webDashboard.js`、`public/dashboard.html`、`src/market/streams.js`、`src/market/websocket.js`、`src/risk/manager.js`、`src/execution/orderExecutor.js`、`.env.example`、`tests/phase1-security-execution.test.js` | `npm test` 通过（21 个测试文件，194 pass / 0 fail / 13 离线大文件自动 skip） |
 | 2026-11-18 | **Phase 2 (P2-1 ~ P2-4)** | 完成挂单自愈对账与精确净盈亏核算：`syncAccount` 联动 `futuresOpenOrders` 回填存续仓位 SL/TP `orderId`；新增 `reconcilePositions` 定时巡检自动为裸仓补挂 `STOP_MARKET` 并推送飞书告警；WS 断线重连后自动触发 `wsReconnected` 全量对账且保护 `startBalance`；实现 `recordOrderExecution` 按 `orderId` 幂等核算开平仓 `commission` 与 `realizedProfit` 差额修正。 | `src/execution/positionTracker.js`、`src/execution/orderExecutor.js`、`src/state/database.js`、`src/state/repository.js`、`src/market/websocket.js`、`src/logger/notifier.js`、`src/logger/webDashboard.js`、`src/index.js`、`src/config.js`、`tests/phase2-reconciliation-pnl.test.js` | `npm test` 通过（22 个测试文件，197 pass / 0 fail / 13 离线大文件自动 skip） |
 | 2026-11-21 | **Phase 3 (P3-1 ~ P3-4)** | 打通投研成果与实盘引擎：封装 `breakout24h4h` 实盘策略适配器（注册到 `strategyEngine`，保持冻结投研源码原样），实时计算并派发 ATR；在 `websocket.warmupKlines` & `streams.warmupFuturesKlines` 实现启动历史 K 线预热与去重；在 `limits.js` & `manager.js` 扩展 `STOP_LOSS_MODE=pct\|atr` 动态止损与优雅回退；编写 `scripts/check-holdout-readiness.js` 实现 2026 样本外数据就绪巡检与解封指引。 | `src/strategy/breakout24h4h.js`、`src/strategy/engine.js`、`src/market/streams.js`、`src/market/websocket.js`、`src/risk/limits.js`、`src/risk/manager.js`、`src/config.js`、`src/index.js`、`scripts/check-holdout-readiness.js`、`package.json`、`tests/phase3-strategy-warmup-atr.test.js`、`docs/API_AND_PORTS.md`、`docs/SYSTEM_ANALYSIS_AND_ROADMAP.md` | `npm test` 通过（23 个测试文件，203 pass / 0 fail / 13 离线大文件自动 skip） |
+| 2026-11-23 | **Phase 4 (P4-1 ~ P4-4)** | 指标升级、存储演进与部署标准化：新增标准 Wilder's RMA 平滑的 `rsiEmaV2` 策略（缓存窗口 300 根且集成 ATR）；补齐 `notifier.js` 的 Telegram Bot 双渠道告警推送并全面校准 `README.md`；Web 面板扩展 `/api/trades` 与前端最近 50 条成交流水表格；编写生产级 `Dockerfile` 与 `compose.yaml`（含健康检查、数据卷与日志轮转）。 | `src/strategy/rsiEmaV2.js`、`src/strategy/engine.js`、`src/research/strategyAdapter.js`、`src/logger/notifier.js`、`src/logger/webDashboard.js`、`public/dashboard.html`、`src/config.js`、`README.md`、`Dockerfile`、`compose.yaml`、`.dockerignore`、`tests/phase4-indicators-telegram-docker.test.js`、`docs/API_AND_PORTS.md`、`docs/SYSTEM_ANALYSIS_AND_ROADMAP.md` | `npm test` 通过（24 个测试文件，208 pass / 0 fail / 13 离线大文件自动 skip） |

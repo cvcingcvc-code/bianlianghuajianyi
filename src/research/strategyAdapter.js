@@ -14,6 +14,7 @@
 const LIVE_STRATEGY_MODULES = {
   emaCrossover: () => require('../strategy/emaCrossover'),
   rsiEma: () => require('../strategy/rsiEma'),
+  rsiEmaV2: () => require('../strategy/rsiEmaV2'),
 };
 
 // Research-only candidate strategies (STRATEGY RESEARCH V2 / V3A). They are NOT
