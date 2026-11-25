@@ -10,7 +10,7 @@
     "research": "node src/research/cli.js",
     "research:compare": "node src/research/cli.js --compare",
     "research:holdout-check": "node scripts/check-holdout-readiness.js",
-    "test": "node --test \"tests/**/*.test.js\""
+    "test": "node -e \"const fs=require('fs'),path=require('path'),{execFileSync}=require('child_process');const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):e.name.endsWith('.test.js')?[path.join(d,e.name)]:[]);execFileSync(process.execPath,['--test',...walk('tests')],{stdio:'inherit'})\""
   },
   "dependencies": {
     "dotenv": "^17.4.2",
